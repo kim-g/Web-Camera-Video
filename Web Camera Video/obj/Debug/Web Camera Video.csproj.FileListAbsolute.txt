@@ -17,3 +17,24 @@ D:\Visual Studio\Web Camera Video New\Web Camera Video\obj\Debug\Web Camera Vide
 D:\Visual Studio\Web Camera Video New\Web Camera Video\obj\Debug\Web Camera Video.pdb
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.exe
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.pdb
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Controls.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AxInterop.WMPLib.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Interop.WMPLib.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.dll
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.xml
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
+d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.xml
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csprojResolveAssemblyReference.cache
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Configuration.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Form1.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.SnapshotForm.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Video.resources
+d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.Cache

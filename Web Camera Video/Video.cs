@@ -117,27 +117,34 @@ namespace Web_Camera_Video
 
     private void InitializeComponent()
     {
-      ComponentResourceManager componentResourceManager = new ComponentResourceManager(typeof (Video));
-      this.axWindowsMediaPlayer1 = new AxWindowsMediaPlayer();
-      this.axWindowsMediaPlayer1.BeginInit();
-      this.SuspendLayout();
-      this.axWindowsMediaPlayer1.Dock = DockStyle.Fill;
-      this.axWindowsMediaPlayer1.Enabled = true;
-      this.axWindowsMediaPlayer1.Location = new Point(0, 0);
-      this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-      this.axWindowsMediaPlayer1.OcxState = (AxHost.State) componentResourceManager.GetObject("axWindowsMediaPlayer1.OcxState");
-      this.axWindowsMediaPlayer1.Size = new Size(711, 437);
-      this.axWindowsMediaPlayer1.TabIndex = 0;
-      this.axWindowsMediaPlayer1.StatusChange += new EventHandler(this.axWindowsMediaPlayer1_StatusChange);
-      this.AutoScaleDimensions = new SizeF(6f, 13f);
-      this.AutoScaleMode = AutoScaleMode.Font;
-      this.BackColor = Color.White;
-      this.ClientSize = new Size(711, 437);
-      this.Controls.Add((Control) this.axWindowsMediaPlayer1);
-      this.Name = "Video";
-      this.Text = "Video";
-      this.axWindowsMediaPlayer1.EndInit();
-      this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Video));
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 0);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(711, 437);
+            this.axWindowsMediaPlayer1.TabIndex = 0;
+            this.axWindowsMediaPlayer1.StatusChange += new System.EventHandler(this.axWindowsMediaPlayer1_StatusChange);
+            // 
+            // Video
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(711, 437);
+            this.Controls.Add(this.axWindowsMediaPlayer1);
+            this.Name = "Video";
+            this.Text = "Video";
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
+            this.ResumeLayout(false);
+
     }
   }
 }

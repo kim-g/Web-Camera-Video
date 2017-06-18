@@ -1,5 +1,41 @@
 <?xml version="1.0"?>
 <Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Big_Button>
+    <Name>Arial</Name>
+    <Size>60</Size>
+    <Color />
+    <Style>Bold</Style>
+  </Big_Button>
+  <Medium_Button>
+    <Name>Arial</Name>
+    <Size>36</Size>
+    <Color />
+    <Style>Bold</Style>
+  </Medium_Button>
+  <Small_Button>
+    <Name>Arial</Name>
+    <Size>12</Size>
+    <Color />
+    <Style>Regular</Style>
+  </Small_Button>
+  <List>
+    <Name>Arial</Name>
+    <Size>22</Size>
+    <Color />
+    <Style>Regular</Style>
+  </List>
+  <ID_Label>
+    <Name>Arial</Name>
+    <Size>36</Size>
+    <Color />
+    <Style>Regular</Style>
+  </ID_Label>
+  <CountDown>
+    <Name>Arial</Name>
+    <Size>200</Size>
+    <Color />
+    <Style>Bold</Style>
+  </CountDown>
   <Work_Directory>c:\work</Work_Directory>
   <Prep_Directory>prep</Prep_Directory>
   <Template_Directory>template</Template_Directory>
@@ -99,42 +135,6 @@
   <AutoRun>
     <string>startup.bat</string>
   </AutoRun>
-  <Big_Button>
-    <Name>Arial</Name>
-    <Size>60</Size>
-    <Style>Bold</Style>
-    <Color />
-  </Big_Button>
-  <Medium_Button>
-    <Name>Arial</Name>
-    <Size>36</Size>
-    <Style>Bold</Style>
-    <Color />
-  </Medium_Button>
-  <Small_Button>
-    <Name>Arial</Name>
-    <Size>12</Size>
-    <Style>Regular</Style>
-    <Color />
-  </Small_Button>
-  <List>
-    <Name>Arial</Name>
-    <Size>22</Size>
-    <Style>Regular</Style>
-    <Color />
-  </List>
-  <ID_Label>
-    <Name>Arial</Name>
-    <Size>36</Size>
-    <Style>Regular</Style>
-    <Color />
-  </ID_Label>
-  <CountDown>
-    <Name>Arial</Name>
-    <Size>200</Size>
-    <Style>Bold</Style>
-    <Color />
-  </CountDown>
   <Open_Dialog_Filter>Windows Media Video|*.wmv|Все файлы|*.*</Open_Dialog_Filter>
   <Data_Format>t = &lt;b&gt;
 ФИО: {0}
