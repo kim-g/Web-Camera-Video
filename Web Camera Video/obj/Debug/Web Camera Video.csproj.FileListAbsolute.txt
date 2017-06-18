@@ -1,0 +1,41 @@
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.VFW.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Vision.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.VFW.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Vision.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csprojResolveAssemblyReference.cache
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Form1.resources
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.Cache
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.exe
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.pdb
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Controls.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Controls.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.DebuggerVisualizers (2010).dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.FFMPEG.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.Ximea.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.FFMPEG.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.Ximea.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.SnapshotForm.resources
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Interop.WMPLib.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AxInterop.WMPLib.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Interop.MediaPlayer.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Interop.WMPDXMLib.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Interop.WMPLib.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\AxInterop.WMPLib.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.ResolveComReference.cache
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Video.resources
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Configuration.resources
