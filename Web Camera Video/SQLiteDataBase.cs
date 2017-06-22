@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SQLite;
+using System.Drawing;
 using System.IO;
 
 namespace Web_Camera_Video
@@ -129,9 +130,78 @@ namespace Web_Camera_Video
             return true;
         }
 
+        //Работа с конфигом, получение значения
+
         public string GetConfigValue(string name)
         {
             DataTable Conf = ReadTable("SELECT `value` FROM `config` WHERE `name`='" + name + "' LIMIT 1");
+            return Conf.Rows[0].ItemArray[0].ToString();
+        }
+
+        public int GetConfigValueInt(string name)
+        {
+            DataTable Conf = ReadTable("SELECT `value` FROM `config` WHERE `name`='" + name + "' LIMIT 1");
+            return Convert.ToInt32(Conf.Rows[0].ItemArray[0].ToString());
+        }
+
+        public bool GetConfigValueBool(string name)
+        {
+            DataTable Conf = ReadTable("SELECT `value` FROM `config` WHERE `name`='" + name + "' LIMIT 1");
+            return Conf.Rows[0].ItemArray[0].ToString() == "1";
+        }
+
+
+        //Работа с конфигом, установка значения
+
+        public bool SetConfigValue(string name, string value)
+        {
+            return Execute("UPDATE `config` SET `value`='" + value + "' WHERE `name`='" + name + "' LIMIT 1");
+        }
+
+        public bool SetConfigValue(string name, int value)
+        {
+            return Execute("UPDATE `config` SET `value`='" + value.ToString() + "' WHERE `name`='" + name + "' LIMIT 1");
+        }
+
+        public bool SetConfigValue(string name, bool value)
+        {
+            string val = value ? "1" : "0";
+            return Execute("UPDATE `config` SET `value`='" + val + "' WHERE `name`='" + name + "' LIMIT 1");
+        }
+
+
+
+        // Загрузка шрифта из БД
+        public Font GetFont(string name)
+        {
+            DataTable Conf = ReadTable("SELECT * FROM `fonts` WHERE `name`='" + name + "' LIMIT 1");
+            return new Font(Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("font_name")].ToString(), 
+                (float)Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("size")],
+                GetStyle(Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("style")].ToString()));
+        }
+
+        // Установка стиля шрифта
+        private FontStyle GetStyle(string Style)
+        {
+            FontStyle FS = FontStyle.Regular;
+
+            switch (Style.ToLower())
+            {
+                case "regular": FS = FontStyle.Regular; break;
+                case "bold": FS = FontStyle.Bold; break;
+                case "italic": FS = FontStyle.Italic; break; 
+                case "underline": FS = FontStyle.Underline; break;
+                case "strikeout": FS = FontStyle.Strikeout; break;
+            }
+            return FS;
+        }
+
+
+
+        // Получение текста
+        public string GetText(string name)
+        {
+            DataTable Conf = ReadTable("SELECT `value_" + GetConfigValue("language") + "` FROM `config` WHERE `name`='" + name + "' LIMIT 1");
             return Conf.Rows[0].ItemArray[0].ToString();
         }
     }

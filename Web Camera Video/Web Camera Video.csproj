@@ -79,13 +79,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive_List.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Directories.cs" />
     <Compile Include="FontInfo.cs" />
     <Compile Include="Directory_Class.cs" />
     <Compile Include="Prep_Directory_Class.cs" />
-    <Compile Include="Configuration.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,11 +100,12 @@
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
-    <Compile Include="Config_Labels.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration.resx" />
+    <EmbeddedResource Include="Configuration.resx">
+      <DependentUpon>Configuration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx" />
     <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="SnapshotForm.resx" />

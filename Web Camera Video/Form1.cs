@@ -77,6 +77,8 @@ namespace Web_Camera_Video
 
         SQLiteDataBase ConfigDB;
         Directories Dir;
+        int Input_Monitor;
+        int Show_Monitor;
 
     public Form1()
     {
@@ -98,10 +100,12 @@ namespace Web_Camera_Video
                 System.Diagnostics.Process.Start(AutoRun[i]);
             }
 
-            MaskM = Image.FromFile(config.Get_Mask_Image(true));
-            MaskW = Image.FromFile(config.Get_Mask_Image(false));
-            ShootLabel = Image.FromFile(config.Get_Photo_Image());
-            Welcome = Image.FromFile(config.Get_Welcome_Image());
+            string Images = ConfigDB.GetConfigValue("Images") + @"\";
+
+            MaskM = Image.FromFile(Images + ConfigDB.GetConfigValue("MaskImageM"));
+            MaskW = Image.FromFile(Images + ConfigDB.GetConfigValue("MaskImageW"));
+            ShootLabel = Image.FromFile(Images + ConfigDB.GetConfigValue("SmileImage"));
+            Welcome = Image.FromFile(Images + ConfigDB.GetConfigValue("Welcome"));
 
             sc = Screen.AllScreens;
             if (sc.Length < 2)
@@ -111,33 +115,36 @@ namespace Web_Camera_Video
                 return;
             }
 
-            if (config.Input_Monitor >= sc.Length)
+            if (ConfigDB.GetConfigValueInt("Input_Monitor") >= sc.Length)
             {
                 MessageBox.Show("Указанный в настройках монитор не найден.\n\n Для окна ввода устанавливается монитор " + (sc.Length - 1).ToString(), "ОШИБКА");
-                config.Input_Monitor = sc.Length - 1;
+                ConfigDB.SetConfigValue("Input_Monitor", sc.Length - 1);
             }
+            Input_Monitor = ConfigDB.GetConfigValueInt("Input_Monitor");
 
-            if (config.Show_Monitor >= sc.Length)
+            if (ConfigDB.GetConfigValueInt("Show_Monitor") >= sc.Length)
             {
                 MessageBox.Show("Указанный в настройках монитор не найден.\n\n Для окна показа видео устанавливается монитор " + (sc.Length - 1).ToString(), "ОШИБКА");
-                config.Show_Monitor = sc.Length - 1;
+                ConfigDB.SetConfigValue("Show_Monitor", sc.Length - 1);
             }
+            Show_Monitor = ConfigDB.GetConfigValueInt("Show_Monitor");
 
             // Показ видео
             VideoForm = new Video();
 
+
             // Настройка монитора ввода данных
             FormBorderStyle = FormBorderStyle.None;
-            Left = sc[config.Input_Monitor].Bounds.Width;
-            Top = sc[config.Input_Monitor].Bounds.Height;
+            Left = sc[Input_Monitor].Bounds.Width;
+            Top = sc[Input_Monitor].Bounds.Height;
             StartPosition = FormStartPosition.Manual;
-            Location = sc[Form1.config.Input_Monitor].Bounds.Location;
-            Point p = new Point(sc[Form1.config.Input_Monitor].Bounds.Location.X, sc[Form1.config.Input_Monitor].Bounds.Location.Y);
+            Location = sc[Input_Monitor].Bounds.Location;
+            Point p = new Point(sc[Input_Monitor].Bounds.Location.X, sc[Input_Monitor].Bounds.Location.Y);
             Location = p;
             WindowState = FormWindowState.Maximized;
 
             // Настройка кнопки конфигурации
-            button1.Left = sc[Form1.config.Input_Monitor].Bounds.Width - button1.Width - 10;
+            button1.Left = sc[Input_Monitor].Bounds.Width - button1.Width - 10;
             button1.Top = 10;
 
             // Настройка кнопок
@@ -154,48 +161,48 @@ namespace Web_Camera_Video
 
         private void Exit_Button_Show()
         {
-            Exit_Button.BackgroundImage = Image.FromFile(config.Get_Cancel_Image());
+            Exit_Button.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Cancel_Button"));
             Exit_Button.Width = Exit_Button.BackgroundImage.Width;
             Exit_Button.Height = Exit_Button.BackgroundImage.Height;
-            Exit_Button.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - Exit_Button.Width) / 2;
+            Exit_Button.Left = (sc[Input_Monitor].Bounds.Width - Exit_Button.Width) / 2;
             Exit_Button.Top = Show_Old_Button.Bottom + 50;
-            Exit_Button.Font = config.Get_Small_Button_Font();
-            Exit_Button.Text = config.Exit_Label;
+            Exit_Button.Font = ConfigDB.GetFont("Small_Button");
+            Exit_Button.Text = ConfigDB.GetText("Exit_Label");
             Exit_Button.Visible = true;
         }
 
         private void Show_Old_Button_Show()
         {
-            Show_Old_Button.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
+            Show_Old_Button.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
             Show_Old_Button.Width = Show_Old_Button.BackgroundImage.Width;
             Show_Old_Button.Height = Show_Old_Button.BackgroundImage.Height;
-            Show_Old_Button.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - Show_Old_Button.Width) / 2;
+            Show_Old_Button.Left = (sc[Input_Monitor].Bounds.Width - Show_Old_Button.Width) / 2;
             Show_Old_Button.Top = New_User_Button.Bottom + 50;
-            Show_Old_Button.Font = config.Get_Medium_Button_Font();
-            Show_Old_Button.Text = config.Show_Old_Label;
+            Show_Old_Button.Font = ConfigDB.GetFont("Medium_Button");
+            Show_Old_Button.Text = ConfigDB.GetText("Show_Old_Label");
             Show_Old_Button.Visible = true;
         }
 
         private void Cancel_Button_Prepare()
         {
-            Cancel_Button.BackgroundImage = Image.FromFile(config.Get_Cancel_Image());
+            Cancel_Button.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Cancel_Button"));
             Cancel_Button.Width = Cancel_Button.BackgroundImage.Width;
             Cancel_Button.Height = Cancel_Button.BackgroundImage.Height;
-            Cancel_Button.Left = sc[Form1.config.Input_Monitor].Bounds.Width - Cancel_Button.Width - 10;
-            Cancel_Button.Top = sc[Form1.config.Input_Monitor].Bounds.Height - Cancel_Button.Height - 10;
-            Cancel_Button.Font = config.Get_Small_Button_Font();
-            Cancel_Button.Text = config.Cancel_Label;
+            Cancel_Button.Left = sc[Input_Monitor].Bounds.Width - Cancel_Button.Width - 10;
+            Cancel_Button.Top = sc[Input_Monitor].Bounds.Height - Cancel_Button.Height - 10;
+            Cancel_Button.Font = ConfigDB.GetFont("Small_Button");
+            Cancel_Button.Text = ConfigDB.GetText("Cancel_Label");
             Cancel_Button.Visible = false;
         }
 
         private void New_User_Button_Show()
         {
-            New_User_Button.BackgroundImage = Image.FromFile(config.Get_New_User_Button_Image());
+            New_User_Button.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("New_User_Button"));
             New_User_Button.Width = New_User_Button.BackgroundImage.Width;
             New_User_Button.Height = New_User_Button.BackgroundImage.Height;
-            New_User_Button.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - New_User_Button.Width) / 2;
-            New_User_Button.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - New_User_Button.Height) / 2 - 150;
-            New_User_Button.Font = config.Get_Big_Button_Font();
+            New_User_Button.Left = (sc[Input_Monitor].Bounds.Width - New_User_Button.Width) / 2;
+            New_User_Button.Top = (sc[Input_Monitor].Bounds.Height - New_User_Button.Height) / 2 - 150;
+            New_User_Button.Font = ConfigDB.GetFont("Big_Button");
             New_User_Button.Text = config.New_User_Label;
             New_User_Button.Visible = true;
             New_User_Button.Focus();
@@ -337,8 +344,8 @@ namespace Web_Camera_Video
             CountDown.Font = config.Get_CountDown_Font();
             CountDown.Height = CountDown.Font.Height;
             CountDown.Width = 500;
-            CountDown.Left = (sc[config.Input_Monitor].Bounds.Width - CountDown.Width) / 2;
-            CountDown.Top = (sc[config.Input_Monitor].Bounds.Height - CountDown.Height) / 2;
+            CountDown.Left = (sc[Input_Monitor].Bounds.Width - CountDown.Width) / 2;
+            CountDown.Top = (sc[Input_Monitor].Bounds.Height - CountDown.Height) / 2;
 
             if (config.Stop_Immediately) VideoForm.Stop();
 
@@ -357,7 +364,7 @@ namespace Web_Camera_Video
             UserID = AL.Get_New_ID();
             ID_Label.Font = config.Get_ID_Label_Font();
             ID_Label.Text = config.ID_Label_Text + " " + UserID.ToString("D4");
-            ID_Label.Left = (sc[config.Input_Monitor].Bounds.Width - ID_Label.Width) / 2;
+            ID_Label.Left = (sc[Input_Monitor].Bounds.Width - ID_Label.Width) / 2;
             ID_Label.Top = 50;
             ID_Label.Visible = config.ShowID;
             UI = new UserInformation(UserID);
@@ -368,8 +375,8 @@ namespace Web_Camera_Video
             // Настройка элементов ввода информации
             Sex_Label.Font = config.Get_List_Font();
 
-            Name_Label.Left = (sc[config.Input_Monitor].Bounds.Width - 640) / 2;
-            Name_Label.Top = sc[config.Input_Monitor].Bounds.Height / 2 - Name_Label.Height - Name_Edit.Height - Sex_Label.Height - 15;
+            Name_Label.Left = (sc[Input_Monitor].Bounds.Width - 640) / 2;
+            Name_Label.Top = sc[Input_Monitor].Bounds.Height / 2 - Name_Label.Height - Name_Edit.Height - Sex_Label.Height - 15;
             Name_Label.Text = config.Name_Label;
             Name_Label.Visible = true;
 
@@ -411,9 +418,9 @@ namespace Web_Camera_Video
             button5.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
             button5.Width = button5.BackgroundImage.Width;
             button5.Height = button5.BackgroundImage.Height;
-            button5.Left = (sc[config.Input_Monitor].Bounds.Width - button5.Width) / 2;
+            button5.Left = (sc[Input_Monitor].Bounds.Width - button5.Width) / 2;
             button5.Top = Sex_Label.Bottom + 20;
-            button5.Font = config.Get_Medium_Button_Font();
+            button5.Font = ConfigDB.GetFont("Medium_Button");
             button5.Text = config.SetUI;
             button5.Visible = true;
         }
@@ -449,8 +456,8 @@ namespace Web_Camera_Video
             Wait_Image.Image = Image.FromFile(config.Get_Wait_Image());
             Wait_Image.Width = Wait_Image.Image.Width;
             Wait_Image.Height = Wait_Image.Image.Height;
-            Wait_Image.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - Wait_Image.Width) / 2;
-            Wait_Image.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - Wait_Image.Height) / 2;
+            Wait_Image.Left = (sc[Input_Monitor].Bounds.Width - Wait_Image.Width) / 2;
+            Wait_Image.Top = (sc[Input_Monitor].Bounds.Height - Wait_Image.Height) / 2;
             Wait_Image.Visible = true;
             WaitForResult = true;
         }
@@ -513,8 +520,8 @@ namespace Web_Camera_Video
                 // Настройка показа времени видео
                 TimeLabel.Font = config.Get_CountDown_Font();
                 TimeLabel.Text = VideoForm.GetTimeLeft();
-                TimeLabel.Top = (sc[config.Input_Monitor].Bounds.Height - TimeLabel.Height) / 2;
-                TimeLabel.Left = (sc[config.Input_Monitor].Bounds.Width - TimeLabel.Width) / 2;
+                TimeLabel.Top = (sc[Input_Monitor].Bounds.Height - TimeLabel.Height) / 2;
+                TimeLabel.Left = (sc[Input_Monitor].Bounds.Width - TimeLabel.Width) / 2;
                 TimeLabel.Visible = true;
                 Show_Delay = false;
                 Show_Video_Time = true;
@@ -524,8 +531,8 @@ namespace Web_Camera_Video
                 Stop_Button.BackgroundImage = Image.FromFile(config.Get_Cancel_Image());
                 Stop_Button.Width = Stop_Button.BackgroundImage.Width;
                 Stop_Button.Height = Stop_Button.BackgroundImage.Height;
-                Stop_Button.Left = (sc[config.Input_Monitor].Bounds.Width - Stop_Button.Width) / 2;
-                Stop_Button.Font = config.Get_Small_Button_Font();
+                Stop_Button.Left = (sc[Input_Monitor].Bounds.Width - Stop_Button.Width) / 2;
+                Stop_Button.Font = ConfigDB.GetFont("Small_Button");
                 Stop_Button.Text = config.Stop_Video;
                 Stop_Button.Visible = true;
 
@@ -540,9 +547,9 @@ namespace Web_Camera_Video
             button3.BackgroundImage = Image.FromFile(config.Get_New_User_Button_Image());
             button3.Width = button3.BackgroundImage.Width;
             button3.Height = button3.BackgroundImage.Height;
-            button3.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - button3.Width) / 2;
-            button3.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - button3.Height) / 2 - 200;
-            button3.Font = config.Get_Big_Button_Font();
+            button3.Left = (sc[Input_Monitor].Bounds.Width - button3.Width) / 2;
+            button3.Top = (sc[Input_Monitor].Bounds.Height - button3.Height) / 2 - 200;
+            button3.Font = ConfigDB.GetFont("Big_Button");
             button3.Text = config.Show_Label;
             button3.Visible = true;
 
@@ -582,9 +589,9 @@ namespace Web_Camera_Video
             Repeate_Button.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
             Repeate_Button.Width = Repeate_Button.BackgroundImage.Width;
             Repeate_Button.Height = Repeate_Button.BackgroundImage.Height;
-            Repeate_Button.Left = (sc[config.Input_Monitor].Bounds.Width - Repeate_Button.Width) / 2;
-            Repeate_Button.Top = (sc[config.Input_Monitor].Bounds.Height - Repeate_Button.Height - 30 - Delay_Label.Height) / 2 - 200;
-            Repeate_Button.Font = config.Get_Medium_Button_Font();
+            Repeate_Button.Left = (sc[Input_Monitor].Bounds.Width - Repeate_Button.Width) / 2;
+            Repeate_Button.Top = (sc[Input_Monitor].Bounds.Height - Repeate_Button.Height - 30 - Delay_Label.Height) / 2 - 200;
+            Repeate_Button.Font = ConfigDB.GetFont("Medium_Button");
             Repeate_Button.Text = config.Show_Again_Label;
             Repeate_Button.Visible = true;
 
@@ -632,9 +639,9 @@ namespace Web_Camera_Video
             Finish_Him.BackgroundImage = Image.FromFile(config.Get_New_User_Button_Image());
             Finish_Him.Width = Finish_Him.BackgroundImage.Width;
             Finish_Him.Height = Finish_Him.BackgroundImage.Height;
-            Finish_Him.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - Finish_Him.Width) / 2;
+            Finish_Him.Left = (sc[Input_Monitor].Bounds.Width - Finish_Him.Width) / 2;
             Finish_Him.Top = EMail_Edit.Bottom + 25;
-            Finish_Him.Font = config.Get_Big_Button_Font();
+            Finish_Him.Font = ConfigDB.GetFont("Big_Button");
             Finish_Him.Text = config.Finish_Label;
             Finish_Him.Visible = true;
         }
@@ -655,8 +662,8 @@ namespace Web_Camera_Video
             Wait_Image.Image = Image.FromFile(config.Get_Thanks_Image());
             Wait_Image.Width = Wait_Image.Image.Width;
             Wait_Image.Height = Wait_Image.Image.Height;
-            Wait_Image.Left = (sc[config.Input_Monitor].Bounds.Width - Wait_Image.Width) / 2;
-            Wait_Image.Top = (sc[config.Input_Monitor].Bounds.Height - Wait_Image.Height) / 2;
+            Wait_Image.Left = (sc[Input_Monitor].Bounds.Width - Wait_Image.Width) / 2;
+            Wait_Image.Top = (sc[Input_Monitor].Bounds.Height - Wait_Image.Height) / 2;
             Wait_Image.Visible = true;
             Thanks_Timer = config.Thanks_Delay;
             Thanks_Delay = true;
@@ -760,17 +767,17 @@ namespace Web_Camera_Video
                     // Настройка показа фото
                     pictureBox1.Width = config.Camera_Window_Width;
                     pictureBox1.Height = config.Camera_Window_Height;
-                    pictureBox1.Left = sc[Form1.config.Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
-                    pictureBox1.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - pictureBox1.Height) / 2;
+                    pictureBox1.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
+                    pictureBox1.Top = (sc[Input_Monitor].Bounds.Height - pictureBox1.Height) / 2;
                     pictureBox1.Visible = true;
 
                     // Настройка кнопки сохранения
                     button4.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
                     button4.Width = config.Camera_Window_Width;
                     button4.Height = button4.BackgroundImage.Height;
-                    button4.Left = sc[Form1.config.Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
+                    button4.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
                     button4.Top = pictureBox1.Bottom + 20;
-                    button4.Font = config.Get_Medium_Button_Font();
+                    button4.Font = ConfigDB.GetFont("Medium_Button");
                     button4.Text = config.Save_Photo;
                     button4.Visible = true;
                 }
@@ -798,8 +805,8 @@ namespace Web_Camera_Video
             // Настройка параметров Web-плеера
             videoSourcePlayer1.Width = config.Camera_Window_Width;
             videoSourcePlayer1.Height = config.Camera_Window_Height;
-            videoSourcePlayer1.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - videoSourcePlayer1.Width) / 2;
-            videoSourcePlayer1.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - videoSourcePlayer1.Height) / 2;
+            videoSourcePlayer1.Left = (sc[Input_Monitor].Bounds.Width - videoSourcePlayer1.Width) / 2;
+            videoSourcePlayer1.Top = (sc[Input_Monitor].Bounds.Height - videoSourcePlayer1.Height) / 2;
             videoSourcePlayer1.Visible = true;
             Start_Web_Camera();
 
@@ -807,9 +814,9 @@ namespace Web_Camera_Video
             button2.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
             button2.Width = config.Camera_Window_Width;
             button2.Height = button2.BackgroundImage.Height;
-            button2.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - button2.Width) / 2;
+            button2.Left = (sc[Input_Monitor].Bounds.Width - button2.Width) / 2;
             button2.Top = videoSourcePlayer1.Bottom + 20;
-            button2.Font = config.Get_Medium_Button_Font();
+            button2.Font = ConfigDB.GetFont("Medium_Button");
             button2.Text = config.Photo_Label;
             button2.Visible = true;
         }
@@ -900,15 +907,15 @@ namespace Web_Camera_Video
             Open_Old_Button.BackgroundImage = Image.FromFile(config.Get_Thin_Button_Image());
             Open_Old_Button.Width = Open_Old_Button.BackgroundImage.Width;
             Open_Old_Button.Height = Open_Old_Button.BackgroundImage.Height;
-            Open_Old_Button.Font = config.Get_Medium_Button_Font();
+            Open_Old_Button.Font = ConfigDB.GetFont("Medium_Button");
             Open_Old_Button.Text = config.Open_Old;
 
             listBox1.Font = config.Get_List_Font();
             listBox1.Width = 1000;
             listBox1.Height = 480;
-            listBox1.Top = (sc[config.Input_Monitor].Bounds.Height - listBox1.Height - Open_Old_Button.Height - Interval) / 2;
-            listBox1.Left = (sc[config.Input_Monitor].Bounds.Width - listBox1.Width) / 2;
-            Open_Old_Button.Left = (sc[config.Input_Monitor].Bounds.Width - Open_Old_Button.Width) / 2;
+            listBox1.Top = (sc[Input_Monitor].Bounds.Height - listBox1.Height - Open_Old_Button.Height - Interval) / 2;
+            listBox1.Left = (sc[Input_Monitor].Bounds.Width - listBox1.Width) / 2;
+            Open_Old_Button.Left = (sc[Input_Monitor].Bounds.Width - Open_Old_Button.Width) / 2;
             Open_Old_Button.Top = listBox1.Bottom + Interval;
 
             Archive_List AL = new Archive_List(config.GetArchiveDirectory());
@@ -950,8 +957,8 @@ namespace Web_Camera_Video
             CountDown.Font = new Font("Arial", 200, FontStyle.Bold);
             CountDown.Height = CountDown.Font.Height;
             CountDown.Width = 500;
-            CountDown.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - CountDown.Width) / 2;
-            CountDown.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - CountDown.Height) / 2;
+            CountDown.Left = (sc[Input_Monitor].Bounds.Width - CountDown.Width) / 2;
+            CountDown.Top = (sc[Input_Monitor].Bounds.Height - CountDown.Height) / 2;
 
             Show_Timer = config.Show_Delay + 1;
             ShowArchive = OD.FileName;
@@ -970,8 +977,8 @@ namespace Web_Camera_Video
             CountDown.Font = new Font("Arial", 200, FontStyle.Bold);
             CountDown.Height = CountDown.Font.Height;
             CountDown.Width = 500;
-            CountDown.Left = (sc[Form1.config.Input_Monitor].Bounds.Width - CountDown.Width) / 2;
-            CountDown.Top = (sc[Form1.config.Input_Monitor].Bounds.Height - CountDown.Height) / 2;
+            CountDown.Left = (sc[Input_Monitor].Bounds.Width - CountDown.Width) / 2;
+            CountDown.Top = (sc[Input_Monitor].Bounds.Height - CountDown.Height) / 2;
 
             Archive_List AL = new Archive_List(config.GetArchiveDirectory());
 
@@ -981,7 +988,7 @@ namespace Web_Camera_Video
 
             ID_Label.Font = config.Get_ID_Label_Font();
             ID_Label.Text = config.ID_Label_Text + " " + UI.ID.ToString("D4");
-            ID_Label.Left = (sc[config.Input_Monitor].Bounds.Width - ID_Label.Width) / 2;
+            ID_Label.Left = (sc[Input_Monitor].Bounds.Width - ID_Label.Width) / 2;
             ID_Label.Top = 50;
             ID_Label.Visible = config.ShowID;
 
