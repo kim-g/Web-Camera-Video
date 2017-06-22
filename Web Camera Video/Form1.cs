@@ -2,6 +2,7 @@
 using AForge.Video;
 using AForge.Video.DirectShow;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -17,7 +18,6 @@ namespace Web_Camera_Video
   {
     private string ShowArchive = "";
     private FilterInfoCollection videoDevices;
-    public static Config config;
     public VideoCaptureDevice videoDevice;
     private VideoCapabilities[] videoCapabilities;
     private VideoCapabilities[] snapshotCapabilities;
@@ -75,20 +75,27 @@ namespace Web_Camera_Video
     private Label TimeLabel;
     private Button Stop_Button;
 
+        SQLiteDataBase ConfigDB;
+        Directories Dir;
+
     public Form1()
     {
             InitializeComponent();
 
-            config = Config.LoadFromFile();
+            ConfigDB = SQLiteDataBase.Open("config.db");
+            Dir = Directories.GetFromDB(ConfigDB);
 
-            Directory.CreateDirectory(config.Get_Data_Directory());
-            Directory.CreateDirectory(config.GetTemplateDirectory());
-            Directory.CreateDirectory(config.GetArchiveDirectory());
+
+
+            Directory.CreateDirectory(Dir.Data);
+            Directory.CreateDirectory(Dir.Template);
+            Directory.CreateDirectory(Dir.Archive);
 
             // Запуск сторонних программ
-            for (int i = 0; i < config.AutoRun.Length; i++)
+            string[] AutoRun = ConfigDB.GetConfigValue("AutoRun").Split(';');
+            for (int i = 0; i < AutoRun.Length; i++)
             {
-                System.Diagnostics.Process.Start(config.AutoRun[i]);
+                System.Diagnostics.Process.Start(AutoRun[i]);
             }
 
             MaskM = Image.FromFile(config.Get_Mask_Image(true));
@@ -733,8 +740,7 @@ namespace Web_Camera_Video
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (new Configuration().Set_Configurations())
-                Stop_Web_Camera();
+            
         }
 
         private void Animation_Tick(object sender, EventArgs e)

@@ -38,3 +38,12 @@ d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Sn
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Video.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.Cache
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\EntityFramework.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\System.Data.SQLite.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\System.Data.SQLite.EF6.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\System.Data.SQLite.Linq.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\EntityFramework.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\System.Data.SQLite.xml
