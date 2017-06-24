@@ -15,6 +15,7 @@ namespace Web_Camera_Video
     public string Name;
     public string EMail;
     public bool Sex;
+    public string SexLabel;
 
     public UserInformation(int _ID)
     {
@@ -23,9 +24,9 @@ namespace Web_Camera_Video
 
     public void SaveToFile()
     {
-      if (!Directory.Exists(Form1.config.Get_Data_Directory()))
-        Directory.CreateDirectory(Form1.config.Get_Data_Directory());
-      StreamWriter streamWriter = new StreamWriter(Form1.config.Get_Data_Directory() + Form1.config.UserInfo);
+      if (!Directory.Exists(Form1.Dir.Data))
+        Directory.CreateDirectory(Form1.Dir.Data);
+      StreamWriter streamWriter = new StreamWriter(Form1.Dir.Data + Form1.ConfigDB.GetConfigValue("UserInfo"));
       string name = this.Name;
       streamWriter.WriteLine(name);
       string email = this.EMail;
@@ -69,7 +70,7 @@ namespace Web_Camera_Video
       if (!Directory.Exists(Path.GetDirectoryName(InfoFile)))
         Directory.CreateDirectory(Path.GetDirectoryName(InfoFile));
       StreamWriter streamWriter = new StreamWriter(InfoFile);
-      string dataFormat = Form1.config.Data_Format;
+      string dataFormat = Form1.ConfigDB.GetConfigValue("Data_Format");
       string name = this.Name;
       string email = this.EMail;
       streamWriter.Write(dataFormat, (object) name, (object) email);

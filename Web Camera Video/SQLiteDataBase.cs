@@ -176,7 +176,7 @@ namespace Web_Camera_Video
         {
             DataTable Conf = ReadTable("SELECT * FROM `fonts` WHERE `name`='" + name + "' LIMIT 1");
             return new Font(Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("font_name")].ToString(), 
-                (float)Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("size")],
+                Convert.ToInt32(Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("size")]),
                 GetStyle(Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("style")].ToString()));
         }
 
@@ -201,8 +201,8 @@ namespace Web_Camera_Video
         // Получение текста
         public string GetText(string name)
         {
-            DataTable Conf = ReadTable("SELECT `value_" + GetConfigValue("language") + "` FROM `config` WHERE `name`='" + name + "' LIMIT 1");
-            return Conf.Rows[0].ItemArray[0].ToString();
+            DataTable Conf = ReadTable("SELECT `value_" + GetConfigValue("language") + "` AS 'value' FROM `labels` WHERE `name`='" + name + "' LIMIT 1");
+            return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("value")].ToString();
         }
     }
 }

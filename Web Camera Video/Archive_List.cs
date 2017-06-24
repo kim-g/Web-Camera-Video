@@ -30,15 +30,16 @@ namespace Web_Camera_Video
       this.EMailFiles = new List<string>();
       this.Videos = new List<string>();
       this.Dates = new List<DateTime>();
-      string[] directories = Directory.GetDirectories(Form1.config.GetArchiveDirectory());
+      string[] directories = Directory.GetDirectories(Form1.Dir.Archive);
       for (int index = 0; index < ((IEnumerable<string>) directories).Count<string>(); ++index)
       {
         this.User_IDs.Add(Path.GetFileName(directories[index]).Remove(4));
-        this.Videos.Add(directories[index] + "\\" + Form1.config.Get_Result_Video_File(File.Exists(directories[index] + "\\" + Form1.config.Get_Result_Video_File(true))));
+                string US = File.Exists(directories[index] + "\\" + Form1.ConfigDB.GetConfigValue("VideoFile_M")) ? "M" : "W";
+        this.Videos.Add(directories[index] + "\\" + Form1.ConfigDB.GetConfigValue("VideoFile_" + US));
         this.Dates.Add(Directory.GetCreationTime(directories[index]));
-        string[] strArray = File.ReadAllText(directories[index] + "\\" + Form1.config.UserInfo).Split("\n"[0]);
+        string[] strArray = File.ReadAllText(directories[index] + "\\" + Form1.ConfigDB.GetConfigValue("UserInfo")).Split("\n"[0]);
         this.Names.Add(strArray[0].Trim());
-        this.NameFiles.Add(directories[index] + "\\" + Form1.config.UserInfo);
+        this.NameFiles.Add(directories[index] + "\\" + Form1.ConfigDB.GetConfigValue("UserInfo"));
         this.EMails.Add(strArray[1].Trim());
         this.EMailFiles.Add("");
       }

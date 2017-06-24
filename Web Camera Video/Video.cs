@@ -25,16 +25,16 @@ namespace Web_Camera_Video
             this.InitializeComponent();
             Screen[] allScreens = Screen.AllScreens;
             base.FormBorderStyle = FormBorderStyle.None;
-            base.Left = allScreens[Form1.config.Show_Monitor].Bounds.Width;
-            base.Top = allScreens[Form1.config.Show_Monitor].Bounds.Height;
+            base.Left = allScreens[Form1.Show_Monitor].Bounds.Width;
+            base.Top = allScreens[Form1.Show_Monitor].Bounds.Height;
             base.StartPosition = FormStartPosition.Manual;
-            base.Location = allScreens[Form1.config.Show_Monitor].Bounds.Location;
-            Point location = new Point(allScreens[Form1.config.Show_Monitor].Bounds.Location.X, allScreens[Form1.config.Show_Monitor].Bounds.Location.Y);
+            base.Location = allScreens[Form1.Show_Monitor].Bounds.Location;
+            Point location = new Point(allScreens[Form1.Show_Monitor].Bounds.Location.X, allScreens[Form1.Show_Monitor].Bounds.Location.Y);
             base.Location = location;
             base.WindowState = FormWindowState.Maximized;
-            this.BackColor = Form1.config.Get_Video_Background_Color();
+            this.BackColor = Color.FromArgb(Form1.ConfigDB.GetConfigValueInt("VideoBackgroundColor"));
             base.Show();
-            this.LoadAnyVideo(Form1.config.GetPromoVideo());
+            this.LoadAnyVideo(Form1.Dir.PromoVideo);
         }
 
     public void LoadVideo(string FileName)
@@ -50,7 +50,7 @@ namespace Web_Camera_Video
       {
         int num = (int) MessageBox.Show("Файл шаблона не найден. Проверьте правильность пути в настройках и существование файла.\n\nПоказ видео отменён.", "ОШИБКА");
         this.BackgroundVideo = true;
-        this.LoadAnyVideo(Form1.config.GetPromoVideo());
+        this.LoadAnyVideo(Form1.Dir.PromoVideo);
       }
       else
       {
@@ -76,7 +76,7 @@ namespace Web_Camera_Video
       else
       {
         this.BackgroundVideo = true;
-        this.LoadAnyVideo(Form1.config.GetPromoVideo());
+        this.LoadAnyVideo(Form1.Dir.PromoVideo);
       }
     }
 
