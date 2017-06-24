@@ -1,9 +1,11 @@
 ﻿using AForge.Controls;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using AForge.Imaging.Filters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -41,11 +43,10 @@ namespace Web_Camera_Video
     private int UserID;
     private UserInformation UI;
     private IContainer components;
-    private VideoSourcePlayer videoSourcePlayer1;
     private System.Windows.Forms.PictureBox pictureBox1;
-    private Button button2;
+    private Button CameraButton;
     private Button button3;
-    private Button button4;
+    private Button SavePhoto;
     private Button New_User_Button;
     private Timer SearchTimer;
     private Button button1;
@@ -79,9 +80,21 @@ namespace Web_Camera_Video
         public static Directories Dir;
         public static int Input_Monitor;
         private Label QuestionLabel;
+        private Button Answer_1;
+        private Button Answer_2;
         public static int Show_Monitor;
+        private int Question_ID = 0;
+        private int Answer_1_ID = 0;
+        private int Answer_2_ID = 0;
+        private string Answer_1_Script = "";
+        private string Answer_2_Script = "";
+        public int MovieChosen = 0;
+        private System.Windows.Forms.PictureBox picFrame;
+        Bitmap bitmap;
+        private Image SnapShot;
+        private Image WebCamVideo;
 
-    public Form1()
+        public Form1()
     {
             InitializeComponent();
 
@@ -131,7 +144,7 @@ namespace Web_Camera_Video
             Show_Monitor = ConfigDB.GetConfigValueInt("Show_Monitor");
 
             // Показ видео
-            VideoForm = new Video();
+            /*VideoForm = new Video();*/ // Пока не надо
 
 
             // Настройка монитора ввода данных
@@ -147,17 +160,107 @@ namespace Web_Camera_Video
             // Настройка кнопки конфигурации
             button1.Left = sc[Input_Monitor].Bounds.Width - button1.Width - 10;
             button1.Top = 10;
+            button1.Enabled = false;
 
             // Настройка кнопок
-            New_User_Button_Show();
-            Cancel_Button_Prepare();
-            Show_Old_Button_Show();
+            //New_User_Button_Show();
+            //Cancel_Button_Prepare();
+            //Show_Old_Button_Show();
             Exit_Button_Show();
+
+            ShowQuestion(1);
+
 
             Show();
         }
 
-    [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+        // Показ вопроса
+        public void ShowQuestion(int QuestionID)
+        {
+            Question_ID = QuestionID;
+            Hide_All();
+            SetElement(QuestionLabel, "questions");
+            SetElement(Answer_1, "answer_1");
+            SetElement(Answer_2, "answer_2");
+            QuestionLabel.Text = ConfigDB.GetQuestion(QuestionID);
+            DataTable dt = ConfigDB.ReadTable("SELECT `id`, `text_" + ConfigDB.GetConfigValue("language") + "` AS 'text', `command` FROM `answers` WHERE `question`=" + QuestionID.ToString());
+            Answer_1_ID = Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("id")]);
+            Answer_2_ID = Convert.ToInt32(dt.Rows[1].ItemArray[dt.Columns.IndexOf("id")]);
+            Answer_1.Text = dt.Rows[0].ItemArray[dt.Columns.IndexOf("text")].ToString();
+            Answer_2.Text = dt.Rows[1].ItemArray[dt.Columns.IndexOf("text")].ToString();
+            Answer_1_Script = dt.Rows[0].ItemArray[dt.Columns.IndexOf("command")].ToString();
+            Answer_2_Script = dt.Rows[1].ItemArray[dt.Columns.IndexOf("command")].ToString();
+        }
+
+        // Обработка скрипта
+        public void RunScript(string Script)
+        {
+            string[] Commands = Script.Split(';');      // Разделим на отдельные команды.
+            for (int i = 0; i < Commands.Length; i++)
+            {
+                //Очистим команду от мусора
+                string Command = Commands[i].Trim(' ', '\n', '\r', '\t');
+
+                //Обработка команды
+                string[] Com = Command.Split('=');
+                RunCommand(Com);
+            }
+        }
+
+        // Обработка отдельной команды
+        public void RunCommand(string[] Command)
+        {
+            switch (Command[0])
+            {
+                case "language":    ConfigDB.SetConfigValue("language", Command[1]);    break;
+                case "question":    ShowQuestion(Convert.ToInt32(Command[1]));          break;
+                case "movie":       MovieChosen = Convert.ToInt32(Command[1]);          break;
+                case "photo":       TakeAPhoto();                                       break;
+                case "new_user":    New_User();                                         break;
+                case "sex":         SetSex(Command[1]);                                 break;
+                case "make_photo":  Take_Picture();                                     break;
+                case "save_photo":  Save_Photo();                                       break;
+
+            }
+        }
+
+        // Показать слайд фотографирования
+        public void TakeAPhoto()
+        {
+            Hide_All();
+
+            // Настройка параметров Web-плеера
+            SetElementPosition(picFrame, "Camera");
+            Start_Web_Camera();
+
+            // Настройка кнопки Снимка
+            SetElement(CameraButton, "Camera_Button");
+            CameraButton.Text = ConfigDB.GetText("Photo_Label");
+        }
+
+        void New_User()
+        {
+            UI = new UserInformation(ConfigDB.GetConfigValueInt("Users") + 1);
+            ConfigDB.SetConfigValue("Users", UI.ID);
+        }
+
+        void SetSex(string Sex)
+        {
+            if (Sex.ToLower() == "male")
+            {
+                UI.Sex = true;
+                UI.SexLabel = "M";
+            }
+            if (Sex.ToLower() == "female")
+            {
+                UI.Sex = false;
+                UI.SexLabel = "W";
+            }
+        }
+
+
+
+        [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern bool CreateHardLink(string lpFileName, string lpExistingFileName, IntPtr lpSecurityAttributes);
 
         private void Exit_Button_Show()
@@ -226,8 +329,32 @@ namespace Web_Camera_Video
                 ConfigDB.SetConfigValue("CurrentWebCamera", 0);
             }
             videoDevice = new VideoCaptureDevice(videoDevices[ConfigDB.GetConfigValueInt("CurrentWebCamera")].MonikerString);
+            videoDevice.NewFrame += new NewFrameEventHandler(cam_NewFrame);
             videoCapabilities = videoDevice.VideoCapabilities;
             snapshotCapabilities = videoDevice.SnapshotCapabilities;
+            
+        }
+
+
+        // Обработка получаемого с камеры кадра
+        void cam_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            try
+            {
+                bitmap = (Bitmap)eventArgs.Frame.Clone();
+
+                var filter = new Mirror(false, true);
+                filter.ApplyInPlace(bitmap);
+
+                picFrame.Image = bitmap;
+                WebCamVideo = bitmap;
+            }
+            catch
+            {
+
+
+            }
+
         }
 
 
@@ -246,9 +373,7 @@ namespace Web_Camera_Video
                     videoDevice.SnapshotResolution = snapshotCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
                     videoDevice.SnapshotFrame += new NewFrameEventHandler(videoDevice_SnapshotFrame);
                 }
-
-                videoSourcePlayer1.VideoSource = videoDevice;
-                videoSourcePlayer1.Start();
+                videoDevice.Start();
                 Playing = true;
             }
         }
@@ -273,9 +398,12 @@ namespace Web_Camera_Video
             }
             else
             {
-                Video_Move = true;
+                //Video_Move = true;
 
                 SetImage(snapshot);
+                Hide_All();
+                SetElementPosition(pictureBox1, "Camera");
+                SetElement(SavePhoto, "Camera_Button");
             }
 
             Shooting = false;
@@ -283,15 +411,25 @@ namespace Web_Camera_Video
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if ((videoDevice != null) && (videoDevice.ProvideSnapshots))
+            RunScript("make_photo");
+        }
+
+        private void Take_Picture()
+        {
+            SnapShot = (Image)WebCamVideo.Clone();
+
+            Hide_All();
+            pictureBox1.Image = SnapShot;
+            SetElementPosition(pictureBox1, "Camera");
+            SetElement(SavePhoto, "Camera_Button");
+
+            /*if ((videoDevice != null) && (videoDevice.ProvideSnapshots))
             {
                 Shooting = true;
 
-                videoSourcePlayer1.Invalidate();
 
                 videoDevice.SimulateTrigger();
-
-            }
+            }*/
         }
 
         private void SetImage(Bitmap bitmap)
@@ -315,16 +453,9 @@ namespace Web_Camera_Video
             return MaskW;
         }
 
-        private void videoSourcePlayer1_Paint(object sender, PaintEventArgs e)
+         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Playing) e.Graphics.DrawImage(Mask(UI.Sex), 0, 0, videoSourcePlayer1.Width, videoSourcePlayer1.Height);
-
-            if (Shooting) e.Graphics.DrawImage(ShootLabel, (videoSourcePlayer1.Width - ShootLabel.Width) / 2, (videoSourcePlayer1.Height - ShootLabel.Height) / 2, ShootLabel.Width, ShootLabel.Height);
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            videoSourcePlayer1.Stop();
+            videoDevice.Stop();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -428,18 +559,24 @@ namespace Web_Camera_Video
 
         private void Stop_Web_Camera()
         {
-            videoSourcePlayer1.Stop();
+            videoDevice.Stop();
             Playing = false;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Stop_Web_Camera();
+            RunScript("save_photo");
+        }
+
+        private void Save_Photo()
+        {
+            Hide_All();
+
             if (!Directory.Exists(Dir.Data)) { Directory.CreateDirectory(Dir.Data); };  // Проверим существование папки
             Photo.Save(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"), ImageFormat.Jpeg);
 
             // Проверим существование файла шаблона перед его копированием
-            string ProjectFile = ConfigDB.GetConfigValue("VideoFile_" + UI.SexLabel);
+            string ProjectFile = ConfigDB.GetMovieTemplate(MovieChosen);
             if (!File.Exists(Dir.Template + "\\" + ProjectFile))
             {
                 MessageBox.Show("Файл шаблона не найден. Проверьте правильность пути в настройках и существование файла.\n\nРабота с текущим пользователем прекращена.", "ОШИБКА");
@@ -450,17 +587,7 @@ namespace Web_Camera_Video
             UI.SaveToFile();
             UI.SaveToStructuredFile(Dir.Data + ConfigDB.GetConfigValue("UserData"));
 
-            videoSourcePlayer1.Visible = false;
-            button2.Visible = false;
-            pictureBox1.Visible = false;
-            button4.Visible = false;
-
-            Wait_Image.Image = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("WaitLabel"));
-            Wait_Image.Width = Wait_Image.Image.Width;
-            Wait_Image.Height = Wait_Image.Image.Height;
-            Wait_Image.Left = (sc[Input_Monitor].Bounds.Width - Wait_Image.Width) / 2;
-            Wait_Image.Top = (sc[Input_Monitor].Bounds.Height - Wait_Image.Height) / 2;
-            Wait_Image.Visible = true;
+            SetPictureBox(pictureBox1, "wait");
             WaitForResult = true;
         }
 
@@ -759,13 +886,13 @@ namespace Web_Camera_Video
             {
                 const int Padding = 50;
 
-                videoSourcePlayer1.Left -= 10;
-                button2.Left -= 10;
-                if (videoSourcePlayer1.Left < Padding)
+                picFrame.Left -= 10;
+                CameraButton.Left -= 10;
+                if (picFrame.Left < Padding)
                 {
                     Video_Move = false;
-                    videoSourcePlayer1.Left = Padding;
-                    button2.Left = Padding;
+                    picFrame.Left = Padding;
+                    CameraButton.Left = Padding;
 
                     // Настройка показа фото
                     pictureBox1.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
@@ -775,14 +902,14 @@ namespace Web_Camera_Video
                     pictureBox1.Visible = true;
 
                     // Настройка кнопки сохранения
-                    button4.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
-                    button4.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
-                    button4.Height = button4.BackgroundImage.Height;
-                    button4.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
-                    button4.Top = pictureBox1.Bottom + 20;
-                    button4.Font = ConfigDB.GetFont("Medium_Button");
-                    button4.Text = ConfigDB.GetText("Save_Photo");
-                    button4.Visible = true;
+                    SavePhoto.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
+                    SavePhoto.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
+                    SavePhoto.Height = SavePhoto.BackgroundImage.Height;
+                    SavePhoto.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
+                    SavePhoto.Top = pictureBox1.Bottom + 20;
+                    SavePhoto.Font = ConfigDB.GetFont("Medium_Button");
+                    SavePhoto.Text = ConfigDB.GetText("Save_Photo");
+                    SavePhoto.Visible = true;
                 }
             }
 
@@ -807,22 +934,22 @@ namespace Web_Camera_Video
             UI.SexLabel = UI.Sex ? "M" : "W";
 
             // Настройка параметров Web-плеера
-            videoSourcePlayer1.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
-            videoSourcePlayer1.Height = ConfigDB.GetConfigValueInt("Camera_Window_Height");
-            videoSourcePlayer1.Left = (sc[Input_Monitor].Bounds.Width - videoSourcePlayer1.Width) / 2;
-            videoSourcePlayer1.Top = (sc[Input_Monitor].Bounds.Height - videoSourcePlayer1.Height) / 2;
-            videoSourcePlayer1.Visible = true;
+            picFrame.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
+            picFrame.Height = ConfigDB.GetConfigValueInt("Camera_Window_Height");
+            picFrame.Left = (sc[Input_Monitor].Bounds.Width - picFrame.Width) / 2;
+            picFrame.Top = (sc[Input_Monitor].Bounds.Height - picFrame.Height) / 2;
+            picFrame.Visible = true;
             Start_Web_Camera();
 
             // Настройка кнопки Снимка
-            button2.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
-            button2.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
-            button2.Height = button2.BackgroundImage.Height;
-            button2.Left = (sc[Input_Monitor].Bounds.Width - button2.Width) / 2;
-            button2.Top = videoSourcePlayer1.Bottom + 20;
-            button2.Font = ConfigDB.GetFont("Medium_Button");
-            button2.Text = ConfigDB.GetText("Photo_Label");
-            button2.Visible = true;
+            CameraButton.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
+            CameraButton.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
+            CameraButton.Height = CameraButton.BackgroundImage.Height;
+            CameraButton.Left = (sc[Input_Monitor].Bounds.Width - CameraButton.Width) / 2;
+            CameraButton.Top = picFrame.Bottom + 20;
+            CameraButton.Font = ConfigDB.GetFont("Medium_Button");
+            CameraButton.Text = ConfigDB.GetText("Photo_Label");
+            CameraButton.Visible = true;
         }
 
         private void Cancel_Button_Click(object sender, EventArgs e)
@@ -861,9 +988,9 @@ namespace Web_Camera_Video
         private void Hide_All()
         {
             pictureBox1.Visible = false;
-            button2.Visible = false;
+            CameraButton.Visible = false;
             button3.Visible = false;
-            button4.Visible = false;
+            SavePhoto.Visible = false;
             New_User_Button.Visible = false;
             Wait_Image.Visible = false;
             CountDown.Visible = false;
@@ -879,8 +1006,6 @@ namespace Web_Camera_Video
             Show_Old_Button.Visible = false;
             listBox1.Visible = false;
             Open_Old_Button.Visible = false;
-            videoSourcePlayer1.Stop();
-            videoSourcePlayer1.Visible = false;
             Video_Delay.Visible = false;
             Delay_Label.Visible = false;
             Delay_Label_End.Visible = false;
@@ -889,6 +1014,10 @@ namespace Web_Camera_Video
             RB_Female.Visible = false;
             TimeLabel.Visible = false;
             Stop_Button.Visible = false;
+            QuestionLabel.Visible = false;
+            Answer_1.Visible = false;
+            Answer_2.Visible = false;
+            picFrame.Visible = false;
         }
 
         private void Exit_Button_Click(object sender, EventArgs e)
@@ -1035,20 +1164,63 @@ namespace Web_Camera_Video
           base.Dispose(disposing);
         }
 
-        void SetQuestionLabel()
+        // Установка параметров визуальных элементов из БД
+        void SetElement(Control Vis_Element, string Style)
         {
-            QuestionLabel.Font = ConfigDB.GetFont("Questions");
+            string Query = "SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';";
+            DataTable dt = ConfigDB.ReadTable("SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';");
+            SetElementPositionFromDataTable(Vis_Element, dt);
+            Vis_Element.Font = ConfigDB.GetFont(dt.Rows[0].ItemArray[dt.Columns.IndexOf("font")].ToString());
+            if (dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].GetType() != typeof(DBNull))
+                Vis_Element.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + 
+                    dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].ToString());
+
+            Vis_Element.Width = Vis_Element.Width == 0 ? Vis_Element.BackgroundImage.Width : Vis_Element.Width;
+            Vis_Element.Height = Vis_Element.Height == 0 ? Vis_Element.BackgroundImage.Height : Vis_Element.Height;
+            Vis_Element.Visible = true;
+        }
+
+        // Установка параметров визуальных элементов из БД
+        void SetPictureBox(System.Windows.Forms.PictureBox Vis_Element, string Style)
+        {
+            string Query = "SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';";
+            DataTable dt = ConfigDB.ReadTable("SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';");
+            SetElementPositionFromDataTable(Vis_Element, dt);
+            if (dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].GetType() != typeof(DBNull))
+                Vis_Element.Image = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" +
+                    dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].ToString());
+
+            Vis_Element.Width = Vis_Element.Width == 0 ? Vis_Element.BackgroundImage.Width : Vis_Element.Width;
+            Vis_Element.Height = Vis_Element.Height == 0 ? Vis_Element.BackgroundImage.Height : Vis_Element.Height;
+            Vis_Element.Visible = true;
+        }
+
+        // Установка параметров визуальных элементов из БД
+        void SetElementPosition(Control Vis_Element, string Style)
+        {
+            string Query = "SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';";
+            DataTable dt = ConfigDB.ReadTable("SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';");
+            SetElementPositionFromDataTable(Vis_Element, dt);
 
         }
 
-    private void InitializeComponent()
+        // Установка положения и размеров визуальных элементов из БД
+        void SetElementPositionFromDataTable(Control Vis_Element, DataTable dt)
+        {
+            Vis_Element.Width = Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("width")]);
+            Vis_Element.Height = Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("height")]);
+            Vis_Element.Left = Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("left")]);
+            Vis_Element.Top = Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("top")]);
+            Vis_Element.Visible = true;
+        }
+
+        private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
-            this.videoSourcePlayer1 = new AForge.Controls.VideoSourcePlayer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.CameraButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.SavePhoto = new System.Windows.Forms.Button();
             this.New_User_Button = new System.Windows.Forms.Button();
             this.SearchTimer = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
@@ -1078,22 +1250,14 @@ namespace Web_Camera_Video
             this.TimeLabel = new System.Windows.Forms.Label();
             this.Stop_Button = new System.Windows.Forms.Button();
             this.QuestionLabel = new System.Windows.Forms.Label();
+            this.Answer_1 = new System.Windows.Forms.Button();
+            this.Answer_2 = new System.Windows.Forms.Button();
+            this.picFrame = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Video_Delay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
             this.SuspendLayout();
-            // 
-            // videoSourcePlayer1
-            // 
-            this.videoSourcePlayer1.ForeColor = System.Drawing.Color.White;
-            this.videoSourcePlayer1.Location = new System.Drawing.Point(12, 9);
-            this.videoSourcePlayer1.Name = "videoSourcePlayer1";
-            this.videoSourcePlayer1.Size = new System.Drawing.Size(640, 480);
-            this.videoSourcePlayer1.TabIndex = 2;
-            this.videoSourcePlayer1.Text = "videoSourcePlayer1";
-            this.videoSourcePlayer1.VideoSource = null;
-            this.videoSourcePlayer1.Visible = false;
-            this.videoSourcePlayer1.Paint += new System.Windows.Forms.PaintEventHandler(this.videoSourcePlayer1_Paint);
             // 
             // pictureBox1
             // 
@@ -1106,21 +1270,21 @@ namespace Web_Camera_Video
             this.pictureBox1.Visible = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
-            // button2
+            // CameraButton
             // 
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(723, 173);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(180, 29);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Сделать снимок";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.CameraButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.CameraButton.FlatAppearance.BorderSize = 0;
+            this.CameraButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CameraButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CameraButton.ForeColor = System.Drawing.Color.White;
+            this.CameraButton.Location = new System.Drawing.Point(723, 173);
+            this.CameraButton.Name = "CameraButton";
+            this.CameraButton.Size = new System.Drawing.Size(180, 29);
+            this.CameraButton.TabIndex = 4;
+            this.CameraButton.Text = "CameraButton";
+            this.CameraButton.UseVisualStyleBackColor = true;
+            this.CameraButton.Visible = false;
+            this.CameraButton.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -1137,25 +1301,24 @@ namespace Web_Camera_Video
             this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // SavePhoto
             // 
-            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(722, 208);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(181, 26);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "Сохранить снимок";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.SavePhoto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SavePhoto.FlatAppearance.BorderSize = 0;
+            this.SavePhoto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SavePhoto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.SavePhoto.ForeColor = System.Drawing.Color.White;
+            this.SavePhoto.Location = new System.Drawing.Point(722, 208);
+            this.SavePhoto.Name = "SavePhoto";
+            this.SavePhoto.Size = new System.Drawing.Size(181, 26);
+            this.SavePhoto.TabIndex = 8;
+            this.SavePhoto.Text = "SavePhoto";
+            this.SavePhoto.UseVisualStyleBackColor = true;
+            this.SavePhoto.Visible = false;
+            this.SavePhoto.Click += new System.EventHandler(this.button4_Click);
             // 
             // New_User_Button
             // 
-            this.New_User_Button.BackgroundImage = global::Web_Camera_Video.Properties.Resources.Button_Big;
             this.New_User_Button.FlatAppearance.BorderSize = 0;
             this.New_User_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.New_User_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -1493,11 +1656,53 @@ namespace Web_Camera_Video
             this.QuestionLabel.Text = "QuestionLabel";
             this.QuestionLabel.Visible = false;
             // 
+            // Answer_1
+            // 
+            this.Answer_1.BackColor = System.Drawing.Color.Transparent;
+            this.Answer_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Answer_1.FlatAppearance.BorderSize = 0;
+            this.Answer_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Answer_1.Location = new System.Drawing.Point(1221, 282);
+            this.Answer_1.Name = "Answer_1";
+            this.Answer_1.Size = new System.Drawing.Size(116, 41);
+            this.Answer_1.TabIndex = 258;
+            this.Answer_1.Text = "Answer 1";
+            this.Answer_1.UseVisualStyleBackColor = false;
+            this.Answer_1.Visible = false;
+            this.Answer_1.Click += new System.EventHandler(this.Answer_1_Click);
+            // 
+            // Answer_2
+            // 
+            this.Answer_2.BackColor = System.Drawing.Color.Transparent;
+            this.Answer_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Answer_2.FlatAppearance.BorderSize = 0;
+            this.Answer_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Answer_2.Location = new System.Drawing.Point(1221, 329);
+            this.Answer_2.Name = "Answer_2";
+            this.Answer_2.Size = new System.Drawing.Size(116, 41);
+            this.Answer_2.TabIndex = 259;
+            this.Answer_2.Text = "Answer 2";
+            this.Answer_2.UseVisualStyleBackColor = false;
+            this.Answer_2.Visible = false;
+            this.Answer_2.Click += new System.EventHandler(this.Answer_2_Click);
+            // 
+            // picFrame
+            // 
+            this.picFrame.Location = new System.Drawing.Point(37, 28);
+            this.picFrame.Name = "picFrame";
+            this.picFrame.Size = new System.Drawing.Size(249, 206);
+            this.picFrame.TabIndex = 260;
+            this.picFrame.TabStop = false;
+            this.picFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.picFrame_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1399, 558);
+            this.Controls.Add(this.picFrame);
+            this.Controls.Add(this.Answer_2);
+            this.Controls.Add(this.Answer_1);
             this.Controls.Add(this.QuestionLabel);
             this.Controls.Add(this.Stop_Button);
             this.Controls.Add(this.TimeLabel);
@@ -1524,11 +1729,10 @@ namespace Web_Camera_Video
             this.Controls.Add(this.Wait_Image);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.New_User_Button);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.SavePhoto);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.CameraButton);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.videoSourcePlayer1);
             this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -1537,9 +1741,25 @@ namespace Web_Camera_Video
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Video_Delay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFrame)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
     }
-  }
+
+        private void Answer_1_Click(object sender, EventArgs e)
+        {
+            RunScript(Answer_1_Script);
+        }
+
+        private void Answer_2_Click(object sender, EventArgs e)
+        {
+            RunScript(Answer_2_Script);
+        }
+
+        private void picFrame_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(Mask(UI.Sex), (picFrame.Width - Mask(UI.Sex).Width) / 2, (picFrame.Height - Mask(UI.Sex).Height) / 2, Mask(UI.Sex).Width, Mask(UI.Sex).Height);
+        }
+    }
 }

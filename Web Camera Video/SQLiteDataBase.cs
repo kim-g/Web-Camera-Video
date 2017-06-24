@@ -155,18 +155,18 @@ namespace Web_Camera_Video
 
         public bool SetConfigValue(string name, string value)
         {
-            return Execute("UPDATE `config` SET `value`='" + value + "' WHERE `name`='" + name + "' LIMIT 1");
+            return Execute("UPDATE `config` SET `value`='" + value + "' WHERE `name`='" + name + "'");
         }
 
         public bool SetConfigValue(string name, int value)
         {
-            return Execute("UPDATE `config` SET `value`='" + value.ToString() + "' WHERE `name`='" + name + "' LIMIT 1");
+            return Execute("UPDATE `config` SET `value`='" + value.ToString() + "' WHERE `name`='" + name + "'");
         }
 
         public bool SetConfigValue(string name, bool value)
         {
             string val = value ? "1" : "0";
-            return Execute("UPDATE `config` SET `value`='" + val + "' WHERE `name`='" + name + "' LIMIT 1");
+            return Execute("UPDATE `config` SET `value`='" + val + "' WHERE `name`='" + name + "'");
         }
 
 
@@ -196,13 +196,39 @@ namespace Web_Camera_Video
             return FS;
         }
 
+        // Получение текста вопроса
+        public string GetQuestion(int id)
+        {
+            DataTable Conf = ReadTable("SELECT `text_" + GetConfigValue("language") + "` AS 'text' FROM `questions` WHERE `id`='" + id.ToString() + "' LIMIT 1");
+            return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("text")].ToString();
+        }
 
+        // Получение текста ответа
+        public string GetAnswer(int id)
+        {
+            DataTable Conf = ReadTable("SELECT `text_" + GetConfigValue("language") + "` AS 'text' FROM `answers` WHERE `id`='" + id.ToString() + "' LIMIT 1");
+            return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("text")].ToString();
+        }
 
         // Получение текста
         public string GetText(string name)
         {
             DataTable Conf = ReadTable("SELECT `value_" + GetConfigValue("language") + "` AS 'value' FROM `labels` WHERE `name`='" + name + "' LIMIT 1");
             return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("value")].ToString();
+        }
+
+        // Получение проекта ролика
+        public string GetMovieTemplate(int id)
+        {
+            DataTable Conf = ReadTable("SELECT `template` FROM `movies` WHERE `id`='" + id + "' LIMIT 1");
+            return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("template")].ToString();
+        }
+
+        // Получение готового ролика
+        public string GetMovieOutput(int id)
+        {
+            DataTable Conf = ReadTable("SELECT `result` FROM `movies` WHERE `id`='" + id + "' LIMIT 1");
+            return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("result")].ToString();
         }
     }
 }
