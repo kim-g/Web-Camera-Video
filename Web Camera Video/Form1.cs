@@ -92,7 +92,50 @@ namespace Web_Camera_Video
         private System.Windows.Forms.PictureBox picFrame;
         Bitmap bitmap;
         private Image SnapShot;
+        private Panel VirtualKeyboard;
+        private Button VK_Button_Point;
+        private Button VK_Button_Comma;
+        private Button VK_Button_M;
+        private Button VK_Button_N;
+        private Button VK_Button_B;
+        private Button VK_Button_V;
+        private Button VK_Button_C;
+        private Button VK_Button_X;
+        private Button VK_Button_Z;
+        private Button VK_Button_L;
+        private Button VK_Button_K;
+        private Button VK_Button_J;
+        private Button VK_Button_H;
+        private Button VK_Button_G;
+        private Button VK_Button_F;
+        private Button VK_Button_D;
+        private Button VK_Button_S;
+        private Button VK_Button_A;
+        private Button VK_Button_P;
+        private Button VK_Button_O;
+        private Button VK_Button_I;
+        private Button VK_Button_U;
+        private Button VK_Button_Y;
+        private Button VK_Button_T;
+        private Button VK_Button_R;
+        private Button VK_Button_E;
+        private Button VK_Button_W;
+        private Button VK_Button_Q;
+        private Button VK_Button_At;
+        private Button VK_Button_Ground;
+        private Button VK_Button_minus;
+        private Button VK_Button_10;
+        private Button VK_Button_9;
+        private Button VK_Button_8;
+        private Button VK_Button_7;
+        private Button VK_Button_6;
+        private Button VK_Button_5;
+        private Button VK_Button_4;
+        private Button VK_Button_3;
+        private Button VK_Button_2;
+        private Button VK_Button_1;
         private Image WebCamVideo;
+        private TextBox TextBoxForVK;
 
         public Form1()
     {
@@ -168,7 +211,7 @@ namespace Web_Camera_Video
             //Show_Old_Button_Show();
             Exit_Button_Show();
 
-            ShowQuestion(1);
+            RunScript("question=1");
 
 
             Show();
@@ -190,6 +233,7 @@ namespace Web_Camera_Video
             Answer_2.Text = dt.Rows[1].ItemArray[dt.Columns.IndexOf("text")].ToString();
             Answer_1_Script = dt.Rows[0].ItemArray[dt.Columns.IndexOf("command")].ToString();
             Answer_2_Script = dt.Rows[1].ItemArray[dt.Columns.IndexOf("command")].ToString();
+            RunScript("");
         }
 
         // Обработка скрипта
@@ -220,6 +264,7 @@ namespace Web_Camera_Video
                 case "sex":         SetSex(Command[1]);                                 break;
                 case "make_photo":  Take_Picture();                                     break;
                 case "save_photo":  Save_Photo();                                       break;
+                case "vk":          VK();                                               break;
 
             }
         }
@@ -400,10 +445,10 @@ namespace Web_Camera_Video
             {
                 //Video_Move = true;
 
-                SetImage(snapshot);
+               /* SetImage(snapshot);
                 Hide_All();
                 SetElementPosition(pictureBox1, "Camera");
-                SetElement(SavePhoto, "Camera_Button");
+                SetElement(SavePhoto, "Camera_Button");*/
             }
 
             Shooting = false;
@@ -421,7 +466,12 @@ namespace Web_Camera_Video
             Hide_All();
             pictureBox1.Image = SnapShot;
             SetElementPosition(pictureBox1, "Camera");
-            SetElement(SavePhoto, "Camera_Button");
+            SetElement(Answer_1, "OK");
+            SetElement(Answer_2, "No");
+            Answer_1.Text = "";
+            Answer_2.Text = "";
+            Answer_1_Script = "save_photo";
+            Answer_2_Script = "photo";
 
             /*if ((videoDevice != null) && (videoDevice.ProvideSnapshots))
             {
@@ -573,7 +623,7 @@ namespace Web_Camera_Video
             Hide_All();
 
             if (!Directory.Exists(Dir.Data)) { Directory.CreateDirectory(Dir.Data); };  // Проверим существование папки
-            Photo.Save(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"), ImageFormat.Jpeg);
+            SnapShot.Save(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"), ImageFormat.Jpeg);
 
             // Проверим существование файла шаблона перед его копированием
             string ProjectFile = ConfigDB.GetMovieTemplate(MovieChosen);
@@ -1018,6 +1068,7 @@ namespace Web_Camera_Video
             Answer_1.Visible = false;
             Answer_2.Visible = false;
             picFrame.Visible = false;
+            VirtualKeyboard.Visible = false;
         }
 
         private void Exit_Button_Click(object sender, EventArgs e)
@@ -1140,7 +1191,7 @@ namespace Web_Camera_Video
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawImage(Mask(UI.Sex), 0, 0, pictureBox1.Width, pictureBox1.Height);
+            
         }
 
         private void Stop_Button_Click(object sender, EventArgs e)
@@ -1201,7 +1252,6 @@ namespace Web_Camera_Video
             string Query = "SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';";
             DataTable dt = ConfigDB.ReadTable("SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';");
             SetElementPositionFromDataTable(Vis_Element, dt);
-
         }
 
         // Установка положения и размеров визуальных элементов из БД
@@ -1253,15 +1303,58 @@ namespace Web_Camera_Video
             this.Answer_1 = new System.Windows.Forms.Button();
             this.Answer_2 = new System.Windows.Forms.Button();
             this.picFrame = new System.Windows.Forms.PictureBox();
+            this.VirtualKeyboard = new System.Windows.Forms.Panel();
+            this.VK_Button_Point = new System.Windows.Forms.Button();
+            this.VK_Button_Comma = new System.Windows.Forms.Button();
+            this.VK_Button_M = new System.Windows.Forms.Button();
+            this.VK_Button_N = new System.Windows.Forms.Button();
+            this.VK_Button_B = new System.Windows.Forms.Button();
+            this.VK_Button_V = new System.Windows.Forms.Button();
+            this.VK_Button_C = new System.Windows.Forms.Button();
+            this.VK_Button_X = new System.Windows.Forms.Button();
+            this.VK_Button_Z = new System.Windows.Forms.Button();
+            this.VK_Button_L = new System.Windows.Forms.Button();
+            this.VK_Button_K = new System.Windows.Forms.Button();
+            this.VK_Button_J = new System.Windows.Forms.Button();
+            this.VK_Button_H = new System.Windows.Forms.Button();
+            this.VK_Button_G = new System.Windows.Forms.Button();
+            this.VK_Button_F = new System.Windows.Forms.Button();
+            this.VK_Button_D = new System.Windows.Forms.Button();
+            this.VK_Button_S = new System.Windows.Forms.Button();
+            this.VK_Button_A = new System.Windows.Forms.Button();
+            this.VK_Button_P = new System.Windows.Forms.Button();
+            this.VK_Button_O = new System.Windows.Forms.Button();
+            this.VK_Button_I = new System.Windows.Forms.Button();
+            this.VK_Button_U = new System.Windows.Forms.Button();
+            this.VK_Button_Y = new System.Windows.Forms.Button();
+            this.VK_Button_T = new System.Windows.Forms.Button();
+            this.VK_Button_R = new System.Windows.Forms.Button();
+            this.VK_Button_E = new System.Windows.Forms.Button();
+            this.VK_Button_W = new System.Windows.Forms.Button();
+            this.VK_Button_Q = new System.Windows.Forms.Button();
+            this.VK_Button_At = new System.Windows.Forms.Button();
+            this.VK_Button_Ground = new System.Windows.Forms.Button();
+            this.VK_Button_minus = new System.Windows.Forms.Button();
+            this.VK_Button_10 = new System.Windows.Forms.Button();
+            this.VK_Button_9 = new System.Windows.Forms.Button();
+            this.VK_Button_8 = new System.Windows.Forms.Button();
+            this.VK_Button_7 = new System.Windows.Forms.Button();
+            this.VK_Button_6 = new System.Windows.Forms.Button();
+            this.VK_Button_5 = new System.Windows.Forms.Button();
+            this.VK_Button_4 = new System.Windows.Forms.Button();
+            this.VK_Button_3 = new System.Windows.Forms.Button();
+            this.VK_Button_2 = new System.Windows.Forms.Button();
+            this.VK_Button_1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Video_Delay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
+            this.VirtualKeyboard.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(723, 99);
+            this.pictureBox1.Location = new System.Drawing.Point(764, 99);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(417, 68);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1277,7 +1370,7 @@ namespace Web_Camera_Video
             this.CameraButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CameraButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CameraButton.ForeColor = System.Drawing.Color.White;
-            this.CameraButton.Location = new System.Drawing.Point(723, 173);
+            this.CameraButton.Location = new System.Drawing.Point(764, 173);
             this.CameraButton.Name = "CameraButton";
             this.CameraButton.Size = new System.Drawing.Size(180, 29);
             this.CameraButton.TabIndex = 4;
@@ -1292,7 +1385,7 @@ namespace Web_Camera_Video
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(726, 272);
+            this.button3.Location = new System.Drawing.Point(767, 272);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(184, 24);
             this.button3.TabIndex = 7;
@@ -1308,7 +1401,7 @@ namespace Web_Camera_Video
             this.SavePhoto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SavePhoto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SavePhoto.ForeColor = System.Drawing.Color.White;
-            this.SavePhoto.Location = new System.Drawing.Point(722, 208);
+            this.SavePhoto.Location = new System.Drawing.Point(763, 208);
             this.SavePhoto.Name = "SavePhoto";
             this.SavePhoto.Size = new System.Drawing.Size(181, 26);
             this.SavePhoto.TabIndex = 8;
@@ -1323,7 +1416,7 @@ namespace Web_Camera_Video
             this.New_User_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.New_User_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.New_User_Button.ForeColor = System.Drawing.Color.White;
-            this.New_User_Button.Location = new System.Drawing.Point(723, 12);
+            this.New_User_Button.Location = new System.Drawing.Point(764, 12);
             this.New_User_Button.Name = "New_User_Button";
             this.New_User_Button.Size = new System.Drawing.Size(416, 46);
             this.New_User_Button.TabIndex = 10;
@@ -1340,7 +1433,7 @@ namespace Web_Camera_Video
             // button1
             // 
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(1165, 7);
+            this.button1.Location = new System.Drawing.Point(1206, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(30, 30);
             this.button1.TabIndex = 256;
@@ -1359,7 +1452,7 @@ namespace Web_Camera_Video
             // Wait_Image
             // 
             this.Wait_Image.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Wait_Image.Location = new System.Drawing.Point(681, 60);
+            this.Wait_Image.Location = new System.Drawing.Point(722, 60);
             this.Wait_Image.Name = "Wait_Image";
             this.Wait_Image.Size = new System.Drawing.Size(45, 23);
             this.Wait_Image.TabIndex = 14;
@@ -1381,28 +1474,29 @@ namespace Web_Camera_Video
             // 
             this.Name_Edit.BackColor = System.Drawing.SystemColors.Window;
             this.Name_Edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Name_Edit.Location = new System.Drawing.Point(718, 346);
+            this.Name_Edit.Location = new System.Drawing.Point(133, 450);
             this.Name_Edit.Name = "Name_Edit";
             this.Name_Edit.Size = new System.Drawing.Size(421, 38);
             this.Name_Edit.TabIndex = 16;
+            this.Name_Edit.Text = "123456789";
             this.Name_Edit.Visible = false;
             // 
             // Name_Label
             // 
             this.Name_Label.AutoSize = true;
             this.Name_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.Name_Label.Location = new System.Drawing.Point(719, 319);
+            this.Name_Label.Location = new System.Drawing.Point(134, 423);
             this.Name_Label.Name = "Name_Label";
-            this.Name_Label.Size = new System.Drawing.Size(60, 24);
+            this.Name_Label.Size = new System.Drawing.Size(100, 24);
             this.Name_Label.TabIndex = 17;
-            this.Name_Label.Text = "label1";
+            this.Name_Label.Text = "123456789";
             this.Name_Label.Visible = false;
             // 
             // EMail_Edit
             // 
             this.EMail_Edit.BackColor = System.Drawing.SystemColors.Window;
             this.EMail_Edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EMail_Edit.Location = new System.Drawing.Point(715, 420);
+            this.EMail_Edit.Location = new System.Drawing.Point(756, 420);
             this.EMail_Edit.Name = "EMail_Edit";
             this.EMail_Edit.Size = new System.Drawing.Size(421, 38);
             this.EMail_Edit.TabIndex = 16;
@@ -1412,7 +1506,7 @@ namespace Web_Camera_Video
             // 
             this.EMail_Label.AutoSize = true;
             this.EMail_Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.EMail_Label.Location = new System.Drawing.Point(716, 393);
+            this.EMail_Label.Location = new System.Drawing.Point(757, 393);
             this.EMail_Label.Name = "EMail_Label";
             this.EMail_Label.Size = new System.Drawing.Size(60, 24);
             this.EMail_Label.TabIndex = 17;
@@ -1426,7 +1520,7 @@ namespace Web_Camera_Video
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button5.ForeColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(714, 493);
+            this.button5.Location = new System.Drawing.Point(755, 493);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(191, 45);
             this.button5.TabIndex = 18;
@@ -1442,7 +1536,7 @@ namespace Web_Camera_Video
             this.Finish_Him.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Finish_Him.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Finish_Him.ForeColor = System.Drawing.Color.White;
-            this.Finish_Him.Location = new System.Drawing.Point(726, 295);
+            this.Finish_Him.Location = new System.Drawing.Point(767, 295);
             this.Finish_Him.Name = "Finish_Him";
             this.Finish_Him.Size = new System.Drawing.Size(180, 28);
             this.Finish_Him.TabIndex = 19;
@@ -1458,7 +1552,7 @@ namespace Web_Camera_Video
             this.Repeate_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Repeate_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Repeate_Button.ForeColor = System.Drawing.Color.White;
-            this.Repeate_Button.Location = new System.Drawing.Point(726, 240);
+            this.Repeate_Button.Location = new System.Drawing.Point(767, 240);
             this.Repeate_Button.Name = "Repeate_Button";
             this.Repeate_Button.Size = new System.Drawing.Size(181, 26);
             this.Repeate_Button.TabIndex = 20;
@@ -1473,7 +1567,7 @@ namespace Web_Camera_Video
             this.Cancel_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Cancel_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Cancel_Button.ForeColor = System.Drawing.Color.White;
-            this.Cancel_Button.Location = new System.Drawing.Point(1134, 513);
+            this.Cancel_Button.Location = new System.Drawing.Point(1175, 513);
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Size = new System.Drawing.Size(180, 45);
             this.Cancel_Button.TabIndex = 21;
@@ -1488,7 +1582,7 @@ namespace Web_Camera_Video
             this.Exit_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Exit_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Exit_Button.ForeColor = System.Drawing.Color.White;
-            this.Exit_Button.Location = new System.Drawing.Point(502, 503);
+            this.Exit_Button.Location = new System.Drawing.Point(543, 503);
             this.Exit_Button.Name = "Exit_Button";
             this.Exit_Button.Size = new System.Drawing.Size(180, 45);
             this.Exit_Button.TabIndex = 22;
@@ -1504,7 +1598,7 @@ namespace Web_Camera_Video
             this.Show_Old_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Show_Old_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Show_Old_Button.ForeColor = System.Drawing.Color.White;
-            this.Show_Old_Button.Location = new System.Drawing.Point(714, 463);
+            this.Show_Old_Button.Location = new System.Drawing.Point(755, 463);
             this.Show_Old_Button.Name = "Show_Old_Button";
             this.Show_Old_Button.Size = new System.Drawing.Size(192, 26);
             this.Show_Old_Button.TabIndex = 23;
@@ -1537,7 +1631,7 @@ namespace Web_Camera_Video
             this.Open_Old_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Open_Old_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Open_Old_Button.ForeColor = System.Drawing.Color.White;
-            this.Open_Old_Button.Location = new System.Drawing.Point(934, 173);
+            this.Open_Old_Button.Location = new System.Drawing.Point(975, 173);
             this.Open_Old_Button.Name = "Open_Old_Button";
             this.Open_Old_Button.Size = new System.Drawing.Size(180, 29);
             this.Open_Old_Button.TabIndex = 25;
@@ -1549,7 +1643,7 @@ namespace Web_Camera_Video
             // ID_Label
             // 
             this.ID_Label.AutoSize = true;
-            this.ID_Label.Location = new System.Drawing.Point(651, 527);
+            this.ID_Label.Location = new System.Drawing.Point(692, 527);
             this.ID_Label.Name = "ID_Label";
             this.ID_Label.Size = new System.Drawing.Size(35, 13);
             this.ID_Label.TabIndex = 26;
@@ -1558,7 +1652,7 @@ namespace Web_Camera_Video
             // 
             // Video_Delay
             // 
-            this.Video_Delay.Location = new System.Drawing.Point(922, 528);
+            this.Video_Delay.Location = new System.Drawing.Point(963, 528);
             this.Video_Delay.Name = "Video_Delay";
             this.Video_Delay.Size = new System.Drawing.Size(95, 20);
             this.Video_Delay.TabIndex = 27;
@@ -1568,7 +1662,7 @@ namespace Web_Camera_Video
             // Delay_Label
             // 
             this.Delay_Label.AutoSize = true;
-            this.Delay_Label.Location = new System.Drawing.Point(842, 535);
+            this.Delay_Label.Location = new System.Drawing.Point(883, 535);
             this.Delay_Label.Name = "Delay_Label";
             this.Delay_Label.Size = new System.Drawing.Size(66, 13);
             this.Delay_Label.TabIndex = 28;
@@ -1578,7 +1672,7 @@ namespace Web_Camera_Video
             // Delay_Label_End
             // 
             this.Delay_Label_End.AutoSize = true;
-            this.Delay_Label_End.Location = new System.Drawing.Point(1047, 530);
+            this.Delay_Label_End.Location = new System.Drawing.Point(1088, 530);
             this.Delay_Label_End.Name = "Delay_Label_End";
             this.Delay_Label_End.Size = new System.Drawing.Size(91, 13);
             this.Delay_Label_End.TabIndex = 29;
@@ -1589,7 +1683,7 @@ namespace Web_Camera_Video
             // 
             this.RB_Male.AutoSize = true;
             this.RB_Male.Checked = true;
-            this.RB_Male.Location = new System.Drawing.Point(992, 472);
+            this.RB_Male.Location = new System.Drawing.Point(1033, 472);
             this.RB_Male.Name = "RB_Male";
             this.RB_Male.Size = new System.Drawing.Size(63, 17);
             this.RB_Male.TabIndex = 30;
@@ -1601,7 +1695,7 @@ namespace Web_Camera_Video
             // RB_Female
             // 
             this.RB_Female.AutoSize = true;
-            this.RB_Female.Location = new System.Drawing.Point(1070, 471);
+            this.RB_Female.Location = new System.Drawing.Point(1111, 471);
             this.RB_Female.Name = "RB_Female";
             this.RB_Female.Size = new System.Drawing.Size(74, 17);
             this.RB_Female.TabIndex = 31;
@@ -1612,7 +1706,7 @@ namespace Web_Camera_Video
             // Sex_Label
             // 
             this.Sex_Label.AutoSize = true;
-            this.Sex_Label.Location = new System.Drawing.Point(940, 475);
+            this.Sex_Label.Location = new System.Drawing.Point(981, 475);
             this.Sex_Label.Name = "Sex_Label";
             this.Sex_Label.Size = new System.Drawing.Size(27, 13);
             this.Sex_Label.TabIndex = 32;
@@ -1638,7 +1732,7 @@ namespace Web_Camera_Video
             this.Stop_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Stop_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Stop_Button.ForeColor = System.Drawing.Color.White;
-            this.Stop_Button.Location = new System.Drawing.Point(934, 208);
+            this.Stop_Button.Location = new System.Drawing.Point(975, 208);
             this.Stop_Button.Name = "Stop_Button";
             this.Stop_Button.Size = new System.Drawing.Size(181, 26);
             this.Stop_Button.TabIndex = 34;
@@ -1649,7 +1743,7 @@ namespace Web_Camera_Video
             // 
             // QuestionLabel
             // 
-            this.QuestionLabel.Location = new System.Drawing.Point(1226, 70);
+            this.QuestionLabel.Location = new System.Drawing.Point(1267, 70);
             this.QuestionLabel.Name = "QuestionLabel";
             this.QuestionLabel.Size = new System.Drawing.Size(97, 45);
             this.QuestionLabel.TabIndex = 257;
@@ -1662,7 +1756,7 @@ namespace Web_Camera_Video
             this.Answer_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Answer_1.FlatAppearance.BorderSize = 0;
             this.Answer_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Answer_1.Location = new System.Drawing.Point(1221, 282);
+            this.Answer_1.Location = new System.Drawing.Point(1262, 282);
             this.Answer_1.Name = "Answer_1";
             this.Answer_1.Size = new System.Drawing.Size(116, 41);
             this.Answer_1.TabIndex = 258;
@@ -1677,7 +1771,7 @@ namespace Web_Camera_Video
             this.Answer_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Answer_2.FlatAppearance.BorderSize = 0;
             this.Answer_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Answer_2.Location = new System.Drawing.Point(1221, 329);
+            this.Answer_2.Location = new System.Drawing.Point(1262, 329);
             this.Answer_2.Name = "Answer_2";
             this.Answer_2.Size = new System.Drawing.Size(116, 41);
             this.Answer_2.TabIndex = 259;
@@ -1691,15 +1785,517 @@ namespace Web_Camera_Video
             this.picFrame.Location = new System.Drawing.Point(37, 28);
             this.picFrame.Name = "picFrame";
             this.picFrame.Size = new System.Drawing.Size(249, 206);
+            this.picFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picFrame.TabIndex = 260;
             this.picFrame.TabStop = false;
             this.picFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.picFrame_Paint);
+            // 
+            // VirtualKeyboard
+            // 
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Point);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Comma);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_M);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_N);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_B);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_V);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_C);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_X);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Z);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_L);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_K);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_J);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_H);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_G);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_F);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_D);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_S);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_A);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_P);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_O);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_I);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_U);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Y);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_T);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_R);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_E);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_W);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Q);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_At);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Ground);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_minus);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_10);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_9);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_8);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_7);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_6);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_5);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_4);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_3);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_2);
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_1);
+            this.VirtualKeyboard.Location = new System.Drawing.Point(89, 240);
+            this.VirtualKeyboard.Name = "VirtualKeyboard";
+            this.VirtualKeyboard.Size = new System.Drawing.Size(538, 164);
+            this.VirtualKeyboard.TabIndex = 261;
+            this.VirtualKeyboard.Visible = false;
+            // 
+            // VK_Button_Point
+            // 
+            this.VK_Button_Point.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Point.Location = new System.Drawing.Point(372, 124);
+            this.VK_Button_Point.Name = "VK_Button_Point";
+            this.VK_Button_Point.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Point.TabIndex = 40;
+            this.VK_Button_Point.Text = ".";
+            this.VK_Button_Point.UseVisualStyleBackColor = true;
+            this.VK_Button_Point.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_Comma
+            // 
+            this.VK_Button_Comma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Comma.Location = new System.Drawing.Point(331, 124);
+            this.VK_Button_Comma.Name = "VK_Button_Comma";
+            this.VK_Button_Comma.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Comma.TabIndex = 39;
+            this.VK_Button_Comma.Text = ",";
+            this.VK_Button_Comma.UseVisualStyleBackColor = true;
+            this.VK_Button_Comma.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_M
+            // 
+            this.VK_Button_M.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_M.Location = new System.Drawing.Point(290, 124);
+            this.VK_Button_M.Name = "VK_Button_M";
+            this.VK_Button_M.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_M.TabIndex = 38;
+            this.VK_Button_M.Text = "M";
+            this.VK_Button_M.UseVisualStyleBackColor = true;
+            this.VK_Button_M.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_N
+            // 
+            this.VK_Button_N.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_N.Location = new System.Drawing.Point(249, 124);
+            this.VK_Button_N.Name = "VK_Button_N";
+            this.VK_Button_N.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_N.TabIndex = 37;
+            this.VK_Button_N.Text = "N";
+            this.VK_Button_N.UseVisualStyleBackColor = true;
+            this.VK_Button_N.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_B
+            // 
+            this.VK_Button_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_B.Location = new System.Drawing.Point(208, 124);
+            this.VK_Button_B.Name = "VK_Button_B";
+            this.VK_Button_B.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_B.TabIndex = 36;
+            this.VK_Button_B.Text = "B";
+            this.VK_Button_B.UseVisualStyleBackColor = true;
+            this.VK_Button_B.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_V
+            // 
+            this.VK_Button_V.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_V.Location = new System.Drawing.Point(167, 124);
+            this.VK_Button_V.Name = "VK_Button_V";
+            this.VK_Button_V.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_V.TabIndex = 35;
+            this.VK_Button_V.Text = "V";
+            this.VK_Button_V.UseVisualStyleBackColor = true;
+            this.VK_Button_V.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_C
+            // 
+            this.VK_Button_C.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_C.Location = new System.Drawing.Point(126, 124);
+            this.VK_Button_C.Name = "VK_Button_C";
+            this.VK_Button_C.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_C.TabIndex = 34;
+            this.VK_Button_C.Text = "C";
+            this.VK_Button_C.UseVisualStyleBackColor = true;
+            this.VK_Button_C.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_X
+            // 
+            this.VK_Button_X.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_X.Location = new System.Drawing.Point(85, 124);
+            this.VK_Button_X.Name = "VK_Button_X";
+            this.VK_Button_X.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_X.TabIndex = 33;
+            this.VK_Button_X.Text = "X";
+            this.VK_Button_X.UseVisualStyleBackColor = true;
+            this.VK_Button_X.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_Z
+            // 
+            this.VK_Button_Z.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Z.Location = new System.Drawing.Point(44, 124);
+            this.VK_Button_Z.Name = "VK_Button_Z";
+            this.VK_Button_Z.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Z.TabIndex = 32;
+            this.VK_Button_Z.Text = "Z";
+            this.VK_Button_Z.UseVisualStyleBackColor = true;
+            this.VK_Button_Z.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_L
+            // 
+            this.VK_Button_L.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_L.Location = new System.Drawing.Point(357, 83);
+            this.VK_Button_L.Name = "VK_Button_L";
+            this.VK_Button_L.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_L.TabIndex = 31;
+            this.VK_Button_L.Text = "L";
+            this.VK_Button_L.UseVisualStyleBackColor = true;
+            this.VK_Button_L.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_K
+            // 
+            this.VK_Button_K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_K.Location = new System.Drawing.Point(316, 83);
+            this.VK_Button_K.Name = "VK_Button_K";
+            this.VK_Button_K.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_K.TabIndex = 30;
+            this.VK_Button_K.Text = "K";
+            this.VK_Button_K.UseVisualStyleBackColor = true;
+            this.VK_Button_K.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_J
+            // 
+            this.VK_Button_J.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_J.Location = new System.Drawing.Point(275, 83);
+            this.VK_Button_J.Name = "VK_Button_J";
+            this.VK_Button_J.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_J.TabIndex = 29;
+            this.VK_Button_J.Text = "J";
+            this.VK_Button_J.UseVisualStyleBackColor = true;
+            this.VK_Button_J.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_H
+            // 
+            this.VK_Button_H.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_H.Location = new System.Drawing.Point(234, 83);
+            this.VK_Button_H.Name = "VK_Button_H";
+            this.VK_Button_H.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_H.TabIndex = 28;
+            this.VK_Button_H.Text = "H";
+            this.VK_Button_H.UseVisualStyleBackColor = true;
+            this.VK_Button_H.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_G
+            // 
+            this.VK_Button_G.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_G.Location = new System.Drawing.Point(193, 83);
+            this.VK_Button_G.Name = "VK_Button_G";
+            this.VK_Button_G.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_G.TabIndex = 27;
+            this.VK_Button_G.Text = "G";
+            this.VK_Button_G.UseVisualStyleBackColor = true;
+            this.VK_Button_G.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_F
+            // 
+            this.VK_Button_F.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_F.Location = new System.Drawing.Point(152, 83);
+            this.VK_Button_F.Name = "VK_Button_F";
+            this.VK_Button_F.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_F.TabIndex = 26;
+            this.VK_Button_F.Text = "F";
+            this.VK_Button_F.UseVisualStyleBackColor = true;
+            this.VK_Button_F.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_D
+            // 
+            this.VK_Button_D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_D.Location = new System.Drawing.Point(111, 83);
+            this.VK_Button_D.Name = "VK_Button_D";
+            this.VK_Button_D.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_D.TabIndex = 25;
+            this.VK_Button_D.Text = "D";
+            this.VK_Button_D.UseVisualStyleBackColor = true;
+            this.VK_Button_D.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_S
+            // 
+            this.VK_Button_S.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_S.Location = new System.Drawing.Point(70, 83);
+            this.VK_Button_S.Name = "VK_Button_S";
+            this.VK_Button_S.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_S.TabIndex = 24;
+            this.VK_Button_S.Text = "S";
+            this.VK_Button_S.UseVisualStyleBackColor = true;
+            this.VK_Button_S.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_A
+            // 
+            this.VK_Button_A.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_A.Location = new System.Drawing.Point(29, 83);
+            this.VK_Button_A.Name = "VK_Button_A";
+            this.VK_Button_A.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_A.TabIndex = 23;
+            this.VK_Button_A.Text = "A";
+            this.VK_Button_A.UseVisualStyleBackColor = true;
+            this.VK_Button_A.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_P
+            // 
+            this.VK_Button_P.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_P.Location = new System.Drawing.Point(386, 42);
+            this.VK_Button_P.Name = "VK_Button_P";
+            this.VK_Button_P.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_P.TabIndex = 22;
+            this.VK_Button_P.Text = "P";
+            this.VK_Button_P.UseVisualStyleBackColor = true;
+            this.VK_Button_P.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_O
+            // 
+            this.VK_Button_O.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_O.Location = new System.Drawing.Point(345, 42);
+            this.VK_Button_O.Name = "VK_Button_O";
+            this.VK_Button_O.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_O.TabIndex = 21;
+            this.VK_Button_O.Text = "O";
+            this.VK_Button_O.UseVisualStyleBackColor = true;
+            this.VK_Button_O.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_I
+            // 
+            this.VK_Button_I.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_I.Location = new System.Drawing.Point(304, 42);
+            this.VK_Button_I.Name = "VK_Button_I";
+            this.VK_Button_I.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_I.TabIndex = 20;
+            this.VK_Button_I.Text = "I";
+            this.VK_Button_I.UseVisualStyleBackColor = true;
+            this.VK_Button_I.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_U
+            // 
+            this.VK_Button_U.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_U.Location = new System.Drawing.Point(263, 42);
+            this.VK_Button_U.Name = "VK_Button_U";
+            this.VK_Button_U.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_U.TabIndex = 19;
+            this.VK_Button_U.Text = "U";
+            this.VK_Button_U.UseVisualStyleBackColor = true;
+            this.VK_Button_U.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_Y
+            // 
+            this.VK_Button_Y.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Y.Location = new System.Drawing.Point(222, 42);
+            this.VK_Button_Y.Name = "VK_Button_Y";
+            this.VK_Button_Y.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Y.TabIndex = 18;
+            this.VK_Button_Y.Text = "Y";
+            this.VK_Button_Y.UseVisualStyleBackColor = true;
+            this.VK_Button_Y.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_T
+            // 
+            this.VK_Button_T.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_T.Location = new System.Drawing.Point(181, 42);
+            this.VK_Button_T.Name = "VK_Button_T";
+            this.VK_Button_T.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_T.TabIndex = 17;
+            this.VK_Button_T.Text = "T";
+            this.VK_Button_T.UseVisualStyleBackColor = true;
+            this.VK_Button_T.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_R
+            // 
+            this.VK_Button_R.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_R.Location = new System.Drawing.Point(140, 42);
+            this.VK_Button_R.Name = "VK_Button_R";
+            this.VK_Button_R.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_R.TabIndex = 16;
+            this.VK_Button_R.Text = "R";
+            this.VK_Button_R.UseVisualStyleBackColor = true;
+            this.VK_Button_R.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_E
+            // 
+            this.VK_Button_E.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_E.Location = new System.Drawing.Point(99, 42);
+            this.VK_Button_E.Name = "VK_Button_E";
+            this.VK_Button_E.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_E.TabIndex = 15;
+            this.VK_Button_E.Text = "E";
+            this.VK_Button_E.UseVisualStyleBackColor = true;
+            this.VK_Button_E.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_W
+            // 
+            this.VK_Button_W.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_W.Location = new System.Drawing.Point(58, 42);
+            this.VK_Button_W.Name = "VK_Button_W";
+            this.VK_Button_W.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_W.TabIndex = 14;
+            this.VK_Button_W.Text = "W";
+            this.VK_Button_W.UseVisualStyleBackColor = true;
+            this.VK_Button_W.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_Q
+            // 
+            this.VK_Button_Q.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Q.Location = new System.Drawing.Point(17, 42);
+            this.VK_Button_Q.Name = "VK_Button_Q";
+            this.VK_Button_Q.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Q.TabIndex = 13;
+            this.VK_Button_Q.Text = "Q";
+            this.VK_Button_Q.UseVisualStyleBackColor = true;
+            this.VK_Button_Q.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_At
+            // 
+            this.VK_Button_At.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_At.Location = new System.Drawing.Point(495, 3);
+            this.VK_Button_At.Name = "VK_Button_At";
+            this.VK_Button_At.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_At.TabIndex = 12;
+            this.VK_Button_At.Text = "@";
+            this.VK_Button_At.UseVisualStyleBackColor = true;
+            this.VK_Button_At.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_Ground
+            // 
+            this.VK_Button_Ground.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Ground.Location = new System.Drawing.Point(454, 3);
+            this.VK_Button_Ground.Name = "VK_Button_Ground";
+            this.VK_Button_Ground.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Ground.TabIndex = 11;
+            this.VK_Button_Ground.Text = "_";
+            this.VK_Button_Ground.UseVisualStyleBackColor = true;
+            this.VK_Button_Ground.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_minus
+            // 
+            this.VK_Button_minus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_minus.Location = new System.Drawing.Point(413, 3);
+            this.VK_Button_minus.Name = "VK_Button_minus";
+            this.VK_Button_minus.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_minus.TabIndex = 10;
+            this.VK_Button_minus.Text = "-";
+            this.VK_Button_minus.UseVisualStyleBackColor = true;
+            this.VK_Button_minus.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_10
+            // 
+            this.VK_Button_10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_10.Location = new System.Drawing.Point(372, 3);
+            this.VK_Button_10.Name = "VK_Button_10";
+            this.VK_Button_10.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_10.TabIndex = 9;
+            this.VK_Button_10.Text = "0";
+            this.VK_Button_10.UseVisualStyleBackColor = true;
+            this.VK_Button_10.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_9
+            // 
+            this.VK_Button_9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_9.Location = new System.Drawing.Point(331, 3);
+            this.VK_Button_9.Name = "VK_Button_9";
+            this.VK_Button_9.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_9.TabIndex = 8;
+            this.VK_Button_9.Text = "9";
+            this.VK_Button_9.UseVisualStyleBackColor = true;
+            this.VK_Button_9.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_8
+            // 
+            this.VK_Button_8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_8.Location = new System.Drawing.Point(290, 3);
+            this.VK_Button_8.Name = "VK_Button_8";
+            this.VK_Button_8.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_8.TabIndex = 7;
+            this.VK_Button_8.Text = "8";
+            this.VK_Button_8.UseVisualStyleBackColor = true;
+            this.VK_Button_8.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_7
+            // 
+            this.VK_Button_7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_7.Location = new System.Drawing.Point(249, 3);
+            this.VK_Button_7.Name = "VK_Button_7";
+            this.VK_Button_7.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_7.TabIndex = 6;
+            this.VK_Button_7.Text = "7";
+            this.VK_Button_7.UseVisualStyleBackColor = true;
+            this.VK_Button_7.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_6
+            // 
+            this.VK_Button_6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_6.Location = new System.Drawing.Point(208, 3);
+            this.VK_Button_6.Name = "VK_Button_6";
+            this.VK_Button_6.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_6.TabIndex = 5;
+            this.VK_Button_6.Text = "6";
+            this.VK_Button_6.UseVisualStyleBackColor = true;
+            this.VK_Button_6.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_5
+            // 
+            this.VK_Button_5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_5.Location = new System.Drawing.Point(167, 3);
+            this.VK_Button_5.Name = "VK_Button_5";
+            this.VK_Button_5.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_5.TabIndex = 4;
+            this.VK_Button_5.Text = "5";
+            this.VK_Button_5.UseVisualStyleBackColor = true;
+            this.VK_Button_5.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_4
+            // 
+            this.VK_Button_4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_4.Location = new System.Drawing.Point(126, 3);
+            this.VK_Button_4.Name = "VK_Button_4";
+            this.VK_Button_4.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_4.TabIndex = 3;
+            this.VK_Button_4.Text = "4";
+            this.VK_Button_4.UseVisualStyleBackColor = true;
+            this.VK_Button_4.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_3
+            // 
+            this.VK_Button_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_3.Location = new System.Drawing.Point(85, 3);
+            this.VK_Button_3.Name = "VK_Button_3";
+            this.VK_Button_3.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_3.TabIndex = 2;
+            this.VK_Button_3.Text = "3";
+            this.VK_Button_3.UseVisualStyleBackColor = true;
+            this.VK_Button_3.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_2
+            // 
+            this.VK_Button_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_2.Location = new System.Drawing.Point(44, 3);
+            this.VK_Button_2.Name = "VK_Button_2";
+            this.VK_Button_2.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_2.TabIndex = 1;
+            this.VK_Button_2.Text = "2";
+            this.VK_Button_2.UseVisualStyleBackColor = true;
+            this.VK_Button_2.Click += new System.EventHandler(this.VK_Button_Click);
+            // 
+            // VK_Button_1
+            // 
+            this.VK_Button_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_1.Location = new System.Drawing.Point(3, 3);
+            this.VK_Button_1.Name = "VK_Button_1";
+            this.VK_Button_1.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_1.TabIndex = 0;
+            this.VK_Button_1.Text = "1";
+            this.VK_Button_1.UseVisualStyleBackColor = true;
+            this.VK_Button_1.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1399, 558);
+            this.Controls.Add(this.VirtualKeyboard);
             this.Controls.Add(this.picFrame);
             this.Controls.Add(this.Answer_2);
             this.Controls.Add(this.Answer_1);
@@ -1742,6 +2338,7 @@ namespace Web_Camera_Video
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Video_Delay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).EndInit();
+            this.VirtualKeyboard.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1760,6 +2357,22 @@ namespace Web_Camera_Video
         private void picFrame_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawImage(Mask(UI.Sex), (picFrame.Width - Mask(UI.Sex).Width) / 2, (picFrame.Height - Mask(UI.Sex).Height) / 2, Mask(UI.Sex).Width, Mask(UI.Sex).Height);
+        }
+
+        private void VK_Button_Click(object sender, EventArgs e)
+        {
+           // if (!TextBoxForVK.Focused) return;
+            string CurText = TextBoxForVK.Text;
+            int Sel = TextBoxForVK.SelectionStart;
+            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + ((Button)sender).Text + CurText.Substring(TextBoxForVK.SelectionStart);
+            TextBoxForVK.SelectionStart = Sel + 1;
+        }
+
+        private void VK()
+        {
+            Name_Edit.Visible = true;
+            VirtualKeyboard.Visible = true;
+            TextBoxForVK = Name_Edit;
         }
     }
 }
