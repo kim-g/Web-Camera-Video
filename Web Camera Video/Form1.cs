@@ -136,6 +136,11 @@ namespace Web_Camera_Video
         private Button VK_Button_1;
         private Image WebCamVideo;
         private TextBox TextBoxForVK;
+        private int CountDownTime = 0;
+        private Control CountDownElement;
+        private string CountDownScript;
+        DateTime CountDownStart;
+        
 
         public Form1()
     {
@@ -211,7 +216,7 @@ namespace Web_Camera_Video
             //Show_Old_Button_Show();
             Exit_Button_Show();
 
-            RunScript("question=1");
+            RunScript("background=slide1;question=1");
 
 
             Show();
@@ -254,7 +259,7 @@ namespace Web_Camera_Video
         // Обработка отдельной команды
         public void RunCommand(string[] Command)
         {
-            switch (Command[0])
+            switch (Command[0].ToLower())
             {
                 case "language":    ConfigDB.SetConfigValue("language", Command[1]);    break;
                 case "question":    ShowQuestion(Convert.ToInt32(Command[1]));          break;
@@ -265,14 +270,39 @@ namespace Web_Camera_Video
                 case "make_photo":  Take_Picture();                                     break;
                 case "save_photo":  Save_Photo();                                       break;
                 case "vk":          VK();                                               break;
+                case "count_down":  SetCountDown(Command[1]);                           break;
+                case "background":  SetBackgroundImage(Command[1]);                     break;
 
             }
+        }
+
+        private void SetBackgroundImage(string BackgroundName)
+        {
+            BackgroundImage = Image.FromFile(ConfigDB.GetBackground(BackgroundName));
+        }
+
+        private void SetCountDown(string Command)
+        {
+            string[] Params = Command.Split(',');
+            switch (Params[0].ToLower())
+            {
+                case "camerabutton": CountDownElement = CameraButton; break;
+            }
+            CountDownTime = Convert.ToInt32(Params[1]);
+            CountDownScript = Params[3];
+            CountDownElement.Font = ConfigDB.GetFont(Params[2]);
+            CountDownElement.Text = Params[1];
+            CountDownStart = DateTime.Now;
         }
 
         // Показать слайд фотографирования
         public void TakeAPhoto()
         {
             Hide_All();
+
+            // Настройка надписи
+            SetElement(QuestionLabel, "Camera_Text");
+            QuestionLabel.Text = ConfigDB.GetText("Camera_Text");
 
             // Настройка параметров Web-плеера
             SetElementPosition(picFrame, "Camera");
@@ -456,7 +486,7 @@ namespace Web_Camera_Video
 
         private void button2_Click(object sender, EventArgs e)
         {
-            RunScript("make_photo");
+            RunScript("count_down=camerabutton,3,CountDown,make_photo");
         }
 
         private void Take_Picture()
@@ -932,6 +962,19 @@ namespace Web_Camera_Video
 
         private void Animation_Tick(object sender, EventArgs e)
         {
+            if (CountDownTime > 0)
+            {
+                double CurTime = DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
+                double StartTime = CountDownStart.Second + (CountDownStart.Millisecond / 1000f);
+                double Dif = CurTime - StartTime;
+                CountDownElement.Text = (CountDownTime - (int)Dif).ToString();
+                if (Dif > CountDownTime)
+                {
+                    CountDownTime = 0;
+                    RunScript(CountDownScript);
+                }
+            }
+
             if (Video_Move)
             {
                 const int Padding = 50;
@@ -1743,11 +1786,13 @@ namespace Web_Camera_Video
             // 
             // QuestionLabel
             // 
+            this.QuestionLabel.BackColor = System.Drawing.Color.Transparent;
             this.QuestionLabel.Location = new System.Drawing.Point(1267, 70);
             this.QuestionLabel.Name = "QuestionLabel";
             this.QuestionLabel.Size = new System.Drawing.Size(97, 45);
             this.QuestionLabel.TabIndex = 257;
             this.QuestionLabel.Text = "QuestionLabel";
+            this.QuestionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.QuestionLabel.Visible = false;
             // 
             // Answer_1
@@ -1755,7 +1800,10 @@ namespace Web_Camera_Video
             this.Answer_1.BackColor = System.Drawing.Color.Transparent;
             this.Answer_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Answer_1.FlatAppearance.BorderSize = 0;
+            this.Answer_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Answer_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Answer_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Answer_1.ForeColor = System.Drawing.Color.White;
             this.Answer_1.Location = new System.Drawing.Point(1262, 282);
             this.Answer_1.Name = "Answer_1";
             this.Answer_1.Size = new System.Drawing.Size(116, 41);
@@ -1770,7 +1818,10 @@ namespace Web_Camera_Video
             this.Answer_2.BackColor = System.Drawing.Color.Transparent;
             this.Answer_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Answer_2.FlatAppearance.BorderSize = 0;
+            this.Answer_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Answer_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Answer_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Answer_2.ForeColor = System.Drawing.Color.White;
             this.Answer_2.Location = new System.Drawing.Point(1262, 329);
             this.Answer_2.Name = "Answer_2";
             this.Answer_2.Size = new System.Drawing.Size(116, 41);

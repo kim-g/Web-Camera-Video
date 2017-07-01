@@ -230,5 +230,14 @@ namespace Web_Camera_Video
             DataTable Conf = ReadTable("SELECT `result` FROM `movies` WHERE `id`='" + id + "' LIMIT 1");
             return Conf == null ? "ERROR" : Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("result")].ToString();
         }
+
+        // Получение бекграунда
+        public string GetBackground(string Name)
+        {
+            string FullName = GetConfigValue("Images");
+
+            DataTable Conf = ReadTable("SELECT `filename` FROM `backgrounds` WHERE `name`='" + Name + "' LIMIT 1");
+            return FullName + @"\" + Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString();
+        }
     }
 }
