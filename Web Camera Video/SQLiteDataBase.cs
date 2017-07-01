@@ -237,7 +237,7 @@ namespace Web_Camera_Video
             string FullName = GetConfigValue("Images");
 
             DataTable Conf = ReadTable("SELECT `filename` FROM `backgrounds` WHERE `name`='" + Name + "' LIMIT 1");
-            return FullName + @"\" + Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString();
+            return Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString() == "" ? "" : FullName + @"\" + Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString();
         }
     }
 }

@@ -15,6 +15,9 @@ using System.Windows.Forms;
 using Web_Camera_Video.Properties;
 using Disk.SDK;
 using Disk.SDK.Provider;
+using System.Security.Policy;
+using System.Net.Mail;
+using System.Net;
 
 namespace Web_Camera_Video
 {
@@ -141,8 +144,14 @@ namespace Web_Camera_Video
         private int CountDownTime = 0;
         private Control CountDownElement;
         private string CountDownScript;
+        private WebBrowser webBrowser;
         DateTime CountDownStart;
-        
+        string AccessToken = "111";
+        private Button VK_Button_Backspace;
+        DiskSdkClient YandexDisk;
+        string PubLink;
+
+
 
         public Form1()
     {
@@ -220,7 +229,6 @@ namespace Web_Camera_Video
 
             RunScript("background=slide1;question=1");
 
-
             Show();
         }
 
@@ -240,7 +248,6 @@ namespace Web_Camera_Video
             Answer_2.Text = dt.Rows[1].ItemArray[dt.Columns.IndexOf("text")].ToString();
             Answer_1_Script = dt.Rows[0].ItemArray[dt.Columns.IndexOf("command")].ToString();
             Answer_2_Script = dt.Rows[1].ItemArray[dt.Columns.IndexOf("command")].ToString();
-            RunScript("");
         }
 
         // Обработка скрипта
@@ -275,15 +282,256 @@ namespace Web_Camera_Video
                 case "count_down":  SetCountDown(Command[1]);                           break;
                 case "background":  SetBackgroundImage(Command[1]);                     break;
                 case "cancel_button_show": CancelButtonShow();                          break;
-                case "upload":      UploadFile();                                       break;
+                case "upload":      UploadFile(Command[1]);                             break;
+                case "set_email":   SetEmail();                                         break;
+                case "render":      Render();                                           break;
+                case "get_link":    GetLink();                                          break;
 
             }
         }
 
-        private void UploadFile()
+        private void GetLink()
         {
-            throw new NotImplementedException();
+            YandexDisk.PublishCompleted += SdkOnPublishCompleted;
+            YandexDisk.PublishAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
         }
+
+        private void SdkOnPublishCompleted(object sender, GenericSdkEventArgs<string> e)
+        {
+            PubLink = e.Result;
+            Email(EMail_Edit.Text, PubLink);
+            Hide_All();
+            RunScript("background = slide1; question = 1");
+        }
+
+        private void Render()
+        {
+            Hide_All();
+            SaveTemplate();
+        }
+
+        private void SetEmail()
+        {
+            SetBackgroundImage("email");
+            SetElement(QuestionLabel, "Email_text");
+            SetElement(EMail_Edit, "Email_box");
+            SetElement(Answer_1, "Email_confirm");
+            SetVK(VirtualKeyboard, "Email_keyboard");
+
+            QuestionLabel.Text = ConfigDB.GetText("Enter_Email");
+
+            Answer_1_Script = "render";
+        }
+
+        private void SetVK(Panel virtualKeyboard, string Name)
+        {
+            SetElement(VirtualKeyboard, "Email_keyboard");
+            int Interval = 3;
+            int B_Width = (virtualKeyboard.Width - 12 * Interval) / 13;
+            int B_Height = B_Width;
+            TextBoxForVK = EMail_Edit;
+
+            foreach (Control X in virtualKeyboard.Controls)
+            {
+                X.Width = B_Width;
+                X.Height = B_Height;
+            }
+
+            VK_Button_Backspace.Width = B_Width * 2;
+
+            SetButtons(Interval, B_Width);
+        }
+
+        private void SetButtons(int interval, int B_width)
+        {
+            int Shift = B_width / 3;
+
+            VK_Button_Point.Left = Shift * 3 + B_width * 8 + interval * 8;
+            VK_Button_Comma.Left = Shift * 3 + B_width * 7 + interval * 7;
+            VK_Button_M.Left = Shift * 3 + B_width * 6 + interval * 6;
+            VK_Button_N.Left = Shift * 3 + B_width * 5 + interval * 5;
+            VK_Button_B.Left = Shift * 3 + B_width * 4 + interval * 4;
+            VK_Button_V.Left = Shift * 3 + B_width * 3 + interval * 3;
+            VK_Button_C.Left = Shift * 3 + B_width * 2 + interval * 2;
+            VK_Button_X.Left = Shift * 3 + B_width * 1 + interval * 1;
+            VK_Button_Z.Left = Shift * 3;
+            VK_Button_L.Left = Shift * 2 + B_width * 8 + interval * 8;
+            VK_Button_K.Left = Shift * 2 + B_width * 7 + interval * 7;
+            VK_Button_J.Left = Shift * 2 + B_width * 6 + interval * 6;
+            VK_Button_H.Left = Shift * 2 + B_width * 5 + interval * 5;
+            VK_Button_G.Left = Shift * 2 + B_width * 4 + interval * 4;
+            VK_Button_F.Left = Shift * 2 + B_width * 3 + interval * 3;
+            VK_Button_D.Left = Shift * 2 + B_width * 2 + interval * 2;
+            VK_Button_S.Left = Shift * 2 + B_width * 1 + interval * 1;
+            VK_Button_A.Left = Shift * 2;
+            VK_Button_P.Left = Shift * 1 + B_width * 9 + interval * 9;
+            VK_Button_O.Left = Shift * 1 + B_width * 8 + interval * 8;
+            VK_Button_I.Left = Shift * 1 + B_width * 7 + interval * 7;
+            VK_Button_U.Left = Shift * 1 + B_width * 6 + interval * 6;
+            VK_Button_Y.Left = Shift * 1 + B_width * 5 + interval * 5;
+            VK_Button_T.Left = Shift * 1 + B_width * 4 + interval * 4;
+            VK_Button_R.Left = Shift * 1 + B_width * 3 + interval * 3;
+            VK_Button_E.Left = Shift * 1 + B_width * 2 + interval * 2;
+            VK_Button_W.Left = Shift * 1 + B_width * 1 + interval * 1;
+            VK_Button_Q.Left = Shift;
+            VK_Button_At.Left = B_width * 12 + interval * 12;
+            VK_Button_Ground.Left = B_width * 11 + interval * 11;
+            VK_Button_minus.Left = B_width * 10 + interval * 10;
+            VK_Button_10.Left = B_width * 9 + interval * 9;
+            VK_Button_9.Left = B_width * 8 + interval * 8;
+            VK_Button_8.Left = B_width * 7 + interval * 7;
+            VK_Button_7.Left = B_width * 6 + interval * 6;
+            VK_Button_6.Left = B_width * 5 + interval * 5;
+            VK_Button_5.Left = B_width * 4 + interval * 4;
+            VK_Button_4.Left = B_width * 3 + interval * 3;
+            VK_Button_3.Left = B_width * 2 + interval * 2;
+            VK_Button_2.Left = B_width * 1 + interval * 1;
+            VK_Button_1.Left = 0;
+            VK_Button_Backspace.Left = B_width * 13 + interval * 12 - VK_Button_Backspace.Width;
+
+            VK_Button_Point.Top = B_width * 3 + interval * 3;
+            VK_Button_Comma.Top = B_width * 3 + interval * 3;
+            VK_Button_M.Top = B_width * 3 + interval * 3;
+            VK_Button_N.Top = B_width * 3 + interval * 3;
+            VK_Button_B.Top = B_width * 3 + interval * 3;
+            VK_Button_V.Top = B_width * 3 + interval * 3;
+            VK_Button_C.Top = B_width * 3 + interval * 3;
+            VK_Button_X.Top = B_width * 3 + interval * 3;
+            VK_Button_Z.Top = B_width * 3 + interval * 3;
+            VK_Button_L.Top = B_width * 2 + interval * 2;
+            VK_Button_K.Top = B_width * 2 + interval * 2;
+            VK_Button_J.Top = B_width * 2 + interval * 2;
+            VK_Button_H.Top = B_width * 2 + interval * 2;
+            VK_Button_G.Top = B_width * 2 + interval * 2;
+            VK_Button_F.Top = B_width * 2 + interval * 2;
+            VK_Button_D.Top = B_width * 2 + interval * 2;
+            VK_Button_S.Top = B_width * 2 + interval * 2;
+            VK_Button_A.Top = B_width * 2 + interval * 2;
+            VK_Button_P.Top = B_width * 1 + interval * 1;
+            VK_Button_O.Top = B_width * 1 + interval * 1;
+            VK_Button_I.Top = B_width * 1 + interval * 1;
+            VK_Button_U.Top = B_width * 1 + interval * 1;
+            VK_Button_Y.Top = B_width * 1 + interval * 1;
+            VK_Button_T.Top = B_width * 1 + interval * 1;
+            VK_Button_R.Top = B_width * 1 + interval * 1;
+            VK_Button_E.Top = B_width * 1 + interval * 1;
+            VK_Button_W.Top = B_width * 1 + interval * 1;
+            VK_Button_Q.Top = B_width * 1 + interval * 1;
+            VK_Button_At.Top = 0;
+            VK_Button_Ground.Top = 0;
+            VK_Button_minus.Top = 0;
+            VK_Button_10.Top = 0;
+            VK_Button_9.Top = 0;
+            VK_Button_8.Top = 0;
+            VK_Button_7.Top = 0;
+            VK_Button_6.Top = 0;
+            VK_Button_5.Top = 0;
+            VK_Button_4.Top = 0;
+            VK_Button_3.Top = 0;
+            VK_Button_2.Top = 0;
+            VK_Button_1.Top = 0;
+            VK_Button_Backspace.Top = B_width * 1 + interval * 1;
+        }
+
+        private void Email(string Address, string Link)
+        {
+            string Message_Body = ConfigDB.GetText("Mail_Message");
+            Message_Body = Message_Body.Replace("{LINK}", Link);
+
+            SendMail(ConfigDB.GetConfigValue("SMTP"), ConfigDB.GetConfigValue("Mail_From"), ConfigDB.GetConfigValue("Password"),
+                Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body);
+
+        }
+
+        /// <summary>
+        /// Отправка письма на почтовый ящик C# mail send
+        /// </summary>
+        /// <param name="smtpServer">Имя SMTP-сервера</param>
+        /// <param name="from">Адрес отправителя</param>
+        /// <param name="password">пароль к почтовому ящику отправителя</param>
+        /// <param name="mailto">Адрес получателя</param>
+        /// <param name="caption">Тема письма</param>
+        /// <param name="message">Сообщение</param>
+        /// <param name="attachFile">Присоединенный файл</param>
+        public static void SendMail(string smtpServer, string from, string password,
+        string mailto, string caption, string message, string attachFile = null)
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress(from);
+                mail.To.Add(new MailAddress(mailto));
+                mail.Subject = caption;
+                mail.Body = message;
+                if (!string.IsNullOrEmpty(attachFile))
+                    mail.Attachments.Add(new Attachment(attachFile));
+                SmtpClient client = new SmtpClient();
+                client.Host = smtpServer;
+                client.Port = ConfigDB.GetConfigValueInt("SMTP_Port");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(from.Split('@')[0], password);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Send(mail);
+                mail.Dispose();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Mail.Send: " + e.Message);
+            }
+        }
+
+        private void UploadFile(string Command)
+        {
+            string[] Params = Command.Split(',');
+            YandexDisk = new DiskSdkClient(ConfigDB.GetConfigValue("YandexDiskToken"));
+            YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/" + Params[0], 
+                File.Open(Params[1], FileMode.Open, FileAccess.Read),
+                new AsyncProgress(UpdateProgress),SdkOnUploadCompleted);
+        }
+
+        private void UpdateProgress(ulong current, ulong total)
+        {
+            
+        }
+
+        private void SdkOnUploadCompleted(object sender, SdkEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                RunScript("get_link");
+            }
+            else
+            {
+
+            }
+
+        }
+
+        private void SdkOnAuthorizeCompleted(object sender, GenericSdkEventArgs<string> e)
+        {
+            if (e.Error == null)
+            {
+                AccessToken = e.Result;
+                YandexDisk = new DiskSdkClient(AccessToken);
+            }
+            else
+            {
+                MessageBox.Show(e.Error.ToString());
+            }
+        }
+
+        private void CompleteCallback(object sender, GenericSdkEventArgs<string> e)
+        {
+            if (this.AuthCompleted != null)
+            {
+                this.AuthCompleted(this, new GenericSdkEventArgs<string>(e.Result));
+                AccessToken = e.Result;
+            }
+
+            this.Close();
+        }
+
+        public event EventHandler<GenericSdkEventArgs<string>> AuthCompleted;
 
         private void CancelButtonShow()
         {
@@ -293,7 +541,8 @@ namespace Web_Camera_Video
 
         private void SetBackgroundImage(string BackgroundName)
         {
-            BackgroundImage = Image.FromFile(ConfigDB.GetBackground(BackgroundName));
+            string BKGDI = ConfigDB.GetBackground(BackgroundName);
+            BackgroundImage = BKGDI == "" ? null : Image.FromFile(BKGDI);
         }
 
         private void SetCountDown(string Command)
@@ -672,7 +921,11 @@ namespace Web_Camera_Video
 
             if (!Directory.Exists(Dir.Data)) { Directory.CreateDirectory(Dir.Data); };  // Проверим существование папки
             SnapShot.Save(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"), ImageFormat.Jpeg);
+            RunScript("set_email");
+        }
 
+        private void SaveTemplate()
+        {
             // Проверим существование файла шаблона перед его копированием
             string ProjectFile = ConfigDB.GetMovieTemplate(MovieChosen);
             if (!File.Exists(Dir.Template + "\\" + ProjectFile))
@@ -686,6 +939,7 @@ namespace Web_Camera_Video
             UI.SaveToStructuredFile(Dir.Data + ConfigDB.GetConfigValue("UserData"));
 
             SetPictureBox(pictureBox1, "wait");
+            SetBackgroundImage("wait");
             WaitForResult = true;
         }
 
@@ -693,9 +947,11 @@ namespace Web_Camera_Video
         {
             if (WaitForResult)
             {
-                if (File.Exists(Dir.Output + ConfigDB.GetConfigValue("ResultVideoFile_" + UI.SexLabel)))
+                string Output_File = Dir.Output + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen));
+                if (File.Exists(Output_File))
                 {
-                    Show_Video_Slide();
+                    WaitForResult = false;
+                    RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File);
                 }
             }
 
@@ -1332,6 +1588,7 @@ namespace Web_Camera_Video
             this.Answer_2 = new System.Windows.Forms.Button();
             this.picFrame = new System.Windows.Forms.PictureBox();
             this.VirtualKeyboard = new System.Windows.Forms.Panel();
+            this.VK_Button_Backspace = new System.Windows.Forms.Button();
             this.VK_Button_Point = new System.Windows.Forms.Button();
             this.VK_Button_Comma = new System.Windows.Forms.Button();
             this.VK_Button_M = new System.Windows.Forms.Button();
@@ -1373,6 +1630,7 @@ namespace Web_Camera_Video
             this.VK_Button_3 = new System.Windows.Forms.Button();
             this.VK_Button_2 = new System.Windows.Forms.Button();
             this.VK_Button_1 = new System.Windows.Forms.Button();
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Video_Delay)).BeginInit();
@@ -1789,6 +2047,7 @@ namespace Web_Camera_Video
             this.QuestionLabel.Text = "QuestionLabel";
             this.QuestionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.QuestionLabel.Visible = false;
+            this.QuestionLabel.Click += new System.EventHandler(this.QuestionLabel_Click);
             // 
             // Answer_1
             // 
@@ -1840,6 +2099,8 @@ namespace Web_Camera_Video
             // 
             // VirtualKeyboard
             // 
+            this.VirtualKeyboard.BackColor = System.Drawing.Color.Transparent;
+            this.VirtualKeyboard.Controls.Add(this.VK_Button_Backspace);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_Point);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_Comma);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_M);
@@ -1886,6 +2147,17 @@ namespace Web_Camera_Video
             this.VirtualKeyboard.Size = new System.Drawing.Size(538, 164);
             this.VirtualKeyboard.TabIndex = 261;
             this.VirtualKeyboard.Visible = false;
+            // 
+            // VK_Button_Backspace
+            // 
+            this.VK_Button_Backspace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VK_Button_Backspace.Location = new System.Drawing.Point(430, 42);
+            this.VK_Button_Backspace.Name = "VK_Button_Backspace";
+            this.VK_Button_Backspace.Size = new System.Drawing.Size(100, 35);
+            this.VK_Button_Backspace.TabIndex = 41;
+            this.VK_Button_Backspace.Text = "<----";
+            this.VK_Button_Backspace.UseVisualStyleBackColor = true;
+            this.VK_Button_Backspace.Click += new System.EventHandler(this.VK_Button_Backspace_Click);
             // 
             // VK_Button_Point
             // 
@@ -2338,11 +2610,21 @@ namespace Web_Camera_Video
             this.VK_Button_1.UseVisualStyleBackColor = true;
             this.VK_Button_1.Click += new System.EventHandler(this.VK_Button_Click);
             // 
+            // webBrowser
+            // 
+            this.webBrowser.Location = new System.Drawing.Point(349, 45);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.Size = new System.Drawing.Size(289, 176);
+            this.webBrowser.TabIndex = 262;
+            this.webBrowser.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1399, 558);
+            this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.VirtualKeyboard);
             this.Controls.Add(this.picFrame);
             this.Controls.Add(this.Answer_2);
@@ -2422,6 +2704,20 @@ namespace Web_Camera_Video
             Name_Edit.Visible = true;
             VirtualKeyboard.Visible = true;
             TextBoxForVK = Name_Edit;
+        }
+
+        private void QuestionLabel_Click(object sender, EventArgs e)
+        {
+            //File.WriteAllText("Answer.txt", webBrowser.Document.Window.ToString());
+            //QuestionLabel.Text = AccessToken;
+        }
+
+        private void VK_Button_Backspace_Click(object sender, EventArgs e)
+        {
+            string CurText = TextBoxForVK.Text;
+            int Sel = TextBoxForVK.SelectionStart;
+            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart-1) + CurText.Substring(TextBoxForVK.SelectionStart);
+            TextBoxForVK.SelectionStart = Sel - 1;
         }
     }
 }
