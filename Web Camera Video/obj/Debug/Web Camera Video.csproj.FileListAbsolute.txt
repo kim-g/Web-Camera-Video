@@ -47,3 +47,5 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll

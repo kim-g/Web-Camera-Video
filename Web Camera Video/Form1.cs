@@ -13,6 +13,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Web_Camera_Video.Properties;
+using Disk.SDK;
+using Disk.SDK.Provider;
 
 namespace Web_Camera_Video
 {
@@ -272,8 +274,21 @@ namespace Web_Camera_Video
                 case "vk":          VK();                                               break;
                 case "count_down":  SetCountDown(Command[1]);                           break;
                 case "background":  SetBackgroundImage(Command[1]);                     break;
+                case "cancel_button_show": CancelButtonShow();                          break;
+                case "upload":      UploadFile();                                       break;
 
             }
+        }
+
+        private void UploadFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CancelButtonShow()
+        {
+            SetElement(Cancel_Button, "Cancel");
+            Cancel_Button.Text = ConfigDB.GetText("Cancel_Button");
         }
 
         private void SetBackgroundImage(string BackgroundName)
@@ -299,6 +314,9 @@ namespace Web_Camera_Video
         public void TakeAPhoto()
         {
             Hide_All();
+
+            // Настройка фона
+            RunScript("background=selphy");
 
             // Настройка надписи
             SetElement(QuestionLabel, "Camera_Text");
@@ -421,8 +439,13 @@ namespace Web_Camera_Video
                 var filter = new Mirror(false, true);
                 filter.ApplyInPlace(bitmap);
 
+                // Освобождение ресурсов
+                Image Temp = picFrame.Image;
                 picFrame.Image = bitmap;
+                Temp.Dispose();
+                Temp = WebCamVideo;
                 WebCamVideo = bitmap;
+                Temp.Dispose();
             }
             catch
             {
@@ -494,22 +517,17 @@ namespace Web_Camera_Video
             SnapShot = (Image)WebCamVideo.Clone();
 
             Hide_All();
+            SetBackgroundImage("save");
             pictureBox1.Image = SnapShot;
+            SetElement(QuestionLabel, "Camera_Text");
             SetElementPosition(pictureBox1, "Camera");
             SetElement(Answer_1, "OK");
             SetElement(Answer_2, "No");
+            QuestionLabel.Text = ConfigDB.GetText("Selphy_Save");
             Answer_1.Text = "";
             Answer_2.Text = "";
             Answer_1_Script = "save_photo";
             Answer_2_Script = "photo";
-
-            /*if ((videoDevice != null) && (videoDevice.ProvideSnapshots))
-            {
-                Shooting = true;
-
-
-                videoDevice.SimulateTrigger();
-            }*/
         }
 
         private void SetImage(Bitmap bitmap)
@@ -974,38 +992,6 @@ namespace Web_Camera_Video
                     RunScript(CountDownScript);
                 }
             }
-
-            if (Video_Move)
-            {
-                const int Padding = 50;
-
-                picFrame.Left -= 10;
-                CameraButton.Left -= 10;
-                if (picFrame.Left < Padding)
-                {
-                    Video_Move = false;
-                    picFrame.Left = Padding;
-                    CameraButton.Left = Padding;
-
-                    // Настройка показа фото
-                    pictureBox1.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
-                    pictureBox1.Height = ConfigDB.GetConfigValueInt("Camera_Window_Height");
-                    pictureBox1.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
-                    pictureBox1.Top = (sc[Input_Monitor].Bounds.Height - pictureBox1.Height) / 2;
-                    pictureBox1.Visible = true;
-
-                    // Настройка кнопки сохранения
-                    SavePhoto.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + ConfigDB.GetConfigValue("Thin_Button"));
-                    SavePhoto.Width = ConfigDB.GetConfigValueInt("Camera_Window_Width");
-                    SavePhoto.Height = SavePhoto.BackgroundImage.Height;
-                    SavePhoto.Left = sc[Input_Monitor].Bounds.Width - Padding - pictureBox1.Width;
-                    SavePhoto.Top = pictureBox1.Bottom + 20;
-                    SavePhoto.Font = ConfigDB.GetFont("Medium_Button");
-                    SavePhoto.Text = ConfigDB.GetText("Save_Photo");
-                    SavePhoto.Visible = true;
-                }
-            }
-
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -1059,6 +1045,7 @@ namespace Web_Camera_Video
             // Всё скрыть
             Hide_All();
             ID_Label.Visible = false;
+            Cancel_Button.Visible = false;
 
             // Все таймеры убрать
             Shooting = false;
@@ -1072,10 +1059,7 @@ namespace Web_Camera_Video
             ShowArchive = "";
 
             // Показ начального экрана
-            New_User_Button_Show();
-            Show_Old_Button.Visible = true;
-            Exit_Button.Visible = true;
-            VideoForm.Stop_User_Video();
+            RunScript("background=slide1;question=1");
         }
 
         private void Hide_All()
@@ -1094,7 +1078,6 @@ namespace Web_Camera_Video
             button5.Visible = false;
             Finish_Him.Visible = false;
             Repeate_Button.Visible = false;
-            Cancel_Button.Visible = false;
             Exit_Button.Visible = false;
             Show_Old_Button.Visible = false;
             listBox1.Visible = false;
@@ -1264,14 +1247,16 @@ namespace Web_Camera_Video
             string Query = "SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';";
             DataTable dt = ConfigDB.ReadTable("SELECT * FROM `visual_elements` WHERE `name`='" + Style + "';");
             SetElementPositionFromDataTable(Vis_Element, dt);
-            Vis_Element.Font = ConfigDB.GetFont(dt.Rows[0].ItemArray[dt.Columns.IndexOf("font")].ToString());
+            if (dt.Rows[0].ItemArray[dt.Columns.IndexOf("font")].ToString() != "") Vis_Element.Font = ConfigDB.GetFont(dt.Rows[0].ItemArray[dt.Columns.IndexOf("font")].ToString());
+            Vis_Element.ForeColor = Color.FromArgb(Convert.ToInt32(dt.Rows[0].ItemArray[dt.Columns.IndexOf("font_color")].ToString()));
             if (dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].GetType() != typeof(DBNull))
-                Vis_Element.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" + 
+                Vis_Element.BackgroundImage = Image.FromFile(ConfigDB.GetConfigValue("Images") + @"\" +
                     dt.Rows[0].ItemArray[dt.Columns.IndexOf("background_image")].ToString());
+            else Vis_Element.BackgroundImage = null;
 
             Vis_Element.Width = Vis_Element.Width == 0 ? Vis_Element.BackgroundImage.Width : Vis_Element.Width;
             Vis_Element.Height = Vis_Element.Height == 0 ? Vis_Element.BackgroundImage.Height : Vis_Element.Height;
-            Vis_Element.Visible = true;
+            Vis_Element.Visible = true; 
         }
 
         // Установка параметров визуальных элементов из БД
@@ -1397,6 +1382,8 @@ namespace Web_Camera_Video
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox1.Location = new System.Drawing.Point(764, 99);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(417, 68);
@@ -1408,17 +1395,20 @@ namespace Web_Camera_Video
             // 
             // CameraButton
             // 
+            this.CameraButton.BackColor = System.Drawing.Color.Transparent;
             this.CameraButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.CameraButton.FlatAppearance.BorderSize = 0;
+            this.CameraButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.CameraButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.CameraButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CameraButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CameraButton.ForeColor = System.Drawing.Color.White;
+            this.CameraButton.ForeColor = System.Drawing.Color.Black;
             this.CameraButton.Location = new System.Drawing.Point(764, 173);
             this.CameraButton.Name = "CameraButton";
             this.CameraButton.Size = new System.Drawing.Size(180, 29);
             this.CameraButton.TabIndex = 4;
             this.CameraButton.Text = "CameraButton";
-            this.CameraButton.UseVisualStyleBackColor = true;
+            this.CameraButton.UseVisualStyleBackColor = false;
             this.CameraButton.Visible = false;
             this.CameraButton.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -1427,7 +1417,7 @@ namespace Web_Camera_Video
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.ForeColor = System.Drawing.Color.Black;
             this.button3.Location = new System.Drawing.Point(767, 272);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(184, 24);
@@ -1439,17 +1429,18 @@ namespace Web_Camera_Video
             // 
             // SavePhoto
             // 
+            this.SavePhoto.BackColor = System.Drawing.Color.Transparent;
             this.SavePhoto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SavePhoto.FlatAppearance.BorderSize = 0;
             this.SavePhoto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SavePhoto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SavePhoto.ForeColor = System.Drawing.Color.White;
+            this.SavePhoto.ForeColor = System.Drawing.Color.Black;
             this.SavePhoto.Location = new System.Drawing.Point(763, 208);
             this.SavePhoto.Name = "SavePhoto";
             this.SavePhoto.Size = new System.Drawing.Size(181, 26);
             this.SavePhoto.TabIndex = 8;
             this.SavePhoto.Text = "SavePhoto";
-            this.SavePhoto.UseVisualStyleBackColor = true;
+            this.SavePhoto.UseVisualStyleBackColor = false;
             this.SavePhoto.Visible = false;
             this.SavePhoto.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -1458,7 +1449,7 @@ namespace Web_Camera_Video
             this.New_User_Button.FlatAppearance.BorderSize = 0;
             this.New_User_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.New_User_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.New_User_Button.ForeColor = System.Drawing.Color.White;
+            this.New_User_Button.ForeColor = System.Drawing.Color.Black;
             this.New_User_Button.Location = new System.Drawing.Point(764, 12);
             this.New_User_Button.Name = "New_User_Button";
             this.New_User_Button.Size = new System.Drawing.Size(416, 46);
@@ -1483,13 +1474,14 @@ namespace Web_Camera_Video
             this.button1.TabStop = false;
             this.button1.UseCompatibleTextRendering = true;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             this.button1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button1_KeyDown);
             // 
             // Animation
             // 
             this.Animation.Enabled = true;
-            this.Animation.Interval = 5;
+            this.Animation.Interval = 500;
             this.Animation.Tick += new System.EventHandler(this.Animation_Tick);
             // 
             // Wait_Image
@@ -1562,7 +1554,7 @@ namespace Web_Camera_Video
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button5.ForeColor = System.Drawing.Color.White;
+            this.button5.ForeColor = System.Drawing.Color.Black;
             this.button5.Location = new System.Drawing.Point(755, 493);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(191, 45);
@@ -1578,7 +1570,7 @@ namespace Web_Camera_Video
             this.Finish_Him.FlatAppearance.BorderSize = 0;
             this.Finish_Him.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Finish_Him.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Finish_Him.ForeColor = System.Drawing.Color.White;
+            this.Finish_Him.ForeColor = System.Drawing.Color.Black;
             this.Finish_Him.Location = new System.Drawing.Point(767, 295);
             this.Finish_Him.Name = "Finish_Him";
             this.Finish_Him.Size = new System.Drawing.Size(180, 28);
@@ -1594,7 +1586,7 @@ namespace Web_Camera_Video
             this.Repeate_Button.FlatAppearance.BorderSize = 0;
             this.Repeate_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Repeate_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Repeate_Button.ForeColor = System.Drawing.Color.White;
+            this.Repeate_Button.ForeColor = System.Drawing.Color.Black;
             this.Repeate_Button.Location = new System.Drawing.Point(767, 240);
             this.Repeate_Button.Name = "Repeate_Button";
             this.Repeate_Button.Size = new System.Drawing.Size(181, 26);
@@ -1606,16 +1598,19 @@ namespace Web_Camera_Video
             // 
             // Cancel_Button
             // 
+            this.Cancel_Button.BackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.FlatAppearance.BorderSize = 0;
+            this.Cancel_Button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Cancel_Button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Cancel_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Cancel_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Cancel_Button.ForeColor = System.Drawing.Color.White;
+            this.Cancel_Button.ForeColor = System.Drawing.Color.Black;
             this.Cancel_Button.Location = new System.Drawing.Point(1175, 513);
             this.Cancel_Button.Name = "Cancel_Button";
             this.Cancel_Button.Size = new System.Drawing.Size(180, 45);
             this.Cancel_Button.TabIndex = 21;
             this.Cancel_Button.Text = "Прервать работу";
-            this.Cancel_Button.UseVisualStyleBackColor = true;
+            this.Cancel_Button.UseVisualStyleBackColor = false;
             this.Cancel_Button.Visible = false;
             this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
             // 
@@ -1640,7 +1635,7 @@ namespace Web_Camera_Video
             this.Show_Old_Button.FlatAppearance.BorderSize = 0;
             this.Show_Old_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Show_Old_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Show_Old_Button.ForeColor = System.Drawing.Color.White;
+            this.Show_Old_Button.ForeColor = System.Drawing.Color.Black;
             this.Show_Old_Button.Location = new System.Drawing.Point(755, 463);
             this.Show_Old_Button.Name = "Show_Old_Button";
             this.Show_Old_Button.Size = new System.Drawing.Size(192, 26);
@@ -1673,7 +1668,7 @@ namespace Web_Camera_Video
             this.Open_Old_Button.FlatAppearance.BorderSize = 0;
             this.Open_Old_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Open_Old_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Open_Old_Button.ForeColor = System.Drawing.Color.White;
+            this.Open_Old_Button.ForeColor = System.Drawing.Color.Black;
             this.Open_Old_Button.Location = new System.Drawing.Point(975, 173);
             this.Open_Old_Button.Name = "Open_Old_Button";
             this.Open_Old_Button.Size = new System.Drawing.Size(180, 29);
@@ -1774,7 +1769,7 @@ namespace Web_Camera_Video
             this.Stop_Button.FlatAppearance.BorderSize = 0;
             this.Stop_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Stop_Button.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Stop_Button.ForeColor = System.Drawing.Color.White;
+            this.Stop_Button.ForeColor = System.Drawing.Color.Black;
             this.Stop_Button.Location = new System.Drawing.Point(975, 208);
             this.Stop_Button.Name = "Stop_Button";
             this.Stop_Button.Size = new System.Drawing.Size(181, 26);
@@ -1803,7 +1798,7 @@ namespace Web_Camera_Video
             this.Answer_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Answer_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Answer_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Answer_1.ForeColor = System.Drawing.Color.White;
+            this.Answer_1.ForeColor = System.Drawing.Color.Black;
             this.Answer_1.Location = new System.Drawing.Point(1262, 282);
             this.Answer_1.Name = "Answer_1";
             this.Answer_1.Size = new System.Drawing.Size(116, 41);
@@ -1821,7 +1816,7 @@ namespace Web_Camera_Video
             this.Answer_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.Answer_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.Answer_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Answer_2.ForeColor = System.Drawing.Color.White;
+            this.Answer_2.ForeColor = System.Drawing.Color.Black;
             this.Answer_2.Location = new System.Drawing.Point(1262, 329);
             this.Answer_2.Name = "Answer_2";
             this.Answer_2.Size = new System.Drawing.Size(116, 41);
@@ -1833,6 +1828,8 @@ namespace Web_Camera_Video
             // 
             // picFrame
             // 
+            this.picFrame.BackColor = System.Drawing.Color.Transparent;
+            this.picFrame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.picFrame.Location = new System.Drawing.Point(37, 28);
             this.picFrame.Name = "picFrame";
             this.picFrame.Size = new System.Drawing.Size(249, 206);
@@ -2381,6 +2378,7 @@ namespace Web_Camera_Video
             this.Controls.Add(this.CameraButton);
             this.Controls.Add(this.pictureBox1);
             this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
