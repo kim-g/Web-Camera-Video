@@ -149,7 +149,7 @@ namespace Web_Camera_Video
         string AccessToken = "111";
         private Button VK_Button_Backspace;
         DiskSdkClient YandexDisk;
-        string PubLink;
+        string PubLink = "";
 
 
 
@@ -221,13 +221,8 @@ namespace Web_Camera_Video
             button1.Top = 10;
             button1.Enabled = false;
 
-            // Настройка кнопок
-            //New_User_Button_Show();
-            //Cancel_Button_Prepare();
-            //Show_Old_Button_Show();
-            Exit_Button_Show();
 
-            RunScript("background=slide1;question=1");
+            RunScript(ConfigDB.GetConfigValue("StartScript"));
 
             Show();
         }
@@ -286,8 +281,15 @@ namespace Web_Camera_Video
                 case "set_email":   SetEmail();                                         break;
                 case "render":      Render();                                           break;
                 case "get_link":    GetLink();                                          break;
-
+                case "authorize":   Authorize();                                        break;
             }
+        }
+
+        private void Authorize()
+        {
+            webBrowser.Visible = true;
+            YandexDisk.AuthorizeAsync(new WebBrowserWrapper(webBrowser), ConfigDB.GetConfigValue("YandexDiskTokenID"),
+                ConfigDB.GetConfigValue("YandexDiskTokenCallBack"), CompleteCallback);
         }
 
         private void GetLink()
@@ -299,9 +301,6 @@ namespace Web_Camera_Video
         private void SdkOnPublishCompleted(object sender, GenericSdkEventArgs<string> e)
         {
             PubLink = e.Result;
-            Email(EMail_Edit.Text, PubLink);
-            Hide_All();
-            RunScript("background = slide1; question = 1");
         }
 
         private void Render()
@@ -1247,6 +1246,18 @@ namespace Web_Camera_Video
                     CountDownTime = 0;
                     RunScript(CountDownScript);
                 }
+            }
+
+            // Если уже получил публичеую ссылку, отправим все пользователю и перейдём на экран приветствия.
+            if (PubLink != "")
+            {
+                if (PubLink == null) return;
+                Email(EMail_Edit.Text, PubLink);
+                Hide_All();
+                PubLink = "";
+                EMail_Edit.Text = "";
+                Cancel_Button.Visible = false;
+                RunScript("background=slide1; question=1");
             }
         }
 
@@ -2612,10 +2623,10 @@ namespace Web_Camera_Video
             // 
             // webBrowser
             // 
-            this.webBrowser.Location = new System.Drawing.Point(349, 45);
+            this.webBrowser.Location = new System.Drawing.Point(297, 25);
             this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
-            this.webBrowser.Size = new System.Drawing.Size(289, 176);
+            this.webBrowser.Size = new System.Drawing.Size(419, 212);
             this.webBrowser.TabIndex = 262;
             this.webBrowser.Visible = false;
             // 
