@@ -22,15 +22,11 @@ d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.pd
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Controls.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.dll
-d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AxInterop.WMPLib.dll
-d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Interop.WMPLib.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csprojResolveAssemblyReference.cache
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Configuration.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Form1.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
-d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.SnapshotForm.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
-d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web_Camera_Video.Video.resources
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.Cache
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\EntityFramework.dll
