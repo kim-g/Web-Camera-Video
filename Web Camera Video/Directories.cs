@@ -9,7 +9,6 @@ namespace Web_Camera_Video
 {
     public class Directories
     {
-        public string PromoVideo;
         public string Prep;
         public string Template;
         public string Archive;
@@ -23,7 +22,6 @@ namespace Web_Camera_Video
         {
             Directories Dir = new Directories();
             Dir.Work = DB.GetConfigValue("Work_Directory") + @"\";
-            Dir.PromoVideo = Dir.Work + DB.GetConfigValue("Promo_Video");
             Dir.Prep = Dir.Work + DB.GetConfigValue("Prep_Directory") + @"\";
             Dir.Template = Dir.Work + DB.GetConfigValue("Template_Directory") + @"\";
             Dir.Archive = DB.GetConfigValue("Archive_Directory") + @"\";
