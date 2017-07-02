@@ -253,6 +253,7 @@ namespace Web_Camera_Video
             SetVK(VirtualKeyboard, "Email_keyboard");
 
             QuestionLabel.Text = ConfigDB.GetText("Enter_Email");
+            Answer_1.Text = ConfigDB.GetText("Email_OK");
 
             Answer_1_Script = "render";
         }
@@ -691,7 +692,8 @@ namespace Web_Camera_Video
             UI.SaveToFile();
             UI.SaveToStructuredFile(Dir.Data + ConfigDB.GetConfigValue("UserData"));
 
-            SetPictureBox(pictureBox1, "wait");
+            SetElement(QuestionLabel, "wait");
+            QuestionLabel.Text = ConfigDB.GetText("Wait");
             SetBackgroundImage("wait");
             WaitForResult = true;
         }
@@ -727,6 +729,7 @@ namespace Web_Camera_Video
             {
                 double CurTime = DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
                 double StartTime = CountDownStart.Second + (CountDownStart.Millisecond / 1000f);
+                if (CurTime + 10f < StartTime) CurTime += 60f;
                 double Dif = CurTime - StartTime;
                 CountDownElement.Text = (CountDownTime - (int)Dif).ToString();
                 if (Dif > CountDownTime)
@@ -1852,8 +1855,7 @@ namespace Web_Camera_Video
             string CurText = TextBoxForVK.Text;
             int Sel = TextBoxForVK.SelectionStart;
             string temp = (string)((Button)sender).Tag;
-            char str = temp[0];
-            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + str + CurText.Substring(TextBoxForVK.SelectionStart);
+            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + temp[0] + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel + 1;
         }
 
