@@ -1876,6 +1876,13 @@ namespace Web_Camera_Video
         {
             string CurText = TextBoxForVK.Text;
             int Sel = TextBoxForVK.SelectionStart;
+            if (Sel == 0) return;
+            if (Sel == 1)
+            {
+                TextBoxForVK.Text = CurText.Substring(TextBoxForVK.SelectionStart);
+                TextBoxForVK.SelectionStart = 0;
+                return;
+            }
             TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart-1) + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel - 1;
         }

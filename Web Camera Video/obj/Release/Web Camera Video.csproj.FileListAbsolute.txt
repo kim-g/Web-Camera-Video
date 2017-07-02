@@ -1,7 +1,6 @@
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\Web Camera Video.exe.config
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\Web Camera Video.exe
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\Web Camera Video.pdb
-D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Controls.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Imaging.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Video.DirectShow.dll
@@ -27,4 +26,5 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLit
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\EntityFramework.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\EntityFramework.SqlServer.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLite.xml
-D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Release\Web Camera Video.csprojResolveAssemblyReference.cache
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Video.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Video.DirectShow.xml
