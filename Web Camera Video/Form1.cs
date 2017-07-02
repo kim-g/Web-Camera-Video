@@ -57,7 +57,6 @@ namespace Web_Camera_Video
         private Image SnapShot;
         private Panel VirtualKeyboard;
         private Button VK_Button_Point;
-        private Button VK_Button_Comma;
         private Button VK_Button_M;
         private Button VK_Button_N;
         private Button VK_Button_B;
@@ -868,7 +867,6 @@ namespace Web_Camera_Video
             this.VirtualKeyboard = new System.Windows.Forms.Panel();
             this.VK_Button_Backspace = new System.Windows.Forms.Button();
             this.VK_Button_Point = new System.Windows.Forms.Button();
-            this.VK_Button_Comma = new System.Windows.Forms.Button();
             this.VK_Button_M = new System.Windows.Forms.Button();
             this.VK_Button_N = new System.Windows.Forms.Button();
             this.VK_Button_B = new System.Windows.Forms.Button();
@@ -1075,10 +1073,9 @@ namespace Web_Camera_Video
             // 
             // VirtualKeyboard
             // 
-            this.VirtualKeyboard.BackColor = System.Drawing.Color.Transparent;
+            this.VirtualKeyboard.BackColor = System.Drawing.Color.White;
             this.VirtualKeyboard.Controls.Add(this.VK_Button_Backspace);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_Point);
-            this.VirtualKeyboard.Controls.Add(this.VK_Button_Comma);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_M);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_N);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_B);
@@ -1118,16 +1115,16 @@ namespace Web_Camera_Video
             this.VirtualKeyboard.Controls.Add(this.VK_Button_3);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_2);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_1);
-            this.VirtualKeyboard.Location = new System.Drawing.Point(89, 240);
+            this.VirtualKeyboard.Location = new System.Drawing.Point(611, 259);
             this.VirtualKeyboard.Name = "VirtualKeyboard";
-            this.VirtualKeyboard.Size = new System.Drawing.Size(538, 164);
+            this.VirtualKeyboard.Size = new System.Drawing.Size(820, 440);
             this.VirtualKeyboard.TabIndex = 261;
             this.VirtualKeyboard.Visible = false;
             // 
             // VK_Button_Backspace
             // 
             this.VK_Button_Backspace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Backspace.Location = new System.Drawing.Point(430, 42);
+            this.VK_Button_Backspace.Location = new System.Drawing.Point(29, 366);
             this.VK_Button_Backspace.Name = "VK_Button_Backspace";
             this.VK_Button_Backspace.Size = new System.Drawing.Size(100, 35);
             this.VK_Button_Backspace.TabIndex = 41;
@@ -1138,451 +1135,440 @@ namespace Web_Camera_Video
             // VK_Button_Point
             // 
             this.VK_Button_Point.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Point.Location = new System.Drawing.Point(372, 124);
+            this.VK_Button_Point.Location = new System.Drawing.Point(649, 364);
             this.VK_Button_Point.Name = "VK_Button_Point";
-            this.VK_Button_Point.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Point.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Point.TabIndex = 40;
-            this.VK_Button_Point.Text = ".";
+            this.VK_Button_Point.Tag = "46";
             this.VK_Button_Point.UseVisualStyleBackColor = true;
             this.VK_Button_Point.Click += new System.EventHandler(this.VK_Button_Click);
-            // 
-            // VK_Button_Comma
-            // 
-            this.VK_Button_Comma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Comma.Location = new System.Drawing.Point(331, 124);
-            this.VK_Button_Comma.Name = "VK_Button_Comma";
-            this.VK_Button_Comma.Size = new System.Drawing.Size(35, 35);
-            this.VK_Button_Comma.TabIndex = 39;
-            this.VK_Button_Comma.Text = ",";
-            this.VK_Button_Comma.UseVisualStyleBackColor = true;
-            this.VK_Button_Comma.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_M
             // 
             this.VK_Button_M.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_M.Location = new System.Drawing.Point(290, 124);
+            this.VK_Button_M.Location = new System.Drawing.Point(567, 364);
             this.VK_Button_M.Name = "VK_Button_M";
-            this.VK_Button_M.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_M.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_M.TabIndex = 38;
-            this.VK_Button_M.Text = "M";
+            this.VK_Button_M.Tag = "109";
             this.VK_Button_M.UseVisualStyleBackColor = true;
             this.VK_Button_M.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_N
             // 
             this.VK_Button_N.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_N.Location = new System.Drawing.Point(249, 124);
+            this.VK_Button_N.Location = new System.Drawing.Point(526, 364);
             this.VK_Button_N.Name = "VK_Button_N";
-            this.VK_Button_N.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_N.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_N.TabIndex = 37;
-            this.VK_Button_N.Text = "N";
+            this.VK_Button_N.Tag = "110";
             this.VK_Button_N.UseVisualStyleBackColor = true;
             this.VK_Button_N.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_B
             // 
             this.VK_Button_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_B.Location = new System.Drawing.Point(208, 124);
+            this.VK_Button_B.Location = new System.Drawing.Point(485, 364);
             this.VK_Button_B.Name = "VK_Button_B";
-            this.VK_Button_B.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_B.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_B.TabIndex = 36;
-            this.VK_Button_B.Text = "B";
+            this.VK_Button_B.Tag = "39";
             this.VK_Button_B.UseVisualStyleBackColor = true;
             this.VK_Button_B.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_V
             // 
             this.VK_Button_V.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_V.Location = new System.Drawing.Point(167, 124);
+            this.VK_Button_V.Location = new System.Drawing.Point(444, 364);
             this.VK_Button_V.Name = "VK_Button_V";
-            this.VK_Button_V.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_V.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_V.TabIndex = 35;
-            this.VK_Button_V.Text = "V";
+            this.VK_Button_V.Tag = "118";
             this.VK_Button_V.UseVisualStyleBackColor = true;
             this.VK_Button_V.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_C
             // 
             this.VK_Button_C.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_C.Location = new System.Drawing.Point(126, 124);
+            this.VK_Button_C.Location = new System.Drawing.Point(403, 364);
             this.VK_Button_C.Name = "VK_Button_C";
-            this.VK_Button_C.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_C.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_C.TabIndex = 34;
-            this.VK_Button_C.Text = "C";
+            this.VK_Button_C.Tag = "99";
             this.VK_Button_C.UseVisualStyleBackColor = true;
             this.VK_Button_C.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_X
             // 
             this.VK_Button_X.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_X.Location = new System.Drawing.Point(85, 124);
+            this.VK_Button_X.Location = new System.Drawing.Point(362, 364);
             this.VK_Button_X.Name = "VK_Button_X";
-            this.VK_Button_X.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_X.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_X.TabIndex = 33;
-            this.VK_Button_X.Text = "X";
+            this.VK_Button_X.Tag = "120";
             this.VK_Button_X.UseVisualStyleBackColor = true;
             this.VK_Button_X.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Z
             // 
             this.VK_Button_Z.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Z.Location = new System.Drawing.Point(44, 124);
+            this.VK_Button_Z.Location = new System.Drawing.Point(321, 364);
             this.VK_Button_Z.Name = "VK_Button_Z";
-            this.VK_Button_Z.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Z.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Z.TabIndex = 32;
-            this.VK_Button_Z.Text = "Z";
+            this.VK_Button_Z.Tag = "122";
             this.VK_Button_Z.UseVisualStyleBackColor = true;
             this.VK_Button_Z.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_L
             // 
             this.VK_Button_L.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_L.Location = new System.Drawing.Point(357, 83);
+            this.VK_Button_L.Location = new System.Drawing.Point(634, 323);
             this.VK_Button_L.Name = "VK_Button_L";
-            this.VK_Button_L.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_L.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_L.TabIndex = 31;
-            this.VK_Button_L.Text = "L";
+            this.VK_Button_L.Tag = "108";
             this.VK_Button_L.UseVisualStyleBackColor = true;
             this.VK_Button_L.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_K
             // 
             this.VK_Button_K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_K.Location = new System.Drawing.Point(316, 83);
+            this.VK_Button_K.Location = new System.Drawing.Point(593, 323);
             this.VK_Button_K.Name = "VK_Button_K";
-            this.VK_Button_K.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_K.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_K.TabIndex = 30;
-            this.VK_Button_K.Text = "K";
+            this.VK_Button_K.Tag = "107";
             this.VK_Button_K.UseVisualStyleBackColor = true;
             this.VK_Button_K.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_J
             // 
             this.VK_Button_J.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_J.Location = new System.Drawing.Point(275, 83);
+            this.VK_Button_J.Location = new System.Drawing.Point(552, 323);
             this.VK_Button_J.Name = "VK_Button_J";
-            this.VK_Button_J.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_J.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_J.TabIndex = 29;
-            this.VK_Button_J.Text = "J";
+            this.VK_Button_J.Tag = "106";
             this.VK_Button_J.UseVisualStyleBackColor = true;
             this.VK_Button_J.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_H
             // 
             this.VK_Button_H.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_H.Location = new System.Drawing.Point(234, 83);
+            this.VK_Button_H.Location = new System.Drawing.Point(511, 323);
             this.VK_Button_H.Name = "VK_Button_H";
-            this.VK_Button_H.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_H.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_H.TabIndex = 28;
-            this.VK_Button_H.Text = "H";
+            this.VK_Button_H.Tag = "104";
             this.VK_Button_H.UseVisualStyleBackColor = true;
             this.VK_Button_H.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_G
             // 
             this.VK_Button_G.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_G.Location = new System.Drawing.Point(193, 83);
+            this.VK_Button_G.Location = new System.Drawing.Point(470, 323);
             this.VK_Button_G.Name = "VK_Button_G";
-            this.VK_Button_G.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_G.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_G.TabIndex = 27;
-            this.VK_Button_G.Text = "G";
+            this.VK_Button_G.Tag = "103";
             this.VK_Button_G.UseVisualStyleBackColor = true;
             this.VK_Button_G.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_F
             // 
             this.VK_Button_F.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_F.Location = new System.Drawing.Point(152, 83);
+            this.VK_Button_F.Location = new System.Drawing.Point(429, 323);
             this.VK_Button_F.Name = "VK_Button_F";
-            this.VK_Button_F.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_F.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_F.TabIndex = 26;
-            this.VK_Button_F.Text = "F";
+            this.VK_Button_F.Tag = "102";
             this.VK_Button_F.UseVisualStyleBackColor = true;
             this.VK_Button_F.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_D
             // 
             this.VK_Button_D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_D.Location = new System.Drawing.Point(111, 83);
+            this.VK_Button_D.Location = new System.Drawing.Point(388, 323);
             this.VK_Button_D.Name = "VK_Button_D";
-            this.VK_Button_D.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_D.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_D.TabIndex = 25;
-            this.VK_Button_D.Text = "D";
+            this.VK_Button_D.Tag = "100";
             this.VK_Button_D.UseVisualStyleBackColor = true;
             this.VK_Button_D.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_S
             // 
             this.VK_Button_S.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_S.Location = new System.Drawing.Point(70, 83);
+            this.VK_Button_S.Location = new System.Drawing.Point(347, 323);
             this.VK_Button_S.Name = "VK_Button_S";
-            this.VK_Button_S.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_S.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_S.TabIndex = 24;
-            this.VK_Button_S.Text = "S";
+            this.VK_Button_S.Tag = "115";
             this.VK_Button_S.UseVisualStyleBackColor = true;
             this.VK_Button_S.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_A
             // 
             this.VK_Button_A.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_A.Location = new System.Drawing.Point(29, 83);
+            this.VK_Button_A.Location = new System.Drawing.Point(306, 323);
             this.VK_Button_A.Name = "VK_Button_A";
-            this.VK_Button_A.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_A.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_A.TabIndex = 23;
-            this.VK_Button_A.Text = "A";
+            this.VK_Button_A.Tag = "97";
             this.VK_Button_A.UseVisualStyleBackColor = true;
             this.VK_Button_A.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_P
             // 
             this.VK_Button_P.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_P.Location = new System.Drawing.Point(386, 42);
+            this.VK_Button_P.Location = new System.Drawing.Point(663, 282);
             this.VK_Button_P.Name = "VK_Button_P";
-            this.VK_Button_P.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_P.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_P.TabIndex = 22;
-            this.VK_Button_P.Text = "P";
+            this.VK_Button_P.Tag = "112";
             this.VK_Button_P.UseVisualStyleBackColor = true;
             this.VK_Button_P.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_O
             // 
             this.VK_Button_O.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_O.Location = new System.Drawing.Point(345, 42);
+            this.VK_Button_O.Location = new System.Drawing.Point(622, 282);
             this.VK_Button_O.Name = "VK_Button_O";
-            this.VK_Button_O.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_O.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_O.TabIndex = 21;
-            this.VK_Button_O.Text = "O";
+            this.VK_Button_O.Tag = "111";
             this.VK_Button_O.UseVisualStyleBackColor = true;
             this.VK_Button_O.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_I
             // 
             this.VK_Button_I.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_I.Location = new System.Drawing.Point(304, 42);
+            this.VK_Button_I.Location = new System.Drawing.Point(581, 282);
             this.VK_Button_I.Name = "VK_Button_I";
-            this.VK_Button_I.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_I.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_I.TabIndex = 20;
-            this.VK_Button_I.Text = "I";
+            this.VK_Button_I.Tag = "105";
             this.VK_Button_I.UseVisualStyleBackColor = true;
             this.VK_Button_I.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_U
             // 
             this.VK_Button_U.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_U.Location = new System.Drawing.Point(263, 42);
+            this.VK_Button_U.Location = new System.Drawing.Point(540, 282);
             this.VK_Button_U.Name = "VK_Button_U";
-            this.VK_Button_U.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_U.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_U.TabIndex = 19;
-            this.VK_Button_U.Text = "U";
+            this.VK_Button_U.Tag = "117";
             this.VK_Button_U.UseVisualStyleBackColor = true;
             this.VK_Button_U.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Y
             // 
             this.VK_Button_Y.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Y.Location = new System.Drawing.Point(222, 42);
+            this.VK_Button_Y.Location = new System.Drawing.Point(499, 282);
             this.VK_Button_Y.Name = "VK_Button_Y";
-            this.VK_Button_Y.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Y.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Y.TabIndex = 18;
-            this.VK_Button_Y.Text = "Y";
+            this.VK_Button_Y.Tag = "121";
             this.VK_Button_Y.UseVisualStyleBackColor = true;
             this.VK_Button_Y.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_T
             // 
             this.VK_Button_T.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_T.Location = new System.Drawing.Point(181, 42);
+            this.VK_Button_T.Location = new System.Drawing.Point(458, 282);
             this.VK_Button_T.Name = "VK_Button_T";
-            this.VK_Button_T.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_T.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_T.TabIndex = 17;
-            this.VK_Button_T.Text = "T";
+            this.VK_Button_T.Tag = "116";
             this.VK_Button_T.UseVisualStyleBackColor = true;
             this.VK_Button_T.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_R
             // 
             this.VK_Button_R.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_R.Location = new System.Drawing.Point(140, 42);
+            this.VK_Button_R.Location = new System.Drawing.Point(417, 282);
             this.VK_Button_R.Name = "VK_Button_R";
-            this.VK_Button_R.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_R.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_R.TabIndex = 16;
-            this.VK_Button_R.Text = "R";
+            this.VK_Button_R.Tag = "114";
             this.VK_Button_R.UseVisualStyleBackColor = true;
             this.VK_Button_R.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_E
             // 
             this.VK_Button_E.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_E.Location = new System.Drawing.Point(99, 42);
+            this.VK_Button_E.Location = new System.Drawing.Point(376, 282);
             this.VK_Button_E.Name = "VK_Button_E";
-            this.VK_Button_E.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_E.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_E.TabIndex = 15;
-            this.VK_Button_E.Text = "E";
+            this.VK_Button_E.Tag = "101";
             this.VK_Button_E.UseVisualStyleBackColor = true;
             this.VK_Button_E.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_W
             // 
             this.VK_Button_W.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_W.Location = new System.Drawing.Point(58, 42);
+            this.VK_Button_W.Location = new System.Drawing.Point(335, 282);
             this.VK_Button_W.Name = "VK_Button_W";
-            this.VK_Button_W.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_W.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_W.TabIndex = 14;
-            this.VK_Button_W.Text = "W";
+            this.VK_Button_W.Tag = "119";
             this.VK_Button_W.UseVisualStyleBackColor = true;
             this.VK_Button_W.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Q
             // 
             this.VK_Button_Q.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Q.Location = new System.Drawing.Point(17, 42);
+            this.VK_Button_Q.Location = new System.Drawing.Point(294, 282);
             this.VK_Button_Q.Name = "VK_Button_Q";
-            this.VK_Button_Q.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Q.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Q.TabIndex = 13;
-            this.VK_Button_Q.Text = "Q";
+            this.VK_Button_Q.Tag = "113";
             this.VK_Button_Q.UseVisualStyleBackColor = true;
             this.VK_Button_Q.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_At
             // 
             this.VK_Button_At.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_At.Location = new System.Drawing.Point(495, 3);
+            this.VK_Button_At.Location = new System.Drawing.Point(772, 243);
             this.VK_Button_At.Name = "VK_Button_At";
-            this.VK_Button_At.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_At.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_At.TabIndex = 12;
-            this.VK_Button_At.Text = "@";
+            this.VK_Button_At.Tag = "64";
             this.VK_Button_At.UseVisualStyleBackColor = true;
             this.VK_Button_At.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Ground
             // 
             this.VK_Button_Ground.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Ground.Location = new System.Drawing.Point(454, 3);
+            this.VK_Button_Ground.Location = new System.Drawing.Point(731, 243);
             this.VK_Button_Ground.Name = "VK_Button_Ground";
-            this.VK_Button_Ground.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_Ground.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Ground.TabIndex = 11;
-            this.VK_Button_Ground.Text = "_";
+            this.VK_Button_Ground.Tag = "95";
             this.VK_Button_Ground.UseVisualStyleBackColor = true;
             this.VK_Button_Ground.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_minus
             // 
             this.VK_Button_minus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_minus.Location = new System.Drawing.Point(413, 3);
+            this.VK_Button_minus.Location = new System.Drawing.Point(690, 243);
             this.VK_Button_minus.Name = "VK_Button_minus";
-            this.VK_Button_minus.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_minus.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_minus.TabIndex = 10;
-            this.VK_Button_minus.Text = "-";
+            this.VK_Button_minus.Tag = "45";
             this.VK_Button_minus.UseVisualStyleBackColor = true;
             this.VK_Button_minus.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_10
             // 
             this.VK_Button_10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_10.Location = new System.Drawing.Point(372, 3);
+            this.VK_Button_10.Location = new System.Drawing.Point(649, 243);
             this.VK_Button_10.Name = "VK_Button_10";
-            this.VK_Button_10.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_10.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_10.TabIndex = 9;
-            this.VK_Button_10.Text = "0";
+            this.VK_Button_10.Tag = "48";
             this.VK_Button_10.UseVisualStyleBackColor = true;
             this.VK_Button_10.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_9
             // 
             this.VK_Button_9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_9.Location = new System.Drawing.Point(331, 3);
+            this.VK_Button_9.Location = new System.Drawing.Point(608, 243);
             this.VK_Button_9.Name = "VK_Button_9";
-            this.VK_Button_9.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_9.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_9.TabIndex = 8;
-            this.VK_Button_9.Text = "9";
+            this.VK_Button_9.Tag = "57";
             this.VK_Button_9.UseVisualStyleBackColor = true;
             this.VK_Button_9.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_8
             // 
             this.VK_Button_8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_8.Location = new System.Drawing.Point(290, 3);
+            this.VK_Button_8.Location = new System.Drawing.Point(567, 243);
             this.VK_Button_8.Name = "VK_Button_8";
-            this.VK_Button_8.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_8.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_8.TabIndex = 7;
-            this.VK_Button_8.Text = "8";
+            this.VK_Button_8.Tag = "56";
             this.VK_Button_8.UseVisualStyleBackColor = true;
             this.VK_Button_8.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_7
             // 
             this.VK_Button_7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_7.Location = new System.Drawing.Point(249, 3);
+            this.VK_Button_7.Location = new System.Drawing.Point(526, 243);
             this.VK_Button_7.Name = "VK_Button_7";
-            this.VK_Button_7.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_7.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_7.TabIndex = 6;
-            this.VK_Button_7.Text = "7";
+            this.VK_Button_7.Tag = "55";
             this.VK_Button_7.UseVisualStyleBackColor = true;
             this.VK_Button_7.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_6
             // 
             this.VK_Button_6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_6.Location = new System.Drawing.Point(208, 3);
+            this.VK_Button_6.Location = new System.Drawing.Point(485, 243);
             this.VK_Button_6.Name = "VK_Button_6";
-            this.VK_Button_6.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_6.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_6.TabIndex = 5;
-            this.VK_Button_6.Text = "6";
+            this.VK_Button_6.Tag = "54";
             this.VK_Button_6.UseVisualStyleBackColor = true;
             this.VK_Button_6.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_5
             // 
             this.VK_Button_5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_5.Location = new System.Drawing.Point(167, 3);
+            this.VK_Button_5.Location = new System.Drawing.Point(444, 243);
             this.VK_Button_5.Name = "VK_Button_5";
-            this.VK_Button_5.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_5.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_5.TabIndex = 4;
-            this.VK_Button_5.Text = "5";
+            this.VK_Button_5.Tag = "53";
             this.VK_Button_5.UseVisualStyleBackColor = true;
             this.VK_Button_5.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_4
             // 
             this.VK_Button_4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_4.Location = new System.Drawing.Point(126, 3);
+            this.VK_Button_4.Location = new System.Drawing.Point(403, 243);
             this.VK_Button_4.Name = "VK_Button_4";
-            this.VK_Button_4.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_4.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_4.TabIndex = 3;
-            this.VK_Button_4.Text = "4";
+            this.VK_Button_4.Tag = "52";
             this.VK_Button_4.UseVisualStyleBackColor = true;
             this.VK_Button_4.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_3
             // 
             this.VK_Button_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_3.Location = new System.Drawing.Point(85, 3);
+            this.VK_Button_3.Location = new System.Drawing.Point(362, 243);
             this.VK_Button_3.Name = "VK_Button_3";
-            this.VK_Button_3.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_3.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_3.TabIndex = 2;
-            this.VK_Button_3.Text = "3";
+            this.VK_Button_3.Tag = "51";
             this.VK_Button_3.UseVisualStyleBackColor = true;
             this.VK_Button_3.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_2
             // 
             this.VK_Button_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_2.Location = new System.Drawing.Point(44, 3);
+            this.VK_Button_2.Location = new System.Drawing.Point(321, 243);
             this.VK_Button_2.Name = "VK_Button_2";
-            this.VK_Button_2.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_2.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_2.TabIndex = 1;
-            this.VK_Button_2.Text = "2";
+            this.VK_Button_2.Tag = "50";
             this.VK_Button_2.UseVisualStyleBackColor = true;
             this.VK_Button_2.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_1
             // 
             this.VK_Button_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_1.Location = new System.Drawing.Point(3, 3);
+            this.VK_Button_1.Location = new System.Drawing.Point(280, 243);
             this.VK_Button_1.Name = "VK_Button_1";
-            this.VK_Button_1.Size = new System.Drawing.Size(35, 35);
+            this.VK_Button_1.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_1.TabIndex = 0;
-            this.VK_Button_1.Text = "1";
+            this.VK_Button_1.Tag = "49";
             this.VK_Button_1.UseVisualStyleBackColor = true;
             this.VK_Button_1.Click += new System.EventHandler(this.VK_Button_Click);
             // 
@@ -1617,7 +1603,7 @@ namespace Web_Camera_Video
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1399, 504);
+            this.ClientSize = new System.Drawing.Size(1703, 672);
             this.Controls.Add(this.Cancel_Button);
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.VirtualKeyboard);

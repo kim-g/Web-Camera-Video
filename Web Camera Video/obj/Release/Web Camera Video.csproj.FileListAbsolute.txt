@@ -27,3 +27,4 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLit
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\EntityFramework.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\EntityFramework.SqlServer.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLite.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Release\Web Camera Video.csprojResolveAssemblyReference.cache
