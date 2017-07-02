@@ -260,9 +260,8 @@ namespace Web_Camera_Video
         private void SetVK(Panel virtualKeyboard, string Name)
         {
             SetElement(VirtualKeyboard, "Email_keyboard");
-            int Interval = 3;
-            int B_Width = (virtualKeyboard.Width - 12 * Interval) / 13;
-            int B_Height = B_Width;
+            int B_Width = 60;
+            int B_Height = 70; ;
             TextBoxForVK = EMail_Edit;
 
             foreach (Control X in virtualKeyboard.Controls)
@@ -271,98 +270,98 @@ namespace Web_Camera_Video
                 X.Height = B_Height;
             }
 
-            VK_Button_Backspace.Width = B_Width * 2;
-
-            SetButtons(Interval, B_Width);
+            SetButtons();
         }
 
-        private void SetButtons(int interval, int B_width)
+        private void SetButtons()
         {
-            int Shift = B_width / 3;
+            VK_Button_Point.Left = 256;
+            VK_Button_M.Left = 612;
+            VK_Button_N.Left = 523;
+            VK_Button_B.Left = 441;
+            VK_Button_V.Left = 360;
+            VK_Button_C.Left = 280;
+            VK_Button_X.Left = 201;
+            VK_Button_Z.Left = 125;
+            VK_Button_L.Left = 686;
+            VK_Button_K.Left = 609;
+            VK_Button_J.Left = 533;
+            VK_Button_H.Left = 459;
+            VK_Button_G.Left = 375;
+            VK_Button_F.Left = 297;
+            VK_Button_D.Left = 220;
+            VK_Button_S.Left = 140;
+            VK_Button_A.Left = 63;
+            VK_Button_P.Left = 734;
+            VK_Button_O.Left = 653;
+            VK_Button_I.Left = 584;
+            VK_Button_U.Left = 512;
+            VK_Button_Y.Left = 431;
+            VK_Button_T.Left = 353;
+            VK_Button_R.Left = 276;
+            VK_Button_E.Left = 201;
+            VK_Button_W.Left = 98;
+            VK_Button_Q.Left = 15;
+            VK_Button_At.Left = 467;
+            VK_Button_Ground.Left = 391;
+            VK_Button_minus.Left = 320;
+            VK_Button_10.Left = 700;
+            VK_Button_9.Left = 625;
+            VK_Button_8.Left = 553;
+            VK_Button_7.Left = 477;
+            VK_Button_6.Left = 403;
+            VK_Button_5.Left = 329;
+            VK_Button_4.Left = 254;
+            VK_Button_3.Left = 183;
+            VK_Button_2.Left = 111;
+            VK_Button_1.Left = 39;
+            VK_Button_Backspace.Left = 576;
 
-            VK_Button_Point.Left = Shift * 3 + B_width * 8 + interval * 8;
-            VK_Button_M.Left = Shift * 3 + B_width * 6 + interval * 6;
-            VK_Button_N.Left = Shift * 3 + B_width * 5 + interval * 5;
-            VK_Button_B.Left = Shift * 3 + B_width * 4 + interval * 4;
-            VK_Button_V.Left = Shift * 3 + B_width * 3 + interval * 3;
-            VK_Button_C.Left = Shift * 3 + B_width * 2 + interval * 2;
-            VK_Button_X.Left = Shift * 3 + B_width * 1 + interval * 1;
-            VK_Button_Z.Left = Shift * 3;
-            VK_Button_L.Left = Shift * 2 + B_width * 8 + interval * 8;
-            VK_Button_K.Left = Shift * 2 + B_width * 7 + interval * 7;
-            VK_Button_J.Left = Shift * 2 + B_width * 6 + interval * 6;
-            VK_Button_H.Left = Shift * 2 + B_width * 5 + interval * 5;
-            VK_Button_G.Left = Shift * 2 + B_width * 4 + interval * 4;
-            VK_Button_F.Left = Shift * 2 + B_width * 3 + interval * 3;
-            VK_Button_D.Left = Shift * 2 + B_width * 2 + interval * 2;
-            VK_Button_S.Left = Shift * 2 + B_width * 1 + interval * 1;
-            VK_Button_A.Left = Shift * 2;
-            VK_Button_P.Left = Shift * 1 + B_width * 9 + interval * 9;
-            VK_Button_O.Left = Shift * 1 + B_width * 8 + interval * 8;
-            VK_Button_I.Left = Shift * 1 + B_width * 7 + interval * 7;
-            VK_Button_U.Left = Shift * 1 + B_width * 6 + interval * 6;
-            VK_Button_Y.Left = Shift * 1 + B_width * 5 + interval * 5;
-            VK_Button_T.Left = Shift * 1 + B_width * 4 + interval * 4;
-            VK_Button_R.Left = Shift * 1 + B_width * 3 + interval * 3;
-            VK_Button_E.Left = Shift * 1 + B_width * 2 + interval * 2;
-            VK_Button_W.Left = Shift * 1 + B_width * 1 + interval * 1;
-            VK_Button_Q.Left = Shift;
-            VK_Button_At.Left = B_width * 12 + interval * 12;
-            VK_Button_Ground.Left = B_width * 11 + interval * 11;
-            VK_Button_minus.Left = B_width * 10 + interval * 10;
-            VK_Button_10.Left = B_width * 9 + interval * 9;
-            VK_Button_9.Left = B_width * 8 + interval * 8;
-            VK_Button_8.Left = B_width * 7 + interval * 7;
-            VK_Button_7.Left = B_width * 6 + interval * 6;
-            VK_Button_6.Left = B_width * 5 + interval * 5;
-            VK_Button_5.Left = B_width * 4 + interval * 4;
-            VK_Button_4.Left = B_width * 3 + interval * 3;
-            VK_Button_3.Left = B_width * 2 + interval * 2;
-            VK_Button_2.Left = B_width * 1 + interval * 1;
-            VK_Button_1.Left = 0;
-            VK_Button_Backspace.Left = B_width * 13 + interval * 12 - VK_Button_Backspace.Width;
+            VK_Button_Point.Top = 336;
+            VK_Button_M.Top = 250;
+            VK_Button_N.Top = 250;
+            VK_Button_B.Top = 250;
+            VK_Button_V.Top = 250;
+            VK_Button_C.Top = 250;
+            VK_Button_X.Top = 250;
+            VK_Button_Z.Top = 250;
+            VK_Button_L.Top = 172;
+            VK_Button_K.Top = 172;
+            VK_Button_J.Top = 172;
+            VK_Button_H.Top = 172;
+            VK_Button_G.Top = 172;
+            VK_Button_F.Top = 172;
+            VK_Button_D.Top = 172;
+            VK_Button_S.Top = 172;
+            VK_Button_A.Top = 172;
+            VK_Button_P.Top = 93;
+            VK_Button_O.Top = 93;
+            VK_Button_I.Top = 93;
+            VK_Button_U.Top = 93;
+            VK_Button_Y.Top = 93;
+            VK_Button_T.Top = 93;
+            VK_Button_R.Top = 93;
+            VK_Button_E.Top = 93;
+            VK_Button_W.Top = 93;
+            VK_Button_Q.Top = 93;
+            VK_Button_At.Top = 336;
+            VK_Button_Ground.Top = 336;
+            VK_Button_minus.Top = 336;
+            VK_Button_10.Top = 20;
+            VK_Button_9.Top = 20;
+            VK_Button_8.Top = 20;
+            VK_Button_7.Top = 20;
+            VK_Button_6.Top = 20;
+            VK_Button_5.Top = 20;
+            VK_Button_4.Top = 20;
+            VK_Button_3.Top = 20;
+            VK_Button_2.Top = 20;
+            VK_Button_1.Top = 20;
+            VK_Button_Backspace.Top = 324;
 
-            VK_Button_Point.Top = B_width * 3 + interval * 3;
-            VK_Button_M.Top = B_width * 3 + interval * 3;
-            VK_Button_N.Top = B_width * 3 + interval * 3;
-            VK_Button_B.Top = B_width * 3 + interval * 3;
-            VK_Button_V.Top = B_width * 3 + interval * 3;
-            VK_Button_C.Top = B_width * 3 + interval * 3;
-            VK_Button_X.Top = B_width * 3 + interval * 3;
-            VK_Button_Z.Top = B_width * 3 + interval * 3;
-            VK_Button_L.Top = B_width * 2 + interval * 2;
-            VK_Button_K.Top = B_width * 2 + interval * 2;
-            VK_Button_J.Top = B_width * 2 + interval * 2;
-            VK_Button_H.Top = B_width * 2 + interval * 2;
-            VK_Button_G.Top = B_width * 2 + interval * 2;
-            VK_Button_F.Top = B_width * 2 + interval * 2;
-            VK_Button_D.Top = B_width * 2 + interval * 2;
-            VK_Button_S.Top = B_width * 2 + interval * 2;
-            VK_Button_A.Top = B_width * 2 + interval * 2;
-            VK_Button_P.Top = B_width * 1 + interval * 1;
-            VK_Button_O.Top = B_width * 1 + interval * 1;
-            VK_Button_I.Top = B_width * 1 + interval * 1;
-            VK_Button_U.Top = B_width * 1 + interval * 1;
-            VK_Button_Y.Top = B_width * 1 + interval * 1;
-            VK_Button_T.Top = B_width * 1 + interval * 1;
-            VK_Button_R.Top = B_width * 1 + interval * 1;
-            VK_Button_E.Top = B_width * 1 + interval * 1;
-            VK_Button_W.Top = B_width * 1 + interval * 1;
-            VK_Button_Q.Top = B_width * 1 + interval * 1;
-            VK_Button_At.Top = 0;
-            VK_Button_Ground.Top = 0;
-            VK_Button_minus.Top = 0;
-            VK_Button_10.Top = 0;
-            VK_Button_9.Top = 0;
-            VK_Button_8.Top = 0;
-            VK_Button_7.Top = 0;
-            VK_Button_6.Top = 0;
-            VK_Button_5.Top = 0;
-            VK_Button_4.Top = 0;
-            VK_Button_3.Top = 0;
-            VK_Button_2.Top = 0;
-            VK_Button_1.Top = 0;
-            VK_Button_Backspace.Top = B_width * 1 + interval * 1;
+            VK_Button_W.Width = 84;
+            VK_Button_Backspace.Width = 160;
+            VK_Button_Backspace.Height = 97;
         }
 
         private void Email(string Address, string Link)
@@ -1113,461 +1112,663 @@ namespace Web_Camera_Video
             this.VirtualKeyboard.Controls.Add(this.VK_Button_3);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_2);
             this.VirtualKeyboard.Controls.Add(this.VK_Button_1);
-            this.VirtualKeyboard.Location = new System.Drawing.Point(611, 259);
+            this.VirtualKeyboard.Location = new System.Drawing.Point(624, 329);
             this.VirtualKeyboard.Name = "VirtualKeyboard";
-            this.VirtualKeyboard.Size = new System.Drawing.Size(820, 440);
+            this.VirtualKeyboard.Size = new System.Drawing.Size(570, 249);
             this.VirtualKeyboard.TabIndex = 261;
             this.VirtualKeyboard.Visible = false;
             // 
             // VK_Button_Backspace
             // 
+            this.VK_Button_Backspace.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Backspace.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.VK_Button_Backspace.FlatAppearance.BorderSize = 0;
             this.VK_Button_Backspace.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Backspace.Location = new System.Drawing.Point(29, 366);
+            this.VK_Button_Backspace.Location = new System.Drawing.Point(17, 200);
             this.VK_Button_Backspace.Name = "VK_Button_Backspace";
-            this.VK_Button_Backspace.Size = new System.Drawing.Size(100, 35);
+            this.VK_Button_Backspace.Size = new System.Drawing.Size(160, 35);
             this.VK_Button_Backspace.TabIndex = 41;
-            this.VK_Button_Backspace.Text = "<----";
-            this.VK_Button_Backspace.UseVisualStyleBackColor = true;
+            this.VK_Button_Backspace.UseVisualStyleBackColor = false;
             this.VK_Button_Backspace.Click += new System.EventHandler(this.VK_Button_Backspace_Click);
             // 
             // VK_Button_Point
             // 
+            this.VK_Button_Point.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Point.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_Point.FlatAppearance.BorderSize = 0;
+            this.VK_Button_Point.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Point.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_Point.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Point.Location = new System.Drawing.Point(649, 364);
+            this.VK_Button_Point.Location = new System.Drawing.Point(372, 124);
             this.VK_Button_Point.Name = "VK_Button_Point";
             this.VK_Button_Point.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Point.TabIndex = 40;
-            this.VK_Button_Point.Tag = "46";
-            this.VK_Button_Point.UseVisualStyleBackColor = true;
+            this.VK_Button_Point.Tag = ".";
+            this.VK_Button_Point.UseVisualStyleBackColor = false;
             this.VK_Button_Point.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_M
             // 
+            this.VK_Button_M.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_M.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_M.FlatAppearance.BorderSize = 0;
+            this.VK_Button_M.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_M.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_M.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_M.Location = new System.Drawing.Point(567, 364);
+            this.VK_Button_M.Location = new System.Drawing.Point(290, 124);
             this.VK_Button_M.Name = "VK_Button_M";
             this.VK_Button_M.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_M.TabIndex = 38;
-            this.VK_Button_M.Tag = "109";
-            this.VK_Button_M.UseVisualStyleBackColor = true;
+            this.VK_Button_M.Tag = "m";
+            this.VK_Button_M.UseVisualStyleBackColor = false;
             this.VK_Button_M.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_N
             // 
+            this.VK_Button_N.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_N.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_N.FlatAppearance.BorderSize = 0;
+            this.VK_Button_N.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_N.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_N.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_N.Location = new System.Drawing.Point(526, 364);
+            this.VK_Button_N.Location = new System.Drawing.Point(249, 124);
             this.VK_Button_N.Name = "VK_Button_N";
             this.VK_Button_N.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_N.TabIndex = 37;
-            this.VK_Button_N.Tag = "110";
-            this.VK_Button_N.UseVisualStyleBackColor = true;
+            this.VK_Button_N.Tag = "n";
+            this.VK_Button_N.UseVisualStyleBackColor = false;
             this.VK_Button_N.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_B
             // 
+            this.VK_Button_B.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_B.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_B.FlatAppearance.BorderSize = 0;
+            this.VK_Button_B.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_B.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_B.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_B.Location = new System.Drawing.Point(485, 364);
+            this.VK_Button_B.Location = new System.Drawing.Point(208, 124);
             this.VK_Button_B.Name = "VK_Button_B";
             this.VK_Button_B.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_B.TabIndex = 36;
-            this.VK_Button_B.Tag = "39";
-            this.VK_Button_B.UseVisualStyleBackColor = true;
+            this.VK_Button_B.Tag = "b";
+            this.VK_Button_B.UseVisualStyleBackColor = false;
             this.VK_Button_B.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_V
             // 
+            this.VK_Button_V.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_V.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_V.FlatAppearance.BorderSize = 0;
+            this.VK_Button_V.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_V.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_V.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_V.Location = new System.Drawing.Point(444, 364);
+            this.VK_Button_V.Location = new System.Drawing.Point(167, 124);
             this.VK_Button_V.Name = "VK_Button_V";
             this.VK_Button_V.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_V.TabIndex = 35;
-            this.VK_Button_V.Tag = "118";
-            this.VK_Button_V.UseVisualStyleBackColor = true;
+            this.VK_Button_V.Tag = "v";
+            this.VK_Button_V.UseVisualStyleBackColor = false;
             this.VK_Button_V.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_C
             // 
+            this.VK_Button_C.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_C.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_C.FlatAppearance.BorderSize = 0;
+            this.VK_Button_C.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_C.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_C.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_C.Location = new System.Drawing.Point(403, 364);
+            this.VK_Button_C.Location = new System.Drawing.Point(126, 124);
             this.VK_Button_C.Name = "VK_Button_C";
             this.VK_Button_C.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_C.TabIndex = 34;
-            this.VK_Button_C.Tag = "99";
-            this.VK_Button_C.UseVisualStyleBackColor = true;
+            this.VK_Button_C.Tag = "c";
+            this.VK_Button_C.UseVisualStyleBackColor = false;
             this.VK_Button_C.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_X
             // 
+            this.VK_Button_X.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_X.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_X.FlatAppearance.BorderSize = 0;
+            this.VK_Button_X.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_X.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_X.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_X.Location = new System.Drawing.Point(362, 364);
+            this.VK_Button_X.Location = new System.Drawing.Point(85, 124);
             this.VK_Button_X.Name = "VK_Button_X";
             this.VK_Button_X.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_X.TabIndex = 33;
-            this.VK_Button_X.Tag = "120";
-            this.VK_Button_X.UseVisualStyleBackColor = true;
+            this.VK_Button_X.Tag = "x";
+            this.VK_Button_X.UseVisualStyleBackColor = false;
             this.VK_Button_X.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Z
             // 
+            this.VK_Button_Z.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Z.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_Z.FlatAppearance.BorderSize = 0;
+            this.VK_Button_Z.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Z.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_Z.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Z.Location = new System.Drawing.Point(321, 364);
+            this.VK_Button_Z.Location = new System.Drawing.Point(44, 124);
             this.VK_Button_Z.Name = "VK_Button_Z";
             this.VK_Button_Z.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Z.TabIndex = 32;
-            this.VK_Button_Z.Tag = "122";
-            this.VK_Button_Z.UseVisualStyleBackColor = true;
+            this.VK_Button_Z.Tag = "z";
+            this.VK_Button_Z.UseVisualStyleBackColor = false;
             this.VK_Button_Z.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_L
             // 
+            this.VK_Button_L.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_L.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_L.FlatAppearance.BorderSize = 0;
+            this.VK_Button_L.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_L.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_L.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_L.Location = new System.Drawing.Point(634, 323);
+            this.VK_Button_L.Location = new System.Drawing.Point(357, 83);
             this.VK_Button_L.Name = "VK_Button_L";
             this.VK_Button_L.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_L.TabIndex = 31;
-            this.VK_Button_L.Tag = "108";
-            this.VK_Button_L.UseVisualStyleBackColor = true;
+            this.VK_Button_L.Tag = "l";
+            this.VK_Button_L.UseVisualStyleBackColor = false;
             this.VK_Button_L.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_K
             // 
+            this.VK_Button_K.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_K.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_K.FlatAppearance.BorderSize = 0;
+            this.VK_Button_K.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_K.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_K.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_K.Location = new System.Drawing.Point(593, 323);
+            this.VK_Button_K.Location = new System.Drawing.Point(316, 83);
             this.VK_Button_K.Name = "VK_Button_K";
             this.VK_Button_K.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_K.TabIndex = 30;
-            this.VK_Button_K.Tag = "107";
-            this.VK_Button_K.UseVisualStyleBackColor = true;
+            this.VK_Button_K.Tag = "k";
+            this.VK_Button_K.UseVisualStyleBackColor = false;
             this.VK_Button_K.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_J
             // 
+            this.VK_Button_J.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_J.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_J.FlatAppearance.BorderSize = 0;
+            this.VK_Button_J.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_J.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_J.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_J.Location = new System.Drawing.Point(552, 323);
+            this.VK_Button_J.Location = new System.Drawing.Point(275, 83);
             this.VK_Button_J.Name = "VK_Button_J";
             this.VK_Button_J.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_J.TabIndex = 29;
-            this.VK_Button_J.Tag = "106";
-            this.VK_Button_J.UseVisualStyleBackColor = true;
+            this.VK_Button_J.Tag = "j";
+            this.VK_Button_J.UseVisualStyleBackColor = false;
             this.VK_Button_J.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_H
             // 
+            this.VK_Button_H.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_H.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_H.FlatAppearance.BorderSize = 0;
+            this.VK_Button_H.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_H.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_H.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_H.Location = new System.Drawing.Point(511, 323);
+            this.VK_Button_H.Location = new System.Drawing.Point(234, 83);
             this.VK_Button_H.Name = "VK_Button_H";
             this.VK_Button_H.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_H.TabIndex = 28;
-            this.VK_Button_H.Tag = "104";
-            this.VK_Button_H.UseVisualStyleBackColor = true;
+            this.VK_Button_H.Tag = "h";
+            this.VK_Button_H.UseVisualStyleBackColor = false;
             this.VK_Button_H.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_G
             // 
+            this.VK_Button_G.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_G.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_G.FlatAppearance.BorderSize = 0;
+            this.VK_Button_G.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_G.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_G.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_G.Location = new System.Drawing.Point(470, 323);
+            this.VK_Button_G.Location = new System.Drawing.Point(193, 83);
             this.VK_Button_G.Name = "VK_Button_G";
             this.VK_Button_G.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_G.TabIndex = 27;
-            this.VK_Button_G.Tag = "103";
-            this.VK_Button_G.UseVisualStyleBackColor = true;
+            this.VK_Button_G.Tag = "g";
+            this.VK_Button_G.UseVisualStyleBackColor = false;
             this.VK_Button_G.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_F
             // 
+            this.VK_Button_F.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_F.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_F.FlatAppearance.BorderSize = 0;
+            this.VK_Button_F.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_F.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_F.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_F.Location = new System.Drawing.Point(429, 323);
+            this.VK_Button_F.Location = new System.Drawing.Point(152, 83);
             this.VK_Button_F.Name = "VK_Button_F";
             this.VK_Button_F.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_F.TabIndex = 26;
-            this.VK_Button_F.Tag = "102";
-            this.VK_Button_F.UseVisualStyleBackColor = true;
+            this.VK_Button_F.Tag = "f";
+            this.VK_Button_F.UseVisualStyleBackColor = false;
             this.VK_Button_F.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_D
             // 
+            this.VK_Button_D.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_D.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_D.FlatAppearance.BorderSize = 0;
+            this.VK_Button_D.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_D.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_D.Location = new System.Drawing.Point(388, 323);
+            this.VK_Button_D.Location = new System.Drawing.Point(111, 83);
             this.VK_Button_D.Name = "VK_Button_D";
             this.VK_Button_D.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_D.TabIndex = 25;
-            this.VK_Button_D.Tag = "100";
-            this.VK_Button_D.UseVisualStyleBackColor = true;
+            this.VK_Button_D.Tag = "d";
+            this.VK_Button_D.UseVisualStyleBackColor = false;
             this.VK_Button_D.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_S
             // 
+            this.VK_Button_S.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_S.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_S.FlatAppearance.BorderSize = 0;
+            this.VK_Button_S.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_S.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_S.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_S.Location = new System.Drawing.Point(347, 323);
+            this.VK_Button_S.Location = new System.Drawing.Point(70, 83);
             this.VK_Button_S.Name = "VK_Button_S";
             this.VK_Button_S.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_S.TabIndex = 24;
-            this.VK_Button_S.Tag = "115";
-            this.VK_Button_S.UseVisualStyleBackColor = true;
+            this.VK_Button_S.Tag = "s";
+            this.VK_Button_S.UseVisualStyleBackColor = false;
             this.VK_Button_S.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_A
             // 
+            this.VK_Button_A.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_A.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_A.FlatAppearance.BorderSize = 0;
+            this.VK_Button_A.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_A.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_A.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_A.Location = new System.Drawing.Point(306, 323);
+            this.VK_Button_A.Location = new System.Drawing.Point(29, 83);
             this.VK_Button_A.Name = "VK_Button_A";
             this.VK_Button_A.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_A.TabIndex = 23;
-            this.VK_Button_A.Tag = "97";
-            this.VK_Button_A.UseVisualStyleBackColor = true;
+            this.VK_Button_A.Tag = "a";
+            this.VK_Button_A.UseVisualStyleBackColor = false;
             this.VK_Button_A.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_P
             // 
+            this.VK_Button_P.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_P.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_P.FlatAppearance.BorderSize = 0;
+            this.VK_Button_P.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_P.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_P.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_P.Location = new System.Drawing.Point(663, 282);
+            this.VK_Button_P.Location = new System.Drawing.Point(386, 42);
             this.VK_Button_P.Name = "VK_Button_P";
             this.VK_Button_P.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_P.TabIndex = 22;
-            this.VK_Button_P.Tag = "112";
-            this.VK_Button_P.UseVisualStyleBackColor = true;
+            this.VK_Button_P.Tag = "p";
+            this.VK_Button_P.UseVisualStyleBackColor = false;
             this.VK_Button_P.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_O
             // 
+            this.VK_Button_O.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_O.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_O.FlatAppearance.BorderSize = 0;
+            this.VK_Button_O.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_O.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_O.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_O.Location = new System.Drawing.Point(622, 282);
+            this.VK_Button_O.Location = new System.Drawing.Point(345, 42);
             this.VK_Button_O.Name = "VK_Button_O";
             this.VK_Button_O.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_O.TabIndex = 21;
-            this.VK_Button_O.Tag = "111";
-            this.VK_Button_O.UseVisualStyleBackColor = true;
+            this.VK_Button_O.Tag = "o";
+            this.VK_Button_O.UseVisualStyleBackColor = false;
             this.VK_Button_O.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_I
             // 
+            this.VK_Button_I.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_I.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_I.FlatAppearance.BorderSize = 0;
+            this.VK_Button_I.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_I.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_I.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_I.Location = new System.Drawing.Point(581, 282);
+            this.VK_Button_I.Location = new System.Drawing.Point(304, 42);
             this.VK_Button_I.Name = "VK_Button_I";
             this.VK_Button_I.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_I.TabIndex = 20;
-            this.VK_Button_I.Tag = "105";
-            this.VK_Button_I.UseVisualStyleBackColor = true;
+            this.VK_Button_I.Tag = "i";
+            this.VK_Button_I.UseVisualStyleBackColor = false;
             this.VK_Button_I.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_U
             // 
+            this.VK_Button_U.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_U.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_U.FlatAppearance.BorderSize = 0;
+            this.VK_Button_U.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_U.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_U.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_U.Location = new System.Drawing.Point(540, 282);
+            this.VK_Button_U.Location = new System.Drawing.Point(263, 42);
             this.VK_Button_U.Name = "VK_Button_U";
             this.VK_Button_U.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_U.TabIndex = 19;
-            this.VK_Button_U.Tag = "117";
-            this.VK_Button_U.UseVisualStyleBackColor = true;
+            this.VK_Button_U.Tag = "u";
+            this.VK_Button_U.UseVisualStyleBackColor = false;
             this.VK_Button_U.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Y
             // 
+            this.VK_Button_Y.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Y.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_Y.FlatAppearance.BorderSize = 0;
+            this.VK_Button_Y.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Y.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_Y.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Y.Location = new System.Drawing.Point(499, 282);
+            this.VK_Button_Y.Location = new System.Drawing.Point(222, 42);
             this.VK_Button_Y.Name = "VK_Button_Y";
             this.VK_Button_Y.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Y.TabIndex = 18;
-            this.VK_Button_Y.Tag = "121";
-            this.VK_Button_Y.UseVisualStyleBackColor = true;
+            this.VK_Button_Y.Tag = "y";
+            this.VK_Button_Y.UseVisualStyleBackColor = false;
             this.VK_Button_Y.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_T
             // 
+            this.VK_Button_T.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_T.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_T.FlatAppearance.BorderSize = 0;
+            this.VK_Button_T.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_T.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_T.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_T.Location = new System.Drawing.Point(458, 282);
+            this.VK_Button_T.Location = new System.Drawing.Point(181, 42);
             this.VK_Button_T.Name = "VK_Button_T";
             this.VK_Button_T.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_T.TabIndex = 17;
-            this.VK_Button_T.Tag = "116";
-            this.VK_Button_T.UseVisualStyleBackColor = true;
+            this.VK_Button_T.Tag = "t";
+            this.VK_Button_T.UseVisualStyleBackColor = false;
             this.VK_Button_T.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_R
             // 
+            this.VK_Button_R.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_R.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_R.FlatAppearance.BorderSize = 0;
+            this.VK_Button_R.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_R.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_R.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_R.Location = new System.Drawing.Point(417, 282);
+            this.VK_Button_R.Location = new System.Drawing.Point(140, 42);
             this.VK_Button_R.Name = "VK_Button_R";
             this.VK_Button_R.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_R.TabIndex = 16;
-            this.VK_Button_R.Tag = "114";
-            this.VK_Button_R.UseVisualStyleBackColor = true;
+            this.VK_Button_R.Tag = "r";
+            this.VK_Button_R.UseVisualStyleBackColor = false;
             this.VK_Button_R.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_E
             // 
+            this.VK_Button_E.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_E.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_E.FlatAppearance.BorderSize = 0;
+            this.VK_Button_E.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_E.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_E.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_E.Location = new System.Drawing.Point(376, 282);
+            this.VK_Button_E.Location = new System.Drawing.Point(99, 42);
             this.VK_Button_E.Name = "VK_Button_E";
             this.VK_Button_E.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_E.TabIndex = 15;
-            this.VK_Button_E.Tag = "101";
-            this.VK_Button_E.UseVisualStyleBackColor = true;
+            this.VK_Button_E.Tag = "e";
+            this.VK_Button_E.UseVisualStyleBackColor = false;
             this.VK_Button_E.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_W
             // 
+            this.VK_Button_W.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_W.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_W.FlatAppearance.BorderSize = 0;
+            this.VK_Button_W.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_W.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_W.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_W.Location = new System.Drawing.Point(335, 282);
+            this.VK_Button_W.Location = new System.Drawing.Point(58, 42);
             this.VK_Button_W.Name = "VK_Button_W";
             this.VK_Button_W.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_W.TabIndex = 14;
-            this.VK_Button_W.Tag = "119";
-            this.VK_Button_W.UseVisualStyleBackColor = true;
+            this.VK_Button_W.Tag = "w";
+            this.VK_Button_W.UseVisualStyleBackColor = false;
             this.VK_Button_W.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Q
             // 
+            this.VK_Button_Q.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Q.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_Q.FlatAppearance.BorderSize = 0;
+            this.VK_Button_Q.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Q.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_Q.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Q.Location = new System.Drawing.Point(294, 282);
+            this.VK_Button_Q.Location = new System.Drawing.Point(17, 42);
             this.VK_Button_Q.Name = "VK_Button_Q";
             this.VK_Button_Q.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Q.TabIndex = 13;
-            this.VK_Button_Q.Tag = "113";
-            this.VK_Button_Q.UseVisualStyleBackColor = true;
+            this.VK_Button_Q.Tag = "q";
+            this.VK_Button_Q.UseVisualStyleBackColor = false;
             this.VK_Button_Q.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_At
             // 
+            this.VK_Button_At.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_At.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_At.FlatAppearance.BorderSize = 0;
+            this.VK_Button_At.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_At.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_At.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_At.Location = new System.Drawing.Point(772, 243);
+            this.VK_Button_At.Location = new System.Drawing.Point(495, 3);
             this.VK_Button_At.Name = "VK_Button_At";
             this.VK_Button_At.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_At.TabIndex = 12;
-            this.VK_Button_At.Tag = "64";
-            this.VK_Button_At.UseVisualStyleBackColor = true;
+            this.VK_Button_At.Tag = "@";
+            this.VK_Button_At.UseVisualStyleBackColor = false;
             this.VK_Button_At.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_Ground
             // 
+            this.VK_Button_Ground.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Ground.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_Ground.FlatAppearance.BorderSize = 0;
+            this.VK_Button_Ground.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_Ground.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_Ground.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_Ground.Location = new System.Drawing.Point(731, 243);
+            this.VK_Button_Ground.Location = new System.Drawing.Point(454, 3);
             this.VK_Button_Ground.Name = "VK_Button_Ground";
             this.VK_Button_Ground.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_Ground.TabIndex = 11;
-            this.VK_Button_Ground.Tag = "95";
-            this.VK_Button_Ground.UseVisualStyleBackColor = true;
+            this.VK_Button_Ground.Tag = "_";
+            this.VK_Button_Ground.UseVisualStyleBackColor = false;
             this.VK_Button_Ground.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_minus
             // 
+            this.VK_Button_minus.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_minus.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_minus.FlatAppearance.BorderSize = 0;
+            this.VK_Button_minus.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_minus.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_minus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_minus.Location = new System.Drawing.Point(690, 243);
+            this.VK_Button_minus.Location = new System.Drawing.Point(413, 3);
             this.VK_Button_minus.Name = "VK_Button_minus";
             this.VK_Button_minus.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_minus.TabIndex = 10;
-            this.VK_Button_minus.Tag = "45";
-            this.VK_Button_minus.UseVisualStyleBackColor = true;
+            this.VK_Button_minus.Tag = "-";
+            this.VK_Button_minus.UseVisualStyleBackColor = false;
             this.VK_Button_minus.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_10
             // 
+            this.VK_Button_10.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_10.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_10.FlatAppearance.BorderSize = 0;
+            this.VK_Button_10.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_10.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_10.Location = new System.Drawing.Point(649, 243);
+            this.VK_Button_10.Location = new System.Drawing.Point(372, 3);
             this.VK_Button_10.Name = "VK_Button_10";
             this.VK_Button_10.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_10.TabIndex = 9;
-            this.VK_Button_10.Tag = "48";
-            this.VK_Button_10.UseVisualStyleBackColor = true;
+            this.VK_Button_10.Tag = "0";
+            this.VK_Button_10.UseVisualStyleBackColor = false;
             this.VK_Button_10.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_9
             // 
+            this.VK_Button_9.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_9.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_9.FlatAppearance.BorderSize = 0;
+            this.VK_Button_9.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_9.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_9.Location = new System.Drawing.Point(608, 243);
+            this.VK_Button_9.Location = new System.Drawing.Point(331, 3);
             this.VK_Button_9.Name = "VK_Button_9";
             this.VK_Button_9.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_9.TabIndex = 8;
-            this.VK_Button_9.Tag = "57";
-            this.VK_Button_9.UseVisualStyleBackColor = true;
+            this.VK_Button_9.Tag = "9";
+            this.VK_Button_9.UseVisualStyleBackColor = false;
             this.VK_Button_9.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_8
             // 
+            this.VK_Button_8.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_8.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_8.FlatAppearance.BorderSize = 0;
+            this.VK_Button_8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_8.Location = new System.Drawing.Point(567, 243);
+            this.VK_Button_8.Location = new System.Drawing.Point(290, 3);
             this.VK_Button_8.Name = "VK_Button_8";
             this.VK_Button_8.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_8.TabIndex = 7;
-            this.VK_Button_8.Tag = "56";
-            this.VK_Button_8.UseVisualStyleBackColor = true;
+            this.VK_Button_8.Tag = "8";
+            this.VK_Button_8.UseVisualStyleBackColor = false;
             this.VK_Button_8.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_7
             // 
+            this.VK_Button_7.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_7.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_7.FlatAppearance.BorderSize = 0;
+            this.VK_Button_7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_7.Location = new System.Drawing.Point(526, 243);
+            this.VK_Button_7.Location = new System.Drawing.Point(249, 3);
             this.VK_Button_7.Name = "VK_Button_7";
             this.VK_Button_7.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_7.TabIndex = 6;
-            this.VK_Button_7.Tag = "55";
-            this.VK_Button_7.UseVisualStyleBackColor = true;
+            this.VK_Button_7.Tag = "7";
+            this.VK_Button_7.UseVisualStyleBackColor = false;
             this.VK_Button_7.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_6
             // 
+            this.VK_Button_6.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_6.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_6.FlatAppearance.BorderSize = 0;
+            this.VK_Button_6.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_6.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_6.Location = new System.Drawing.Point(485, 243);
+            this.VK_Button_6.Location = new System.Drawing.Point(208, 3);
             this.VK_Button_6.Name = "VK_Button_6";
             this.VK_Button_6.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_6.TabIndex = 5;
-            this.VK_Button_6.Tag = "54";
-            this.VK_Button_6.UseVisualStyleBackColor = true;
+            this.VK_Button_6.Tag = "6";
+            this.VK_Button_6.UseVisualStyleBackColor = false;
             this.VK_Button_6.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_5
             // 
+            this.VK_Button_5.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_5.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_5.FlatAppearance.BorderSize = 0;
+            this.VK_Button_5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_5.Location = new System.Drawing.Point(444, 243);
+            this.VK_Button_5.Location = new System.Drawing.Point(167, 3);
             this.VK_Button_5.Name = "VK_Button_5";
             this.VK_Button_5.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_5.TabIndex = 4;
-            this.VK_Button_5.Tag = "53";
-            this.VK_Button_5.UseVisualStyleBackColor = true;
+            this.VK_Button_5.Tag = "5";
+            this.VK_Button_5.UseVisualStyleBackColor = false;
             this.VK_Button_5.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_4
             // 
+            this.VK_Button_4.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_4.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_4.FlatAppearance.BorderSize = 0;
+            this.VK_Button_4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_4.Location = new System.Drawing.Point(403, 243);
+            this.VK_Button_4.Location = new System.Drawing.Point(126, 3);
             this.VK_Button_4.Name = "VK_Button_4";
             this.VK_Button_4.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_4.TabIndex = 3;
-            this.VK_Button_4.Tag = "52";
-            this.VK_Button_4.UseVisualStyleBackColor = true;
+            this.VK_Button_4.Tag = "4";
+            this.VK_Button_4.UseVisualStyleBackColor = false;
             this.VK_Button_4.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_3
             // 
+            this.VK_Button_3.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_3.FlatAppearance.BorderSize = 0;
+            this.VK_Button_3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_3.Location = new System.Drawing.Point(362, 243);
+            this.VK_Button_3.Location = new System.Drawing.Point(85, 3);
             this.VK_Button_3.Name = "VK_Button_3";
             this.VK_Button_3.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_3.TabIndex = 2;
-            this.VK_Button_3.Tag = "51";
-            this.VK_Button_3.UseVisualStyleBackColor = true;
+            this.VK_Button_3.Tag = "3";
+            this.VK_Button_3.UseVisualStyleBackColor = false;
             this.VK_Button_3.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_2
             // 
+            this.VK_Button_2.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_2.FlatAppearance.BorderSize = 0;
+            this.VK_Button_2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_2.Location = new System.Drawing.Point(321, 243);
+            this.VK_Button_2.Location = new System.Drawing.Point(44, 3);
             this.VK_Button_2.Name = "VK_Button_2";
             this.VK_Button_2.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_2.TabIndex = 1;
-            this.VK_Button_2.Tag = "50";
-            this.VK_Button_2.UseVisualStyleBackColor = true;
+            this.VK_Button_2.Tag = "2";
+            this.VK_Button_2.UseVisualStyleBackColor = false;
             this.VK_Button_2.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // VK_Button_1
             // 
+            this.VK_Button_1.BackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.VK_Button_1.FlatAppearance.BorderSize = 0;
+            this.VK_Button_1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.VK_Button_1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.VK_Button_1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.VK_Button_1.Location = new System.Drawing.Point(280, 243);
+            this.VK_Button_1.Location = new System.Drawing.Point(3, 3);
             this.VK_Button_1.Name = "VK_Button_1";
             this.VK_Button_1.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_1.TabIndex = 0;
-            this.VK_Button_1.Tag = "49";
-            this.VK_Button_1.UseVisualStyleBackColor = true;
+            this.VK_Button_1.Tag = "1";
+            this.VK_Button_1.UseVisualStyleBackColor = false;
             this.VK_Button_1.Click += new System.EventHandler(this.VK_Button_Click);
             // 
             // webBrowser
@@ -1650,7 +1851,9 @@ namespace Web_Camera_Video
            // if (!TextBoxForVK.Focused) return;
             string CurText = TextBoxForVK.Text;
             int Sel = TextBoxForVK.SelectionStart;
-            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + ((Button)sender).Text + CurText.Substring(TextBoxForVK.SelectionStart);
+            string temp = (string)((Button)sender).Tag;
+            char str = temp[0];
+            TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + str + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel + 1;
         }
 

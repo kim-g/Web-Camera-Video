@@ -19,7 +19,6 @@ d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.ex
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.pdb
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.exe
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
-d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Controls.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.dll
 d:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csprojResolveAssemblyReference.cache
@@ -45,3 +44,5 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Math.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.xml
