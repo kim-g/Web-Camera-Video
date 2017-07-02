@@ -19,28 +19,14 @@ namespace Web_Camera_Video
 {
     public class Form1 : Form
   {
-    private string ShowArchive = "";
     private FilterInfoCollection videoDevices;
     public VideoCaptureDevice videoDevice;
     private VideoCapabilities[] videoCapabilities;
     private VideoCapabilities[] snapshotCapabilities;
     private Image MaskM;
     private Image MaskW;
-    private Image ShootLabel;
-    private Image Welcome;
-    private Image Photo;
-    private bool Shooting;
-    private bool Playing;
     private bool WaitForResult;
-    private bool Video_Move;
-    private bool Show_Delay;
-    private bool Show_Video_Time;
-    private int Show_Timer;
-    private bool Thanks_Delay;
-    private int Thanks_Timer;
-    private int ArchiveID;
     private Screen[] sc;
-    private int UserID;
     private UserInformation UI;
     private IContainer components;
     private System.Windows.Forms.PictureBox pictureBox1;
@@ -621,7 +607,6 @@ namespace Web_Camera_Video
                     videoDevice.SnapshotFrame += new NewFrameEventHandler(videoDevice_SnapshotFrame);
                 }
                 videoDevice.Start();
-                Playing = true;
             }
         }
 
@@ -641,8 +626,6 @@ namespace Web_Camera_Video
             else
             {
             }
-
-            Shooting = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -682,7 +665,6 @@ namespace Web_Camera_Video
         private void Stop_Web_Camera()
         {
             videoDevice.Stop();
-            Playing = false;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -787,15 +769,7 @@ namespace Web_Camera_Video
             Cancel_Button.Visible = false;
 
             // Все таймеры убрать
-            Shooting = false;
-            Playing = false;
             WaitForResult = false;
-            Video_Move = false;
-            Show_Delay = false;
-            Thanks_Delay = false;
-
-
-            ShowArchive = "";
 
             // Показ начального экрана
             RunScript("background=slide1;question=1");
