@@ -281,7 +281,6 @@ namespace Web_Camera_Video
             int Shift = B_width / 3;
 
             VK_Button_Point.Left = Shift * 3 + B_width * 8 + interval * 8;
-            VK_Button_Comma.Left = Shift * 3 + B_width * 7 + interval * 7;
             VK_Button_M.Left = Shift * 3 + B_width * 6 + interval * 6;
             VK_Button_N.Left = Shift * 3 + B_width * 5 + interval * 5;
             VK_Button_B.Left = Shift * 3 + B_width * 4 + interval * 4;
@@ -324,7 +323,6 @@ namespace Web_Camera_Video
             VK_Button_Backspace.Left = B_width * 13 + interval * 12 - VK_Button_Backspace.Width;
 
             VK_Button_Point.Top = B_width * 3 + interval * 3;
-            VK_Button_Comma.Top = B_width * 3 + interval * 3;
             VK_Button_M.Top = B_width * 3 + interval * 3;
             VK_Button_N.Top = B_width * 3 + interval * 3;
             VK_Button_B.Top = B_width * 3 + interval * 3;
