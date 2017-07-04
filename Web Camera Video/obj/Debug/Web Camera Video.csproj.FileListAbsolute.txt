@@ -46,3 +46,34 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csprojResolveAssemblyReference.cache
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Configuration.resources
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Form1.resources
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.Cache
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Math.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.EF6.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.Linq.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Math.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.exe
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.pdb

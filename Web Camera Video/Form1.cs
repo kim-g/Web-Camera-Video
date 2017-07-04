@@ -107,6 +107,7 @@ namespace Web_Camera_Video
         private Button VK_Button_Backspace;
         DiskSdkClient YandexDisk;
         private Button Cancel_Button;
+        private Timer CountDownTimer;
         string PubLink = "";
 
 
@@ -118,7 +119,7 @@ namespace Web_Camera_Video
             ConfigDB = SQLiteDataBase.Open("config.db");
             Dir = Directories.GetFromDB(ConfigDB);
 
-
+            Animation.Interval = 500;
 
             Directory.CreateDirectory(Dir.Data);
             Directory.CreateDirectory(Dir.Template);
@@ -489,6 +490,7 @@ namespace Web_Camera_Video
             CountDownElement.Font = ConfigDB.GetFont(Params[2]);
             CountDownElement.Text = Params[1];
             CountDownStart = DateTime.Now;
+            CountDownTimer.Enabled = true;
         }
 
         // Показать слайд фотографирования
@@ -564,6 +566,8 @@ namespace Web_Camera_Video
         // Обработка получаемого с камеры кадра
         void cam_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
+            Application.DoEvents();
+
             try
             {
                 bitmap = (Bitmap)eventArgs.Frame.Clone();
@@ -581,10 +585,11 @@ namespace Web_Camera_Video
             }
             catch
             {
-
+                Application.DoEvents();
 
             }
 
+            Application.DoEvents();
         }
 
 
@@ -725,20 +730,6 @@ namespace Web_Camera_Video
 
         private void Animation_Tick(object sender, EventArgs e)
         {
-            if (CountDownTime > 0)
-            {
-                double CurTime = DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
-                double StartTime = CountDownStart.Second + (CountDownStart.Millisecond / 1000f);
-                if (CurTime + 10f < StartTime) CurTime += 60f;
-                double Dif = CurTime - StartTime;
-                CountDownElement.Text = (CountDownTime - (int)Dif).ToString();
-                if (Dif > CountDownTime)
-                {
-                    CountDownTime = 0;
-                    RunScript(CountDownScript);
-                }
-            }
-
             // Если уже получил публичеую ссылку, отправим все пользователю и перейдём на экран приветствия.
             if (PubLink != "")
             {
@@ -908,6 +899,7 @@ namespace Web_Camera_Video
             this.VK_Button_1 = new System.Windows.Forms.Button();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.Cancel_Button = new System.Windows.Forms.Button();
+            this.CountDownTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
@@ -1801,6 +1793,11 @@ namespace Web_Camera_Video
             this.Cancel_Button.Visible = false;
             this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
             // 
+            // CountDownTimer
+            // 
+            this.CountDownTimer.Interval = 500;
+            this.CountDownTimer.Tick += new System.EventHandler(this.CountDownTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1885,6 +1882,24 @@ namespace Web_Camera_Video
             }
             TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart-1) + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel - 1;
+        }
+
+        private void CountDownTimer_Tick(object sender, EventArgs e)
+        {
+            if (CountDownTime > 0)
+            {
+                double CurTime = DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
+                double StartTime = CountDownStart.Second + (CountDownStart.Millisecond / 1000f);
+                if (CurTime + 10f < StartTime) CurTime += 60f;
+                double Dif = CurTime - StartTime;
+                CountDownElement.Text = (CountDownTime - (int)Dif).ToString();
+                if (Dif > CountDownTime)
+                {
+                    CountDownTime = 0;
+                    CountDownTimer.Enabled = false;
+                    RunScript(CountDownScript);
+                }
+            }
         }
     }
 }
