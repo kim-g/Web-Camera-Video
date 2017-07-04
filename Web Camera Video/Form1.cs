@@ -572,26 +572,47 @@ namespace Web_Camera_Video
 
             try
             {
-                bitmap = (Bitmap)eventArgs.Frame.Clone();
+                bitmap = ResizeBMP((Bitmap)eventArgs.Frame.Clone(), 412, 0, 1095, 1080, ((Bitmap)eventArgs.Frame).PixelFormat);
 
                 var filter = new Mirror(false, true);
                 filter.ApplyInPlace(bitmap);
 
-                // Освобождение ресурсов
-                Image Temp = picFrame.Image;
-                picFrame.Image = bitmap;
-                Temp.Dispose();
-                Temp = WebCamVideo;
+                // Освобождение ресурсов и присваение новых значений.
+                Image Temp = WebCamVideo;
                 WebCamVideo = bitmap;
                 Temp.Dispose();
+
+
+                Temp = picFrame.Image;
+                picFrame.Image = bitmap;
+                Temp.Dispose();
+
             }
-            catch
+            catch (Exception e)
             {
+                //MessageBox.Show(e.Message);
                 Application.DoEvents();
 
             }
 
             Application.DoEvents();
+        }
+
+        Bitmap ResizeBMP(Bitmap sourse_bmp, int x, int y, int width, int height, PixelFormat PF)
+        {
+            Bitmap destination_bmp = new Bitmap(width, height, PF);
+            try
+            {
+                Graphics g = Graphics.FromImage(destination_bmp);
+                g.DrawImage(sourse_bmp, 0, 0, new Rectangle(x, y, x + width, y + height), GraphicsUnit.Pixel);
+                g.Dispose();
+                sourse_bmp.Dispose();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return destination_bmp;
         }
 
 
@@ -662,7 +683,12 @@ namespace Web_Camera_Video
             return MaskW;
         }
 
-         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private Image Mask()
+        {
+            return MaskM;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             videoDevice.Stop();
         }
@@ -1606,7 +1632,7 @@ namespace Web_Camera_Video
 
         private void picFrame_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawImage(Mask(UI.Sex), (picFrame.Width - Mask(UI.Sex).Width) / 2, (picFrame.Height - Mask(UI.Sex).Height) / 2, Mask(UI.Sex).Width, Mask(UI.Sex).Height);
+            e.Graphics.DrawImage(Mask(), (picFrame.Width - Mask().Width) / 2, (picFrame.Height - Mask().Height) / 2, Mask().Width, Mask().Height);
         }
 
         private void VK_Button_Click(object sender, EventArgs e)
