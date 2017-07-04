@@ -14,6 +14,7 @@ using Disk.SDK;
 using Disk.SDK.Provider;
 using System.Net.Mail;
 using System.Net;
+using System.Threading;
 
 namespace Web_Camera_Video
 {
@@ -32,8 +33,8 @@ namespace Web_Camera_Video
     private System.Windows.Forms.PictureBox pictureBox1;
     private Button CameraButton;
     private Button SavePhoto;
-    private Timer SearchTimer;
-    private Timer Animation;
+    private System.Windows.Forms.Timer SearchTimer;
+    private System.Windows.Forms.Timer Animation;
     private System.Windows.Forms.PictureBox Wait_Image;
     private TextBox EMail_Edit;
     private Label Name_Label;
@@ -107,7 +108,7 @@ namespace Web_Camera_Video
         private Label VK_Button_Backspace;
         DiskSdkClient YandexDisk;
         private Button Cancel_Button;
-        private Timer CountDownTimer;
+        private System.Windows.Forms.Timer CountDownTimer;
         string PubLink = "";
 
 
@@ -585,10 +586,27 @@ namespace Web_Camera_Video
         void cam_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             Application.DoEvents();
-
             try
             {
-                bitmap = ResizeBMP((Bitmap)eventArgs.Frame.Clone(), 412, 0, 1095, 1080, ((Bitmap)eventArgs.Frame).PixelFormat);
+                Bitmap Pic = (Bitmap)eventArgs.Frame.Clone();
+                Thread t = new Thread(new ParameterizedThreadStart(ModifyPic));
+                t.Start(Pic);
+            }
+            catch
+            {
+
+            }
+
+            Application.DoEvents();
+        }
+
+        private void ModifyPic(Object Pic_In)
+        {
+            try
+            {
+                Bitmap Pic = (Bitmap)Pic_In;
+                bitmap = ResizeBMP((Bitmap)Pic.Clone(), 412, 0, 1095, 1080, Pic.PixelFormat);
+                Pic.Dispose();
 
                 var filter = new Mirror(false, true);
                 filter.ApplyInPlace(bitmap);
@@ -610,8 +628,6 @@ namespace Web_Camera_Video
                 Application.DoEvents();
 
             }
-
-            Application.DoEvents();
         }
 
         Bitmap ResizeBMP(Bitmap sourse_bmp, int x, int y, int width, int height, PixelFormat PF)
@@ -626,7 +642,7 @@ namespace Web_Camera_Video
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
             }
             return destination_bmp;
         }
@@ -666,8 +682,9 @@ namespace Web_Camera_Video
 
         private void button2_Click(object sender, EventArgs e)
         {
-            RunScript("make_photo");
-            //RunScript("count_down=camerabutton,3,CountDown,make_photo");
+            if (ConfigDB.GetConfigValueBool("CountDown"))
+                RunScript("count_down=camerabutton,3,CountDown,make_photo");
+            else RunScript("make_photo");
         }
 
         private void Take_Picture()
