@@ -421,6 +421,9 @@ namespace Web_Camera_Video
             YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/" + Params[0], 
                 File.Open(Params[1], FileMode.Open, FileAccess.Read),
                 new AsyncProgress(UpdateProgress),SdkOnUploadCompleted);
+            YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadPhotoFolder") + @"/" + Params[2],
+                File.Open(Params[3], FileMode.Open, FileAccess.Read),
+                new AsyncProgress(UpdateProgress), SdkOnPhotoUploadCompleted);
         }
 
         private void UpdateProgress(ulong current, ulong total)
@@ -436,7 +439,20 @@ namespace Web_Camera_Video
             }
             else
             {
+                MessageBox.Show("Не удалось передать видео в облако.", "Ошибка");
+            }
 
+        }
+
+        private void SdkOnPhotoUploadCompleted(object sender, SdkEventArgs e)
+        {
+            if (e.Error == null)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show("Не удалось передать фотографию в облако.", "Ошибка");
             }
 
         }
@@ -620,17 +636,12 @@ namespace Web_Camera_Video
         {
             if (videoDevice != null)
             {
+                //MessageBox.Show("videoCapabilities.Length == " + videoCapabilities.Length.ToString());
                 if ((videoCapabilities != null) && (videoCapabilities.Length != 0))
                 {
                     videoDevice.VideoResolution = videoCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
                 }
 
-                if ((snapshotCapabilities != null) && (snapshotCapabilities.Length != 0))
-                {
-                    videoDevice.ProvideSnapshots = true;
-                    videoDevice.SnapshotResolution = snapshotCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
-                    videoDevice.SnapshotFrame += new NewFrameEventHandler(videoDevice_SnapshotFrame);
-                }
                 videoDevice.Start();
             }
         }
@@ -743,7 +754,8 @@ namespace Web_Camera_Video
                     File.Copy(Output_File, 
                         Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") + 
                         Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
-                    RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File);
+                    RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File + 
+                        ",Photo_" + UI.ID.ToString() + ".jpg,"+ Dir.Data + ConfigDB.GetConfigValue("UserPhoto"));
                 }
             }
         }
