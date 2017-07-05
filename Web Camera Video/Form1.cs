@@ -109,7 +109,11 @@ namespace Web_Camera_Video
         DiskSdkClient YandexDisk;
         private Button Cancel_Button;
         private System.Windows.Forms.Timer CountDownTimer;
+        private Label label1;
+        private System.Windows.Forms.Timer TimeOutTimer;
         string PubLink = "";
+        DateTime TimeOutTime;
+        bool TimeOutEnable = false;
 
 
 
@@ -160,6 +164,8 @@ namespace Web_Camera_Video
             // И стартуем первичный скрипт
             RunScript(ConfigDB.GetConfigValue("StartScript"));
 
+            Action();
+
             // Покажем саму форму.
             Show();
         }
@@ -195,6 +201,7 @@ namespace Web_Camera_Video
                 string[] Com = Command.Split('=');
                 RunCommand(Com);
             }
+            Action();
         }
 
         // Обработка отдельной команды
@@ -219,6 +226,7 @@ namespace Web_Camera_Video
                 case "render":      Render();                                           break;  // Запустить просчёт видео
                 case "get_link":    GetLink();                                          break;  // Получить публичную ссылку с Яндекс.Диск, отправить её пользователю
                 case "authorize":   Authorize();                                        break;  // Авторизоваться и получить токен. Нужен для старта, в штатном режиме не используется.
+                case "timeout":     TimeOutEnable = Command[1] == "1";                  break;  // Включить таймаут.
             }
         }
 
@@ -245,6 +253,7 @@ namespace Web_Camera_Video
         private void Render()
         {
             Hide_All();
+            TimeOutEnable = false;
             SaveTemplate();
         }
 
@@ -578,7 +587,8 @@ namespace Web_Camera_Video
             videoDevice.NewFrame += new NewFrameEventHandler(cam_NewFrame);
             videoCapabilities = videoDevice.VideoCapabilities;
             snapshotCapabilities = videoDevice.SnapshotCapabilities;
-            
+
+            Action();
         }
 
 
@@ -811,6 +821,7 @@ namespace Web_Camera_Video
             {
                 Clear_All();
             }
+            Action();
         }
 
         private void Clear_All()
@@ -822,6 +833,7 @@ namespace Web_Camera_Video
 
             // Все таймеры убрать
             WaitForResult = false;
+            TimeOutEnable = false;
 
             // Показ начального экрана
             RunScript("background=slide1;question=1");
@@ -962,6 +974,8 @@ namespace Web_Camera_Video
             this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.Cancel_Button = new System.Windows.Forms.Button();
             this.CountDownTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.TimeOutTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
@@ -979,6 +993,7 @@ namespace Web_Camera_Video
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Visible = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // CameraButton
             // 
@@ -1037,16 +1052,19 @@ namespace Web_Camera_Video
             this.Wait_Image.TabIndex = 14;
             this.Wait_Image.TabStop = false;
             this.Wait_Image.Visible = false;
+            this.Wait_Image.Click += new System.EventHandler(this.Wait_Image_Click);
             // 
             // EMail_Edit
             // 
             this.EMail_Edit.BackColor = System.Drawing.SystemColors.Window;
+            this.EMail_Edit.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.EMail_Edit.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.EMail_Edit.Location = new System.Drawing.Point(133, 450);
             this.EMail_Edit.Name = "EMail_Edit";
-            this.EMail_Edit.Size = new System.Drawing.Size(421, 38);
+            this.EMail_Edit.Size = new System.Drawing.Size(421, 31);
             this.EMail_Edit.TabIndex = 16;
             this.EMail_Edit.Visible = false;
+            this.EMail_Edit.Click += new System.EventHandler(this.EMail_Edit_Click);
             // 
             // Name_Label
             // 
@@ -1058,6 +1076,7 @@ namespace Web_Camera_Video
             this.Name_Label.TabIndex = 17;
             this.Name_Label.Text = "123456789";
             this.Name_Label.Visible = false;
+            this.Name_Label.Click += new System.EventHandler(this.Name_Label_Click);
             // 
             // OD
             // 
@@ -1123,6 +1142,7 @@ namespace Web_Camera_Video
             this.picFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picFrame.TabIndex = 260;
             this.picFrame.TabStop = false;
+            this.picFrame.Click += new System.EventHandler(this.picFrame_Click);
             this.picFrame.Paint += new System.Windows.Forms.PaintEventHandler(this.picFrame_Paint);
             // 
             // VirtualKeyboard
@@ -1174,6 +1194,8 @@ namespace Web_Camera_Video
             this.VirtualKeyboard.Size = new System.Drawing.Size(570, 249);
             this.VirtualKeyboard.TabIndex = 261;
             this.VirtualKeyboard.Visible = false;
+            this.VirtualKeyboard.Click += new System.EventHandler(this.VirtualKeyboard_Click);
+            this.VirtualKeyboard.Paint += new System.Windows.Forms.PaintEventHandler(this.VirtualKeyboard_Paint);
             // 
             // VK_Button_Backspace
             // 
@@ -1277,7 +1299,7 @@ namespace Web_Camera_Video
             // VK_Button_K
             // 
             this.VK_Button_K.BackColor = System.Drawing.Color.Transparent;
-           this.VK_Button_K.Location = new System.Drawing.Point(316, 83);
+            this.VK_Button_K.Location = new System.Drawing.Point(316, 83);
             this.VK_Button_K.Name = "VK_Button_K";
             this.VK_Button_K.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_K.TabIndex = 30;
@@ -1347,7 +1369,7 @@ namespace Web_Camera_Video
             // VK_Button_A
             // 
             this.VK_Button_A.BackColor = System.Drawing.Color.Transparent;
-             this.VK_Button_A.Location = new System.Drawing.Point(29, 83);
+            this.VK_Button_A.Location = new System.Drawing.Point(29, 83);
             this.VK_Button_A.Name = "VK_Button_A";
             this.VK_Button_A.Size = new System.Drawing.Size(60, 70);
             this.VK_Button_A.TabIndex = 23;
@@ -1616,11 +1638,27 @@ namespace Web_Camera_Video
             this.CountDownTimer.Interval = 500;
             this.CountDownTimer.Tick += new System.EventHandler(this.CountDownTimer_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 264;
+            this.label1.Text = "label1";
+            // 
+            // TimeOutTimer
+            // 
+            this.TimeOutTimer.Enabled = true;
+            this.TimeOutTimer.Interval = 1000;
+            this.TimeOutTimer.Tick += new System.EventHandler(this.TimeOutTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1703, 672);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Cancel_Button);
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.VirtualKeyboard);
@@ -1640,6 +1678,7 @@ namespace Web_Camera_Video
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Click += new System.EventHandler(this.Form1_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).EndInit();
@@ -1672,6 +1711,8 @@ namespace Web_Camera_Video
             string temp = (string)((Control)sender).Tag;
             TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart) + temp[0] + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel + 1;
+
+            Action();
         }
 
         private void VK()
@@ -1683,8 +1724,7 @@ namespace Web_Camera_Video
 
         private void QuestionLabel_Click(object sender, EventArgs e)
         {
-            //File.WriteAllText("Answer.txt", webBrowser.Document.Window.ToString());
-            //QuestionLabel.Text = AccessToken;
+            Action();
         }
 
         private void VK_Button_Backspace_Click(object sender, EventArgs e)
@@ -1700,6 +1740,8 @@ namespace Web_Camera_Video
             }
             TextBoxForVK.Text = CurText.Substring(0, TextBoxForVK.SelectionStart-1) + CurText.Substring(TextBoxForVK.SelectionStart);
             TextBoxForVK.SelectionStart = Sel - 1;
+
+            Action();
         }
 
         private void CountDownTimer_Tick(object sender, EventArgs e)
@@ -1718,6 +1760,61 @@ namespace Web_Camera_Video
                     RunScript(CountDownScript);
                 }
             }
+        }
+
+        private void TimeOutTimer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan Diff = DateTime.Now - TimeOutTime;
+            label1.Text = TimeOutEnable ? Diff.TotalMilliseconds.ToString() : "No Timeout";
+
+            if (TimeOutEnable)
+                if (Diff.TotalMilliseconds > ConfigDB.GetConfigValueInt("TimeOut") * 1000f)
+                    Clear_All();
+        }
+
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void Action()
+        {
+            TimeOutTime = DateTime.Now;
+        }
+
+        private void picFrame_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void Wait_Image_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void VirtualKeyboard_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void VirtualKeyboard_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void Name_Label_Click(object sender, EventArgs e)
+        {
+            Action();
+        }
+
+        private void EMail_Edit_Click(object sender, EventArgs e)
+        {
+            Action();
         }
     }
 }
