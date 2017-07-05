@@ -114,6 +114,8 @@ namespace Web_Camera_Video
         string PubLink = "";
         DateTime TimeOutTime;
         bool TimeOutEnable = false;
+        bool RenderingAFrame = false;
+        bool RenderFrame = false;
 
 
 
@@ -515,7 +517,7 @@ namespace Web_Camera_Video
             CountDownTime = Convert.ToInt32(Params[1]);
             CountDownScript = Params[3];
             CountDownElement.Font = ConfigDB.GetFont(Params[2]);
-            CountDownElement.Text = Params[1];
+            //CountDownElement.Text = Params[1];
             CountDownStart = DateTime.Now;
             CountDownTimer.Enabled = true;
         }
@@ -534,11 +536,16 @@ namespace Web_Camera_Video
 
             // Настройка параметров Web-плеера
             SetElementPosition(picFrame, "Camera");
-            Start_Web_Camera();
+            
 
             // Настройка кнопки Снимка
             SetElement(CameraButton, "Camera_Button");
             CameraButton.Text = ConfigDB.GetText("Photo_Label");
+
+            Application.DoEvents();
+
+            Start_Web_Camera();
+            RenderFrame = true;
         }
 
         void New_User()
@@ -598,6 +605,9 @@ namespace Web_Camera_Video
             Application.DoEvents();
             try
             {
+                if (!RenderFrame) return;
+                if (RenderingAFrame) return;
+                RenderingAFrame = true;
                 Bitmap Pic = (Bitmap)eventArgs.Frame.Clone();
                 Thread t = new Thread(new ParameterizedThreadStart(ModifyPic));
                 t.Start(Pic);
@@ -614,6 +624,7 @@ namespace Web_Camera_Video
         {
             try
             {
+
                 Bitmap Pic = (Bitmap)Pic_In;
                 bitmap = ResizeBMP((Bitmap)Pic.Clone(), 412, 0, 1095, 1080, Pic.PixelFormat);
                 Pic.Dispose();
@@ -623,17 +634,20 @@ namespace Web_Camera_Video
 
                 // Освобождение ресурсов и присваение новых значений.
                 Image Temp = WebCamVideo;
-                WebCamVideo = bitmap;
+                WebCamVideo = (Image)bitmap.Clone();
                 Temp.Dispose();
 
-
+                Graphics g = Graphics.FromImage(bitmap);
+                DrawCountDown(g);
                 Temp = picFrame.Image;
                 picFrame.Image = bitmap;
                 Temp.Dispose();
+                RenderingAFrame = false;
 
             }
             catch (Exception e)
             {
+                RenderingAFrame = false;
                 //MessageBox.Show(e.Message);
                 Application.DoEvents();
 
@@ -834,6 +848,7 @@ namespace Web_Camera_Video
             // Все таймеры убрать
             WaitForResult = false;
             TimeOutEnable = false;
+            RenderFrame = false;
 
             // Показ начального экрана
             RunScript("background=slide1;question=1");
@@ -1646,6 +1661,7 @@ namespace Web_Camera_Video
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 264;
             this.label1.Text = "label1";
+            this.label1.Visible = false;
             // 
             // TimeOutTimer
             // 
@@ -1746,14 +1762,15 @@ namespace Web_Camera_Video
 
         private void CountDownTimer_Tick(object sender, EventArgs e)
         {
+            CheckCountDown();
+        }
+
+        private void CheckCountDown()
+        {
             if (CountDownTime > 0)
             {
-                double CurTime = DateTime.Now.Second + (DateTime.Now.Millisecond / 1000f);
-                double StartTime = CountDownStart.Second + (CountDownStart.Millisecond / 1000f);
-                if (CurTime + 10f < StartTime) CurTime += 60f;
-                double Dif = CurTime - StartTime;
-                CountDownElement.Text = (CountDownTime - (int)Dif).ToString();
-                if (Dif > CountDownTime)
+                TimeSpan Diff = DateTime.Now - CountDownStart;
+                if (Diff.TotalMilliseconds > CountDownTime * 1000)
                 {
                     CountDownTime = 0;
                     CountDownTimer.Enabled = false;
@@ -1762,8 +1779,25 @@ namespace Web_Camera_Video
             }
         }
 
+        private void DrawCountDown(Graphics g)
+        {
+            if (CountDownTime > 0)
+            {
+                TimeSpan Diff = DateTime.Now - CountDownStart;
+                string s = (CountDownTime - Diff.TotalMilliseconds / 1000) > 0 ? ((int)(CountDownTime - Diff.TotalMilliseconds / 1000) + 1).ToString() : "0";
+                g.DrawString(s, ConfigDB.GetFont("CountDown"), Brushes.Black, new Point(370,260));
+
+                if (Diff.TotalMilliseconds > CountDownTime * 1000)
+                {
+                    RenderFrame = false;
+                }
+            }
+        }
+
         private void TimeOutTimer_Tick(object sender, EventArgs e)
         {
+            CheckCountDown();
+
             TimeSpan Diff = DateTime.Now - TimeOutTime;
             label1.Text = TimeOutEnable ? Diff.TotalMilliseconds.ToString() : "No Timeout";
 
