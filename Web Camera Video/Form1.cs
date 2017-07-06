@@ -229,7 +229,15 @@ namespace Web_Camera_Video
                 case "get_link":    GetLink();                                          break;  // Получить публичную ссылку с Яндекс.Диск, отправить её пользователю
                 case "authorize":   Authorize();                                        break;  // Авторизоваться и получить токен. Нужен для старта, в штатном режиме не используется.
                 case "timeout":     TimeOutEnable = Command[1] == "1";                  break;  // Включить таймаут.
+                case "answer_colors": AnswerColors(Command[1]);                         break;  // Задать цвета шрифтам кнопок ответов.
             }
+        }
+
+        private void AnswerColors(string Command)
+        {
+            string[] Params = Command.Split(',');
+            Answer_1.ForeColor = Color.FromArgb(Convert.ToInt32(Params[0]));
+            Answer_2.ForeColor = Color.FromArgb(Convert.ToInt32(Params[1]));
         }
 
         // Авторизоваться и получить токен. Нужен для старта, в штатном режиме не используется.
