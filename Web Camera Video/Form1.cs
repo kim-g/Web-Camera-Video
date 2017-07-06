@@ -116,6 +116,8 @@ namespace Web_Camera_Video
         bool TimeOutEnable = false;
         bool RenderingAFrame = false;
         bool RenderFrame = false;
+        string UploadName = "";
+        string UploadFileName = "";
 
 
 
@@ -439,9 +441,11 @@ namespace Web_Camera_Video
         private void UploadFile(string Command)
         {
             string[] Params = Command.Split(',');
+            UploadName = Params[0];
+            UploadFileName = Params[1];
             YandexDisk = new DiskSdkClient(ConfigDB.GetConfigValue("YandexDiskToken"));
-            YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/" + Params[0], 
-                File.Open(Params[1], FileMode.Open, FileAccess.Read),
+            YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/" + UploadName, 
+                File.Open(UploadFileName, FileMode.Open, FileAccess.Read),
                 new AsyncProgress(UpdateProgress),SdkOnUploadCompleted);
             YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadPhotoFolder") + @"/" + Params[2],
                 File.Open(Params[3], FileMode.Open, FileAccess.Read),
@@ -461,7 +465,23 @@ namespace Web_Camera_Video
             }
             else
             {
-                MessageBox.Show("Не удалось передать видео в облако.", "Ошибка");
+                YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadFolder") + @"/" + UploadName,
+                File.Open(UploadFileName, FileMode.Open, FileAccess.Read),
+                new AsyncProgress(UpdateProgress), SdkOnUploadCompleted2);
+            }
+
+        }
+
+        private void SdkOnUploadCompleted2(object sender, SdkEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                RunScript("get_link");
+            }
+            else
+            {
+                MessageBox.Show("Ошибка. Не удалось загрузить файл на облпко. Пожалуйста, обратитесь к администратору.", "Ошибка");
+                Clear_All();
             }
 
         }
