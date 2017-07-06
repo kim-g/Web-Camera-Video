@@ -741,7 +741,7 @@ namespace Web_Camera_Video
         private void button2_Click(object sender, EventArgs e)
         {
             if (ConfigDB.GetConfigValueBool("CountDown"))
-                RunScript("count_down=camerabutton,3,CountDown,make_photo");
+                RunScript("count_down=camerabutton," + ConfigDB.GetConfigValue("CountDownTime") + ",CountDown,make_photo");
             else RunScript("make_photo");
         }
 
