@@ -830,12 +830,17 @@ namespace Web_Camera_Video
 
         private void Cancel_Button_Click(object sender, EventArgs e)
         {
+            bool OldRender = RenderFrame;
+            RenderFrame = false;
             DialogResult dialogResult = MessageBox.Show(ConfigDB.GetText("Cancel_Query"), ConfigDB.GetText("Cancel_Label"), MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
                 Clear_All();
+                Action();
+                return;
             }
             Action();
+            RenderFrame = OldRender;
         }
 
         private void Clear_All()
