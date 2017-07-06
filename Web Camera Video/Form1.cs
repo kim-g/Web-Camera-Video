@@ -223,6 +223,7 @@ namespace Web_Camera_Video
                 case "count_down":  SetCountDown(Command[1]);                           break;  // Запустить обратный отсчёт
                 case "background":  SetBackgroundImage(Command[1]);                     break;  // Установить фоновый рисунок формы
                 case "cancel_button_show": CancelButtonShow();                          break;  // Показать кнопку отмены
+                case "cancel_button_hide": Cancel_Button.Visible = false;               break;  // Спрятать
                 case "upload":      UploadFile(Command[1]);                             break;  // Загрузить файл на Яндекс.Диск
                 case "set_email":   SetEmail();                                         break;  // Запросить e-mail пользователя
                 case "render":      Render();                                           break;  // Запустить просчёт видео
@@ -264,6 +265,7 @@ namespace Web_Camera_Video
         {
             Hide_All();
             TimeOutEnable = false;
+            Cancel_Button.Visible = false;
             SaveTemplate();
         }
 
