@@ -41,6 +41,7 @@ namespace Web_Camera_Video
     private OpenFileDialog OD;
 
         public static SQLiteDataBase ConfigDB;
+        public static SQLiteDataBase LogDB;
         public static Directories Dir;
         public static int Input_Monitor;
         private Label QuestionLabel;
@@ -127,6 +128,8 @@ namespace Web_Camera_Video
 
             ConfigDB = SQLiteDataBase.Open("config.db");
             Dir = Directories.GetFromDB(ConfigDB);
+
+            LogDB = SQLiteDataBase.Open(ConfigDB.GetConfigValue("Log"));
 
             Animation.Interval = 500;
 
@@ -268,6 +271,7 @@ namespace Web_Camera_Video
             Hide_All();
             TimeOutEnable = false;
             Cancel_Button.Visible = false;
+            LogDB.LogResult(UI.ID, EMail_Edit.Text);
             SaveTemplate();
         }
 
@@ -822,9 +826,25 @@ namespace Web_Camera_Video
                 if (File.Exists(Output_File))
                 {
                     WaitForResult = false;
-                    File.Copy(Output_File, 
-                        Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") + 
-                        Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
+                    try
+                    {
+                        File.Copy(Output_File,
+                            Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") +
+                            Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            File.Copy(Output_File,
+                            Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") +
+                            Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
+                        }
+                        catch
+                        {
+
+                        }
+                    }
                     RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File + 
                         ",Photo_" + UI.ID.ToString() + ".jpg,"+ Dir.Data + ConfigDB.GetConfigValue("UserPhoto"));
                 }
@@ -850,6 +870,7 @@ namespace Web_Camera_Video
             {
                 if (PubLink == null) return;
                 Email(EMail_Edit.Text, PubLink);
+                LogDB.LogLink(UI.ID, PubLink);
                 Hide_All();
                 PubLink = "";
                 EMail_Edit.Text = "";

@@ -239,5 +239,18 @@ namespace Web_Camera_Video
             DataTable Conf = ReadTable("SELECT `filename` FROM `backgrounds` WHERE `name`='" + Name + "' LIMIT 1");
             return Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString() == "" ? "" : FullName + @"\" + Conf.Rows[0].ItemArray[Conf.Columns.IndexOf("filename")].ToString();
         }
+
+        // Добавление информации о пользователе и email
+        public void LogResult(int UID, string Email)
+        {
+            string Date = DateTime.Now.ToString("u");
+            Execute("INSERT INTO `uploaded` (`user`,`email`,`date`) VALUES (" + UID.ToString() + ", '" + Email + "', '" + Date + "');");
+        }
+
+        // Добавление информации о ссылке по ID
+        public void LogLink(int UID, string Link)
+        {
+            Execute("UPDATE `uploaded` SET `link`='" + Link + "' WHERE `user`='" + UID.ToString() + "';");
+        }
     }
 }
