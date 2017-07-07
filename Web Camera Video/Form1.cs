@@ -687,6 +687,7 @@ namespace Web_Camera_Video
                 Temp = picFrame.Image;
                 picFrame.Image = bitmap;
                 Temp.Dispose();
+                g.Dispose();
                 RenderingAFrame = false;
 
             }
