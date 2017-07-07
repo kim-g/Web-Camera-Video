@@ -399,9 +399,12 @@ namespace Web_Camera_Video
         {
             string Message_Body = ConfigDB.GetText("Mail_Message");
             Message_Body = Message_Body.Replace("{LINK}", Link);
+            string[] Attachments = ConfigDB.GetConfigValue("EmailAttachments").Split(',');
+            for (int i = 0; i < Attachments.Length; i++)
+                Message_Body = Message_Body.Replace("{ATTACH_" + (i+1).ToString() + "}", Path.GetFileName(Attachments[i]));
 
             SendMail(ConfigDB.GetConfigValue("SMTP"), ConfigDB.GetConfigValue("Mail_From"), ConfigDB.GetConfigValue("Password"),
-                Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body);
+                Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body, ConfigDB.GetConfigValue("EmailAttachments"));
 
         }
 
@@ -425,8 +428,16 @@ namespace Web_Camera_Video
                 mail.To.Add(new MailAddress(mailto));
                 mail.Subject = caption;
                 mail.Body = message;
-                if (!string.IsNullOrEmpty(attachFile))
-                    mail.Attachments.Add(new Attachment(attachFile));
+                mail.IsBodyHtml = true;
+                if (attachFile != null)
+                {
+                    string[] Attachments = attachFile.Split(',');
+                    for (int i = 0; i < Attachments.Length; i++)
+                    {
+                        mail.Attachments.Add(new Attachment(Attachments[i]));
+                        mail.Attachments[i].ContentId = Path.GetFileName(Attachments[i]);
+                    }
+                }
                 SmtpClient client = new SmtpClient();
                 client.Host = smtpServer;
                 client.Port = ConfigDB.GetConfigValueInt("SMTP_Port");
