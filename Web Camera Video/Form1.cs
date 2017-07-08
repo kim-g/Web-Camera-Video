@@ -272,6 +272,7 @@ namespace Web_Camera_Video
             TimeOutEnable = false;
             Cancel_Button.Visible = false;
             LogDB.LogResult(UI.ID, EMail_Edit.Text);
+            Thread.Sleep(2000);
             SaveTemplate();
         }
 
@@ -820,7 +821,22 @@ namespace Web_Camera_Video
                 Clear_All();
                 return;
             }
-            File.Copy(Dir.Template + "\\" + ProjectFile, Dir.Prep + Path.GetFileNameWithoutExtension(ProjectFile) + "_" + UI.ID.ToString("D4") + Path.GetExtension(ProjectFile), true);
+            try
+            {
+                File.Copy(Dir.Template + "\\" + ProjectFile, Dir.Prep + Path.GetFileNameWithoutExtension(ProjectFile) + "_" + UI.ID.ToString("D4") + Path.GetExtension(ProjectFile), true);
+            }
+            catch
+            {
+                Thread.Sleep(5000);
+                try
+                {
+                    File.Copy(Dir.Template + "\\" + ProjectFile, Dir.Prep + Path.GetFileNameWithoutExtension(ProjectFile) + "_" + UI.ID.ToString("D4") + Path.GetExtension(ProjectFile), true);
+                }
+                catch
+                {
+
+                }
+            }
             //UI.SaveToFile();
             //UI.SaveToStructuredFile(Dir.Data + ConfigDB.GetConfigValue("UserData"));
 
