@@ -854,6 +854,7 @@ namespace Web_Camera_Video
                 if (File.Exists(Output_File))
                 {
                     WaitForResult = false;
+                    Thread.Sleep(5000);
                     try
                     {
                         File.Copy(Output_File,
@@ -864,9 +865,10 @@ namespace Web_Camera_Video
                     {
                         try
                         {
+                            Thread.Sleep(5000);
                             File.Copy(Output_File,
-                            Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") +
-                            Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
+                                Dir.Archive + Path.GetFileNameWithoutExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "_" + UI.ID.ToString("D4") +
+                                Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)));
                         }
                         catch
                         {
