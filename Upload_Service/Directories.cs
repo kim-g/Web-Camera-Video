@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Web_Camera_Video
+namespace Upload_Service
 {
     public class Directories
     {

@@ -855,6 +855,7 @@ namespace Web_Camera_Video
                 {
                     WaitForResult = false;
                     Thread.Sleep(5000);
+                    // Копирование видео
                     try
                     {
                         File.Copy(Output_File,
@@ -875,8 +876,38 @@ namespace Web_Camera_Video
 
                         }
                     }
-                    RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File + 
-                        ",Photo_" + UI.ID.ToString() + ".jpg,"+ Dir.Data + ConfigDB.GetConfigValue("UserPhoto"));
+
+                    // Копирование фото
+                    try
+                    {
+                        File.Copy(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"),
+                            Dir.Archive_Photo + ConfigDB.GetConfigValue("Archive_Photo_File_Name") + @"_" + UI.ID.ToString("D4") + ".jpg");
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            Thread.Sleep(5000);
+                            File.Copy(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"),
+                                Dir.Archive_Photo + ConfigDB.GetConfigValue("Archive_Photo_File_Name") + @"_" + UI.ID.ToString("D4") + ".jpg");
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                    if (ConfigDB.GetConfigValueBool("Upload_To_Cloud"))
+                        RunScript("upload=Video_" + UI.ID.ToString() + Path.GetExtension(ConfigDB.GetMovieOutput(MovieChosen)) + "," + Output_File +
+                            ",Photo_" + UI.ID.ToString() + ".jpg," + Dir.Data + ConfigDB.GetConfigValue("UserPhoto"));
+                    else
+                    {
+                        Hide_All();
+                        PubLink = "";
+                        EMail_Edit.Text = "";
+                        Cancel_Button.Visible = false;
+                        RunScript("background=slide1; question=1");
+                    }
                 }
             }
         }

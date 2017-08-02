@@ -4,7 +4,7 @@ using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 
-namespace Web_Camera_Video
+namespace Upload_Service
 {
     public class SQLiteDataBase
     {
@@ -121,7 +121,7 @@ namespace Web_Camera_Video
 
             try
             {
-                string Query = Where == null ? "SELECT COUNT() AS 'C' FROM `" + Table + ";" : "SELECT COUNT() AS 'C' FROM `" + Table + "` WHERE " + Where + ";";
+                string Query = Where == null ? "SELECT COUNT() AS 'C' FROM `" + Table + "`;" : "SELECT COUNT() AS 'C' FROM `" + Table + "` WHERE " + Where + ";";
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(Query, Connection);
                 adapter.Fill(dTable);
             }

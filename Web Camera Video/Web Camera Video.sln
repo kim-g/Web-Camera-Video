@@ -1,7 +1,10 @@
-
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web Camera Video", "Web Camera Video.csproj", "{C21A5CE8-3F6D-471A-9B38-64FFE0B3A2DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Upload_Service", "..\Upload_Service\Upload_Service.csproj", "{876EA39C-B14E-41AE-8B9F-F927F183EEAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +16,10 @@ Global
 		{C21A5CE8-3F6D-471A-9B38-64FFE0B3A2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C21A5CE8-3F6D-471A-9B38-64FFE0B3A2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C21A5CE8-3F6D-471A-9B38-64FFE0B3A2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876EA39C-B14E-41AE-8B9F-F927F183EEAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876EA39C-B14E-41AE-8B9F-F927F183EEAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876EA39C-B14E-41AE-8B9F-F927F183EEAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876EA39C-B14E-41AE-8B9F-F927F183EEAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
