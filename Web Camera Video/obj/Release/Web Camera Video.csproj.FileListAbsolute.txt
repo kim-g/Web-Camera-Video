@@ -28,3 +28,5 @@ D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\EntityFramework.S
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLite.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Video.xml
 D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\AForge.Video.DirectShow.xml
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Release\System.Data.SQLite.dll.config
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Release\Web Camera Video.csproj.CoreCompileInputs.cache

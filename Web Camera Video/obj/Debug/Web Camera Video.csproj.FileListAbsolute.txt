@@ -77,3 +77,5 @@ D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.exe
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.pdb
+D:\Visual Studio\Web Camera Video\Web Camera Video\bin\Debug\System.Data.SQLite.dll.config
+D:\Visual Studio\Web Camera Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.CoreCompileInputs.cache

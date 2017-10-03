@@ -15,6 +15,7 @@ using Disk.SDK.Provider;
 using System.Net.Mail;
 using System.Net;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace Web_Camera_Video
 {
@@ -119,6 +120,7 @@ namespace Web_Camera_Video
         bool RenderFrame = false;
         string UploadName = "";
         string UploadFileName = "";
+        const string OnlyPhoto = "OnlyPhoto";
 
 
 
@@ -214,6 +216,7 @@ namespace Web_Camera_Video
         // Обработка отдельной команды
         public void RunCommand(string[] Command)
         {
+            if (Command[0].StartsWith(@"//")) return;
             switch (Command[0].ToLower())
             {
                 case "language":    ConfigDB.SetConfigValue("language", Command[1]);    break;  // Устновка языка
@@ -236,7 +239,57 @@ namespace Web_Camera_Video
                 case "authorize":   Authorize();                                        break;  // Авторизоваться и получить токен. Нужен для старта, в штатном режиме не используется.
                 case "timeout":     TimeOutEnable = Command[1] == "1";                  break;  // Включить таймаут.
                 case "answer_colors": AnswerColors(Command[1]);                         break;  // Задать цвета шрифтам кнопок ответов.
+                case "check_email": CheckEmail(Command[1]);                             break;  // Проверить правильность введения email (если правильно,если команда,если пустое,если неправильно)
+                case "empty_email": EmptyEmail();                                       break;  // Выдать сообзение, что e-mail пуст
+                case "invalid_email": InvalidEmail();                                   break;  // Выдать сообзение, что e-mail не правильный
+                case "upload_photo":  UploadPhoto();                                    break;  // Загрузить только фото
             }
+        }
+
+        private void UploadPhoto()
+        {
+            EMail_Edit.Text = "OnlyPhoto";
+            Render();
+        }
+
+        private void InvalidEmail()
+        {
+            MessageBox.Show(ConfigDB.GetText("Invalid"));
+        }
+
+        private void EmptyEmail()
+        {
+            MessageBox.Show(ConfigDB.GetText("Empty"));
+        }
+
+        private void CheckEmail(string Command)
+        {
+            string[] Params = Command.Split(',');
+            if (EMail_Edit.Text == "")
+            {
+                RunCommand(Params[2].Split(','));
+                return;
+            }
+
+            string[] NoVideoPhrase = ConfigDB.GetConfigValue("NoVideo").Split(',');
+            for (int i = 0; i < NoVideoPhrase.Length; i++)
+                if (EMail_Edit.Text == NoVideoPhrase[i])
+                {
+                    RunCommand(Params[1].Split(','));
+                    return;
+                }
+
+            if (EMail_Edit.Text == "buzin")
+            {
+                Application.Exit();
+                return;
+            }
+
+            Regex r = new Regex(ConfigDB.GetConfigValue("email_regexp"), RegexOptions.IgnoreCase);
+            Match m = r.Match(EMail_Edit.Text);
+            if (m.Success)
+                RunCommand(Params[0].Split(','));
+            else RunCommand(Params[3].Split(','));
         }
 
         private void AnswerColors(string Command)
@@ -273,7 +326,41 @@ namespace Web_Camera_Video
             Cancel_Button.Visible = false;
             LogDB.LogResult(UI.ID, EMail_Edit.Text);
             Thread.Sleep(2000);
-            SaveTemplate();
+            if (EMail_Edit.Text == OnlyPhoto) DoUploadPhoto();
+            else SaveTemplate();
+        }
+
+        private void DoUploadPhoto()
+        {
+            // Копирование фото
+            try
+            {
+                File.Copy(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"),
+                    Dir.Archive_Photo + ConfigDB.GetConfigValue("Archive_Photo_File_Name") + @"_" + UI.ID.ToString("D4") + ".jpg");
+            }
+            catch
+            {
+                try
+                {
+                    Thread.Sleep(5000);
+                    File.Copy(Dir.Data + "\\" + ConfigDB.GetConfigValue("UserPhoto"),
+                        Dir.Archive_Photo + ConfigDB.GetConfigValue("Archive_Photo_File_Name") + @"_" + UI.ID.ToString("D4") + ".jpg");
+                }
+                catch
+                {
+
+                }
+            }
+
+            YandexDisk = new DiskSdkClient(ConfigDB.GetConfigValue("YandexDiskToken"));
+            YandexDisk.UploadFileAsync(ConfigDB.GetConfigValue("YandexDiskUploadPhotoFolder") + @"/" + "Photo_" + UI.ID.ToString() + ".jpg",
+                File.Open(Dir.Data + ConfigDB.GetConfigValue("UserPhoto"), FileMode.Open, FileAccess.Read),
+                new AsyncProgress(UpdateProgress), null);
+            Hide_All();
+            PubLink = "";
+            EMail_Edit.Text = "";
+            Cancel_Button.Visible = false;
+            RunScript("background=slide1; question=1");
         }
 
         private void SetEmail()
@@ -287,7 +374,7 @@ namespace Web_Camera_Video
             QuestionLabel.Text = ConfigDB.GetText("Enter_Email");
             Answer_1.Text = ConfigDB.GetText("Email_OK");
 
-            Answer_1_Script = "render";
+            Answer_1_Script = "check_email=render,upload_photo,empty_email,invalid_email";
         }
 
         private void SetVK(Panel virtualKeyboard, string Name)
@@ -837,8 +924,6 @@ namespace Web_Camera_Video
 
                 }
             }
-            //UI.SaveToFile();
-            //UI.SaveToStructuredFile(Dir.Data + ConfigDB.GetConfigValue("UserData"));
 
             SetElement(QuestionLabel, "wait");
             QuestionLabel.Text = ConfigDB.GetText("Wait");
