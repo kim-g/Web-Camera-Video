@@ -40,6 +40,7 @@ namespace Web_Camera_Video
     private TextBox EMail_Edit;
     private Label Name_Label;
     private OpenFileDialog OD;
+        private int PictureN = 1;
 
         public static SQLiteDataBase ConfigDB;
         public static SQLiteDataBase LogDB;
@@ -120,6 +121,7 @@ namespace Web_Camera_Video
         bool RenderFrame = false;
         string UploadName = "";
         string UploadFileName = "";
+        private Button FullLengthButton;
         const string OnlyPhoto = "OnlyPhoto";
 
 
@@ -140,10 +142,14 @@ namespace Web_Camera_Video
             Directory.CreateDirectory(Dir.Archive);
 
             // Запуск сторонних программ
-            string[] AutoRun = ConfigDB.GetConfigValue("AutoRun").Split(';');
-            for (int i = 0; i < AutoRun.Length; i++)
+            string AR = ConfigDB.GetConfigValue("AutoRun").Trim();
+            if (AR != "")
             {
-                Process.Start(AutoRun[i]);
+                string[] AutoRun = AR.Split(';');
+                for (int i = 0; i < AutoRun.Length; i++)
+                {
+                    Process.Start(AutoRun[i]);
+                }
             }
 
             string Images = ConfigDB.GetConfigValue("Images") + @"\";
@@ -240,10 +246,33 @@ namespace Web_Camera_Video
                 case "timeout":     TimeOutEnable = Command[1] == "1";                  break;  // Включить таймаут.
                 case "answer_colors": AnswerColors(Command[1]);                         break;  // Задать цвета шрифтам кнопок ответов.
                 case "check_email": CheckEmail(Command[1]);                             break;  // Проверить правильность введения email (если правильно,если команда,если пустое,если неправильно)
-                case "empty_email": EmptyEmail();                                       break;  // Выдать сообзение, что e-mail пуст
-                case "invalid_email": InvalidEmail();                                   break;  // Выдать сообзение, что e-mail не правильный
+                case "empty_email": EmptyEmail();                                       break;  // Выдать сообщение, что e-mail пуст
+                case "invalid_email": InvalidEmail();                                   break;  // Выдать сообщение, что e-mail не правильный
                 case "upload_photo":  UploadPhoto();                                    break;  // Загрузить только фото
+                case "picture":     PictureN = Convert.ToInt32(Command[1]);             break;  // Номер картинки для выдачи
+                case "show_picture": ShowPictureSlide(Command[1]);                      break;  // Показать слайд и перейти на следующий слайд при нажатии на что-либо
+                case "send_email":  SendEmail();                                        break;  // Послать e-mail  по адресу без предзагрузок и ссылок
             }
+        }
+
+        private void SendEmail()
+        {
+            Email(EMail_Edit.Text, "");
+            Hide_All();
+            PubLink = "";
+            EMail_Edit.Text = "";
+            RunScript(ConfigDB.GetConfigValue("CloseButtonQuestion"));
+        }
+
+        private void ShowPictureSlide(string Background)
+        {
+            SetBackgroundImage(Background);
+            FullLengthButton.Left = 0;
+            FullLengthButton.Top = Cancel_Button.Top + Cancel_Button.Height + 10;
+            FullLengthButton.Width = Width;
+            FullLengthButton.Height = Height - FullLengthButton.Top;
+            FullLengthButton.Text = "";
+            FullLengthButton.Visible = true;
         }
 
         private void UploadPhoto()
@@ -271,14 +300,14 @@ namespace Web_Camera_Video
                 return;
             }
 
-            string[] NoVideoPhrase = ConfigDB.GetConfigValue("NoVideo").Split(',');
+            /*string[] NoVideoPhrase = ConfigDB.GetConfigValue("NoVideo").Split(',');
             for (int i = 0; i < NoVideoPhrase.Length; i++)
                 if (EMail_Edit.Text == NoVideoPhrase[i])
                 {
                     RunCommand(Params[1].Split(','));
                     return;
                 }
-
+            */
             if (EMail_Edit.Text == "buzin")
             {
                 Application.Exit();
@@ -374,7 +403,7 @@ namespace Web_Camera_Video
             QuestionLabel.Text = ConfigDB.GetText("Enter_Email");
             Answer_1.Text = ConfigDB.GetText("Email_OK");
 
-            Answer_1_Script = "check_email=render,upload_photo,empty_email,invalid_email";
+            Answer_1_Script = "check_email=send_email,send_email,empty_email,invalid_email";
         }
 
         private void SetVK(Panel virtualKeyboard, string Name)
@@ -487,12 +516,17 @@ namespace Web_Camera_Video
         {
             string Message_Body = ConfigDB.GetText("Mail_Message");
             Message_Body = Message_Body.Replace("{LINK}", Link);
+            Message_Body = Message_Body.Replace("{PICTURE}", 
+                Path.GetFileName(ConfigDB.GetConfigValue("picture_" +
+                PictureN.ToString())));
             string[] Attachments = ConfigDB.GetConfigValue("EmailAttachments").Split(',');
             for (int i = 0; i < Attachments.Length; i++)
                 Message_Body = Message_Body.Replace("{ATTACH_" + (i+1).ToString() + "}", Path.GetFileName(Attachments[i]));
 
             SendMail(ConfigDB.GetConfigValue("SMTP"), ConfigDB.GetConfigValue("Mail_From"), ConfigDB.GetConfigValue("Password"),
-                Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body, ConfigDB.GetConfigValue("EmailAttachments"));
+                Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body, 
+                ConfigDB.GetConfigValue("EmailAttachments") + "," +
+                ConfigDB.GetConfigValue("picture_" + PictureN.ToString()));
 
         }
 
@@ -991,7 +1025,7 @@ namespace Web_Camera_Video
                         PubLink = "";
                         EMail_Edit.Text = "";
                         Cancel_Button.Visible = false;
-                        RunScript("background=slide1; question=1");
+                        RunScript(ConfigDB.GetConfigValue("CloseButtonQuestion"));
                     }
                 }
             }
@@ -1021,7 +1055,7 @@ namespace Web_Camera_Video
                 PubLink = "";
                 EMail_Edit.Text = "";
                 Cancel_Button.Visible = false;
-                RunScript("background=slide1; question=1");
+                RunScript(ConfigDB.GetConfigValue("CloseButtonQuestion"));
             }
         }
 
@@ -1045,7 +1079,7 @@ namespace Web_Camera_Video
             // Всё скрыть
             Hide_All();
             EMail_Edit.Text = "";
-            Cancel_Button.Visible = false;
+            Cancel_Button.Visible = true;
 
             // Все таймеры убрать
             WaitForResult = false;
@@ -1053,7 +1087,7 @@ namespace Web_Camera_Video
             RenderFrame = false;
 
             // Показ начального экрана
-            RunScript("background=slide1;question=1");
+            RunScript(ConfigDB.GetConfigValue("CloseButtonQuestion"));
         }
 
         private void Hide_All()
@@ -1193,6 +1227,7 @@ namespace Web_Camera_Video
             this.CountDownTimer = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.TimeOutTimer = new System.Windows.Forms.Timer(this.components);
+            this.FullLengthButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
@@ -1280,6 +1315,7 @@ namespace Web_Camera_Video
             this.EMail_Edit.Name = "EMail_Edit";
             this.EMail_Edit.Size = new System.Drawing.Size(421, 31);
             this.EMail_Edit.TabIndex = 16;
+            this.EMail_Edit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.EMail_Edit.Visible = false;
             this.EMail_Edit.Click += new System.EventHandler(this.EMail_Edit_Click);
             // 
@@ -1871,11 +1907,30 @@ namespace Web_Camera_Video
             this.TimeOutTimer.Interval = 1000;
             this.TimeOutTimer.Tick += new System.EventHandler(this.TimeOutTimer_Tick);
             // 
+            // FullLengthButton
+            // 
+            this.FullLengthButton.BackColor = System.Drawing.Color.Transparent;
+            this.FullLengthButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.FullLengthButton.FlatAppearance.BorderSize = 0;
+            this.FullLengthButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.FullLengthButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.FullLengthButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FullLengthButton.ForeColor = System.Drawing.Color.Black;
+            this.FullLengthButton.Location = new System.Drawing.Point(1270, 398);
+            this.FullLengthButton.Name = "FullLengthButton";
+            this.FullLengthButton.Size = new System.Drawing.Size(116, 41);
+            this.FullLengthButton.TabIndex = 265;
+            this.FullLengthButton.Text = "FullLengthButton";
+            this.FullLengthButton.UseVisualStyleBackColor = false;
+            this.FullLengthButton.Visible = false;
+            this.FullLengthButton.Click += new System.EventHandler(this.FullLengthButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1703, 672);
+            this.Controls.Add(this.FullLengthButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Cancel_Button);
             this.Controls.Add(this.webBrowser);
@@ -2050,6 +2105,13 @@ namespace Web_Camera_Video
 
         private void EMail_Edit_Click(object sender, EventArgs e)
         {
+            Action();
+        }
+
+        private void FullLengthButton_Click(object sender, EventArgs e)
+        {
+            FullLengthButton.Visible = false;
+            RunScript(ConfigDB.GetConfigValue("FullLengthButtonScript"));
             Action();
         }
     }
