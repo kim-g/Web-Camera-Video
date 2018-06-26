@@ -137,9 +137,12 @@ namespace Web_Camera_Video
 
             Animation.Interval = 500;
 
-            Directory.CreateDirectory(Dir.Data);
-            Directory.CreateDirectory(Dir.Template);
-            Directory.CreateDirectory(Dir.Archive);
+            if (Dir != null)
+            {
+                Directory.CreateDirectory(Dir.Data);
+                Directory.CreateDirectory(Dir.Template);
+                Directory.CreateDirectory(Dir.Archive);
+            }
 
             // Запуск сторонних программ
             string AR = ConfigDB.GetConfigValue("AutoRun").Trim();
@@ -554,10 +557,13 @@ namespace Web_Camera_Video
                 if (attachFile != null)
                 {
                     string[] Attachments = attachFile.Split(',');
-                    for (int i = 0; i < Attachments.Length; i++)
+                    foreach (string Attachment in Attachments)
                     {
-                        mail.Attachments.Add(new Attachment(Attachments[i]));
-                        mail.Attachments[i].ContentId = Path.GetFileName(Attachments[i]);
+                        if (Attachment.Trim() == "") continue;
+                        mail.Attachments.Add( new Attachment(Attachment)
+                        {
+                            ContentId = Path.GetFileName(Attachment)
+                        });
                     }
                 }
                 SmtpClient client = new SmtpClient();
@@ -719,7 +725,8 @@ namespace Web_Camera_Video
         {
             UI = new UserInformation(ConfigDB.GetConfigValueInt("Users") + 1);
             ConfigDB.SetConfigValue("Users", UI.ID);
-            Dir.Clear_Prep();
+            if (Dir != null)
+                Dir.Clear_Prep();
         }
 
         void SetSex(string Sex)
@@ -743,25 +750,27 @@ namespace Web_Camera_Video
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // enumerate video devices
-            videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            // Проверка наличия камер
-            if (videoDevices.Count < 1)
+            if (ConfigDB.GetConfigValueBool("use_camera"))
             {
-                MessageBox.Show("Для правильной работы ваш компьютер должени иметь веб-камеру. В настоящий момент веб-камера не подключена или неисправна.\n\nПрограмма не может работать без веб-камеры и вынуждена быть закрыта.", "ОШИБКА");
-                Application.Exit();
-                return;
+                // enumerate video devices
+                videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                // Проверка наличия камер
+                if (videoDevices.Count < 1)
+                {
+                    MessageBox.Show("Для правильной работы ваш компьютер должени иметь веб-камеру. В настоящий момент веб-камера не подключена или неисправна.\n\nПрограмма не может работать без веб-камеры и вынуждена быть закрыта.", "ОШИБКА");
+                    Application.Exit();
+                    return;
+                }
+                if (ConfigDB.GetConfigValueInt("CurrentWebCamera") >= videoDevices.Count)
+                {
+                    MessageBox.Show("Выбрана не существующая в системе веб-камера.\n\nБудет выбрана веб-камера по-умолчанию.", "ОШИБКА");
+                    ConfigDB.SetConfigValue("CurrentWebCamera", 0);
+                }
+                videoDevice = new VideoCaptureDevice(videoDevices[ConfigDB.GetConfigValueInt("CurrentWebCamera")].MonikerString);
+                videoDevice.NewFrame += new NewFrameEventHandler(cam_NewFrame);
+                videoCapabilities = videoDevice.VideoCapabilities;
+                snapshotCapabilities = videoDevice.SnapshotCapabilities;
             }
-            if (ConfigDB.GetConfigValueInt("CurrentWebCamera") >= videoDevices.Count)
-            {
-                MessageBox.Show("Выбрана не существующая в системе веб-камера.\n\nБудет выбрана веб-камера по-умолчанию.", "ОШИБКА");
-                ConfigDB.SetConfigValue("CurrentWebCamera", 0);
-            }
-            videoDevice = new VideoCaptureDevice(videoDevices[ConfigDB.GetConfigValueInt("CurrentWebCamera")].MonikerString);
-            videoDevice.NewFrame += new NewFrameEventHandler(cam_NewFrame);
-            videoCapabilities = videoDevice.VideoCapabilities;
-            snapshotCapabilities = videoDevice.SnapshotCapabilities;
-
             Action();
         }
 
@@ -842,15 +851,18 @@ namespace Web_Camera_Video
 
         private void Start_Web_Camera()
         {
-            if (videoDevice != null)
+            if (ConfigDB.GetConfigValueBool("use_camera"))
             {
-                //MessageBox.Show("videoCapabilities.Length == " + videoCapabilities.Length.ToString());
-                if ((videoCapabilities != null) && (videoCapabilities.Length != 0))
+                if (videoDevice != null)
                 {
-                    videoDevice.VideoResolution = videoCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
-                }
+                    //MessageBox.Show("videoCapabilities.Length == " + videoCapabilities.Length.ToString());
+                    if ((videoCapabilities != null) && (videoCapabilities.Length != 0))
+                    {
+                        videoDevice.VideoResolution = videoCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
+                    }
 
-                videoDevice.Start();
+                    videoDevice.Start();
+                }
             }
         }
 
@@ -910,12 +922,18 @@ namespace Web_Camera_Video
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            videoDevice.Stop();
+            if (ConfigDB.GetConfigValueBool("use_camera"))
+            {
+                videoDevice.Stop();
+            }
         }
 
         private void Stop_Web_Camera()
         {
-            videoDevice.Stop();
+            if (ConfigDB.GetConfigValueBool("use_camera"))
+            {
+                videoDevice.Stop();
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)

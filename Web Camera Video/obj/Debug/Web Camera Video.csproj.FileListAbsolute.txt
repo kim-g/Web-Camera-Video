@@ -113,3 +113,37 @@ E:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.cs
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.CopyComplete
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.exe
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.pdb
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csprojAssemblyReference.cache
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Configuration.resources
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Form1.resources
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.UserInfo.resources
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.GenerateResource.cache
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Math.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.EF6.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.Linq.dll
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Math.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.SqlServer.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.xml
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\bin\Debug\System.Data.SQLite.dll.config
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web_Camera_Video.Properties.Resources.resources
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.CoreCompileInputs.cache
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.csproj.CopyComplete
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.exe
+D:\~gakim\VisualStudio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.pdb

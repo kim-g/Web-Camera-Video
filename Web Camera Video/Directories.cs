@@ -21,6 +21,7 @@ namespace Web_Camera_Video
 
         public static Directories GetFromDB(SQLiteDataBase DB)
         {
+            if (DB.GetConfigValue("Work_Directory") == "") return null;
             Directories Dir = new Directories();
             Dir.Work = DB.GetConfigValue("Work_Directory") + @"\";
             Dir.Prep = Dir.Work + DB.GetConfigValue("Prep_Directory") + @"\";
