@@ -517,11 +517,12 @@ namespace Web_Camera_Video
 
         private void Email(string Address, string Link)
         {
+            string Pic = ConfigDB.GetConfigValue("picture_" + ConfigDB.GetConfigValue("language") + "_" +
+                PictureN.ToString());
+
             string Message_Body = ConfigDB.GetText("Mail_Message");
             Message_Body = Message_Body.Replace("{LINK}", Link);
-            Message_Body = Message_Body.Replace("{PICTURE}", 
-                Path.GetFileName(ConfigDB.GetConfigValue("picture_" +
-                PictureN.ToString())));
+            Message_Body = Message_Body.Replace("{PICTURE}", Path.GetFileName(Pic));
             string[] Attachments = ConfigDB.GetConfigValue("EmailAttachments").Split(',');
             for (int i = 0; i < Attachments.Length; i++)
                 Message_Body = Message_Body.Replace("{ATTACH_" + (i+1).ToString() + "}", Path.GetFileName(Attachments[i]));
@@ -529,7 +530,7 @@ namespace Web_Camera_Video
             SendMail(ConfigDB.GetConfigValue("SMTP"), ConfigDB.GetConfigValue("Mail_From"), ConfigDB.GetConfigValue("Password"),
                 Address.ToLower(), ConfigDB.GetText("Mail_Caption"), Message_Body, 
                 ConfigDB.GetConfigValue("EmailAttachments") + "," +
-                ConfigDB.GetConfigValue("picture_" + PictureN.ToString()));
+                Pic);
 
         }
 
