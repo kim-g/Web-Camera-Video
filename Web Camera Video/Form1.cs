@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
 
 namespace Web_Camera_Video
 {
@@ -255,6 +256,35 @@ namespace Web_Camera_Video
                 case "picture":     PictureN = Convert.ToInt32(Command[1]);             break;  // Номер картинки для выдачи
                 case "show_picture": ShowPictureSlide(Command[1]);                      break;  // Показать слайд и перейти на следующий слайд при нажатии на что-либо
                 case "send_email":  SendEmail();                                        break;  // Послать e-mail  по адресу без предзагрузок и ссылок
+                case "print_picture": Print_Picture();                                  break;  // Напечатать картинку с номером picture
+            }
+        }
+
+        private void Print_Picture()
+        {
+            try
+            {
+                PrintDocument printDoc = new PrintDocument();
+                printDoc.PrintPage += new PrintPageEventHandler(printDoc_Print);
+                printDoc.Print();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void printDoc_Print(object sender, PrintPageEventArgs ev)
+        {
+            try
+            {
+                Image img = Image.FromFile(ConfigDB.GetConfigValue("picture_print_" + 
+                    ConfigDB.GetConfigValue("language") + "_" + PictureN.ToString()));
+                ev.Graphics.DrawImage(img, ev.PageBounds);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
