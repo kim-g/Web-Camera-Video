@@ -1,6 +1,7 @@
 ﻿using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Imaging.Filters;
+using Accord.Video.FFMPEG;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -42,6 +43,11 @@ namespace Web_Camera_Video
     private Label Name_Label;
     private OpenFileDialog OD;
         private int PictureN = 1;
+        private VideoCaptureDevice videoSource = null;
+        bool isNewFrame = false;
+        Bitmap image;
+        bool isRecord = false;
+        VideoFileWriter writer;
 
         public static SQLiteDataBase ConfigDB;
         public static SQLiteDataBase LogDB;
@@ -124,6 +130,7 @@ namespace Web_Camera_Video
         string UploadFileName = "";
         private Button FullLengthButton;
         const string OnlyPhoto = "OnlyPhoto";
+        Thread t;
 
 
 
@@ -187,6 +194,24 @@ namespace Web_Camera_Video
 
             // Покажем саму форму.
             Show();
+
+            t = new Thread(saveVideo);
+
+            Start_Web_Camera();
+
+            
+        }
+
+        void saveVideo()
+        {
+            while (isRecord)
+            {
+                if (isNewFrame)
+                {
+                    writer.WriteVideoFrame(image);
+                    isNewFrame = false;
+                }
+            }
         }
 
         // Показ вопроса
@@ -257,6 +282,7 @@ namespace Web_Camera_Video
                 case "show_picture": ShowPictureSlide(Command[1]);                      break;  // Показать слайд и перейти на следующий слайд при нажатии на что-либо
                 case "send_email":  SendEmail();                                        break;  // Послать e-mail  по адресу без предзагрузок и ссылок
                 case "print_picture": Print_Picture();                                  break;  // Напечатать картинку с номером picture
+                case "get_video":   VideoRecordStart(7000);                             break;  // Начать запись видео
             }
         }
 
@@ -890,11 +916,19 @@ namespace Web_Camera_Video
                     if ((videoCapabilities != null) && (videoCapabilities.Length != 0))
                     {
                         videoDevice.VideoResolution = videoCapabilities[ConfigDB.GetConfigValueInt("CurrentPreviewResolution")];
+                        videoDevice.NewFrame += new NewFrameEventHandler(SelectedCam_NewFrame);
                     }
 
                     videoDevice.Start();
                 }
             }
+        }
+
+        private void SelectedCam_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            image = (Bitmap)eventArgs.Frame.Clone();
+            isNewFrame = true;
+            pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
         }
 
         private void videoDevice_SnapshotFrame(object sender, NewFrameEventArgs eventArgs)
@@ -1287,13 +1321,12 @@ namespace Web_Camera_Video
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(764, 99);
+            this.pictureBox1.Location = new System.Drawing.Point(37, 255);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(417, 68);
+            this.pictureBox1.Size = new System.Drawing.Size(249, 165);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // CameraButton
@@ -2163,5 +2196,35 @@ namespace Web_Camera_Video
             RunScript(ConfigDB.GetConfigValue("FullLengthButtonScript"));
             Action();
         }
+
+        private void VideoRecordStart(int Time)  //непостредственно запись
+        {
+
+           if (!isRecord)
+            {
+                writer = new VideoFileWriter();
+
+                writer.Open(Path.Combine( Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString()+".mp4"), videoDevice.VideoResolution.FrameSize.Width, videoDevice.VideoResolution.FrameSize.Height,
+                    videoDevice.VideoResolution.AverageFrameRate, VideoCodec.MPEG4, ConfigDB.GetConfigValueInt("bitrate"));
+            }
+
+            isRecord = !isRecord;
+            if (isRecord)
+                t.Start();
+
+            System.Threading.Timer StopCam = new System.Threading.Timer((object sender) =>
+            {
+                if (isRecord)
+                {
+                    writer.Close();
+                    isRecord = false;
+                }
+            }, null, Time, Timeout.Infinite);
+
+        }
+
+        
+
+
     }
 }

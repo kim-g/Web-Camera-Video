@@ -35,6 +35,7 @@ namespace Web_Camera_Video
 
             if (!Directory.Exists(Dir.Archive)) Directory.CreateDirectory(Dir.Archive);
             if (!Directory.Exists(Dir.Archive_Photo)) Directory.CreateDirectory(Dir.Archive_Photo);
+            if (!Directory.Exists(Dir.Cloud)) Directory.CreateDirectory(Dir.Cloud);
             return Dir;
         }
 
