@@ -132,7 +132,8 @@ namespace Web_Camera_Video
         const string OnlyPhoto = "OnlyPhoto";
         private System.Windows.Forms.Timer StapCamera;
         Thread t;
-
+        private bool StopVideo = false;
+        private DateTime StartRender;
 
 
         public Form1()
@@ -277,7 +278,14 @@ namespace Web_Camera_Video
                 case "get_video":   VideoRecordStart(7000);                             break;  // Начать запись видео
                 case "one_button":  ShowOneButton(); break; // Показать в вопросе одну кнопку.
                 case "delete_video": DeleteVideo(); break; // Удалить снятое видео.
+                case "answers_up":  AnswersUp(); break;
             }
+        }
+
+        private void AnswersUp()
+        {
+            SetElementPosition(Answer_1, "answer_1_up");
+            SetElementPosition(Answer_2, "answer_2_up");
         }
 
         private void DeleteVideo()
@@ -845,9 +853,13 @@ namespace Web_Camera_Video
             {
                 if (!RenderFrame) return;
                 if (isRecord)
-                { 
+                {
+                    if (!StapCamera.Enabled)
+                        StapCamera.Interval = 7000;
+                        StapCamera.Start();
+
                     Bitmap Temp = (Bitmap)eventArgs.Frame.Clone();
-                    Temp = ResizeBMP((Bitmap)Temp.Clone(), 240, 0, 1440, 1080, Temp.PixelFormat);
+                    //Temp = ResizeBMP((Bitmap)Temp.Clone(), 240, 0, 1440, 1080, Temp.PixelFormat);
                     writer.WriteVideoFrame(Temp);
  
                 }
@@ -881,7 +893,8 @@ namespace Web_Camera_Video
             {
 
                 Bitmap Pic = (Bitmap)Pic_In;
-                bitmap = ResizeBMP((Bitmap)Pic.Clone(), 412, 0, 1095, 1080, Pic.PixelFormat);
+                bitmap = ResizeBMP((Bitmap)Pic.Clone(), 0, 0, 800, 600, Pic.PixelFormat);
+                //bitmap = (Bitmap)(Pic.Clone());
                 Pic.Dispose();
 
                 var filter = new Mirror(false, true);
@@ -2030,14 +2043,14 @@ namespace Web_Camera_Video
             // 
             // StapCamera
             // 
-            this.StapCamera.Interval = 7000;
+            this.StapCamera.Interval = 9000;
             this.StapCamera.Tick += new System.EventHandler(this.StapCamera_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1703, 672);
+            this.ClientSize = new System.Drawing.Size(1084, 672);
             this.Controls.Add(this.FullLengthButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Cancel_Button);
@@ -2163,6 +2176,13 @@ namespace Web_Camera_Video
         {
             CheckCountDown();
 
+            if (StopVideo)
+            {
+                StopVideo = false;
+                RunScript("background=bkg15;question=18;answers_up;");
+
+            }
+
             TimeSpan Diff = DateTime.Now - TimeOutTime;
             label1.Text = TimeOutEnable ? Diff.TotalMilliseconds.ToString() : "No Timeout";
 
@@ -2227,18 +2247,22 @@ namespace Web_Camera_Video
 
         private void VideoRecordStart(int Time)  //непостредственно запись
         {
+            StopVideo = false;
 
-           if (!isRecord)
+            if (!isRecord)
             {
+                StartRender = DateTime.Now;
                 writer = new VideoFileWriter();
 
-                writer.Open(Path.Combine( Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString()+".avi"), 1440, 1080,
+                writer.Open(Path.Combine( Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString()+".avi"),
+                    videoDevice.VideoResolution.FrameSize.Width,
+                    videoDevice.VideoResolution.FrameSize.Height,
                     videoDevice.VideoResolution.AverageFrameRate, VideoCodec.MPEG4, ConfigDB.GetConfigValueInt("bitrate"));
             }
             
             isRecord = !isRecord;
-            if (!StapCamera.Enabled)
-                StapCamera.Start();
+            
+            
         }
 
         private void StapCamera_Tick(object sender, EventArgs e)
@@ -2249,8 +2273,9 @@ namespace Web_Camera_Video
                 Thread.Sleep(50);
                 writer.Close();
                 StapCamera.Stop();
-                RunScript("background=bkg15;question=18;");
+                //RunScript("background=bkg15;question=18;");
                 RenderFrame = false;
+                StopVideo = true;
             }
         }
     }
