@@ -130,6 +130,7 @@ namespace Web_Camera_Video
         string UploadFileName = "";
         private Button FullLengthButton;
         const string OnlyPhoto = "OnlyPhoto";
+        private System.Windows.Forms.Timer StapCamera;
         Thread t;
 
 
@@ -195,8 +196,6 @@ namespace Web_Camera_Video
             // Покажем саму форму.
             Show();
 
-            t = new Thread(saveVideo);
-
             Start_Web_Camera();
 
             
@@ -204,14 +203,7 @@ namespace Web_Camera_Video
 
         void saveVideo()
         {
-            while (isRecord)
-            {
-                if (isNewFrame)
-                {
-                    writer.WriteVideoFrame(image);
-                    isNewFrame = false;
-                }
-            }
+            
         }
 
         // Показ вопроса
@@ -283,7 +275,20 @@ namespace Web_Camera_Video
                 case "send_email":  SendEmail();                                        break;  // Послать e-mail  по адресу без предзагрузок и ссылок
                 case "print_picture": Print_Picture();                                  break;  // Напечатать картинку с номером picture
                 case "get_video":   VideoRecordStart(7000);                             break;  // Начать запись видео
+                case "one_button":  ShowOneButton(); break; // Показать в вопросе одну кнопку.
+                case "delete_video": DeleteVideo(); break; // Удалить снятое видео.
             }
+        }
+
+        private void DeleteVideo()
+        {
+            File.Delete(Path.Combine(Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString() + ".avi"));
+        }
+
+        private void ShowOneButton()
+        {
+            SetElementPosition(Answer_1, "center_button");
+            Answer_2.Visible = false;
         }
 
         private void Print_Picture()
@@ -761,16 +766,16 @@ namespace Web_Camera_Video
             RunScript("background=selphy");
 
             // Настройка надписи
-            SetElement(QuestionLabel, "Camera_Text");
-            QuestionLabel.Text = ConfigDB.GetText("Camera_Text");
+            //SetElement(QuestionLabel, "Camera_Text");
+            //QuestionLabel.Text = ConfigDB.GetText("Camera_Text");
 
             // Настройка параметров Web-плеера
             SetElementPosition(picFrame, "Camera");
             
 
             // Настройка кнопки Снимка
-            SetElement(CameraButton, "Camera_Button");
-            CameraButton.Text = ConfigDB.GetText("Photo_Label");
+            //SetElement(CameraButton, "Camera_Button");
+            //CameraButton.Text = ConfigDB.GetText("Photo_Label");
 
             Application.DoEvents();
 
@@ -839,11 +844,28 @@ namespace Web_Camera_Video
             try
             {
                 if (!RenderFrame) return;
+                if (isRecord)
+                { 
+                    Bitmap Temp = (Bitmap)eventArgs.Frame.Clone();
+                    Temp = ResizeBMP((Bitmap)Temp.Clone(), 240, 0, 1440, 1080, Temp.PixelFormat);
+                    writer.WriteVideoFrame(Temp);
+ 
+                }
+
+                
                 if (RenderingAFrame) return;
-                RenderingAFrame = true;
+
                 Bitmap Pic = (Bitmap)eventArgs.Frame.Clone();
+                RenderingAFrame = true;
+                
+                
                 Thread t = new Thread(new ParameterizedThreadStart(ModifyPic));
                 t.Start(Pic);
+                GC.Collect();
+            }
+            catch (AccessViolationException)
+            {
+
             }
             catch
             {
@@ -926,9 +948,7 @@ namespace Web_Camera_Video
 
         private void SelectedCam_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            image = (Bitmap)eventArgs.Frame.Clone();
-            isNewFrame = true;
-            pictureBox1.Image = (Bitmap)eventArgs.Frame.Clone();
+
         }
 
         private void videoDevice_SnapshotFrame(object sender, NewFrameEventArgs eventArgs)
@@ -1311,6 +1331,7 @@ namespace Web_Camera_Video
             this.label1 = new System.Windows.Forms.Label();
             this.TimeOutTimer = new System.Windows.Forms.Timer(this.components);
             this.FullLengthButton = new System.Windows.Forms.Button();
+            this.StapCamera = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Wait_Image)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picFrame)).BeginInit();
@@ -2007,6 +2028,11 @@ namespace Web_Camera_Video
             this.FullLengthButton.Visible = false;
             this.FullLengthButton.Click += new System.EventHandler(this.FullLengthButton_Click);
             // 
+            // StapCamera
+            // 
+            this.StapCamera.Interval = 7000;
+            this.StapCamera.Tick += new System.EventHandler(this.StapCamera_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2055,7 +2081,7 @@ namespace Web_Camera_Video
 
         private void picFrame_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawImage(Mask(), (picFrame.Width - Mask().Width) / 2, (picFrame.Height - Mask().Height) / 2, Mask().Width, Mask().Height);
+            //e.Graphics.DrawImage(Mask(), (picFrame.Width - Mask().Width) / 2, (picFrame.Height - Mask().Height) / 2, Mask().Width, Mask().Height);
         }
 
         private void VK_Button_Click(object sender, EventArgs e)
@@ -2143,6 +2169,8 @@ namespace Web_Camera_Video
             if (TimeOutEnable)
                 if (Diff.TotalMilliseconds > ConfigDB.GetConfigValueInt("TimeOut") * 1000f)
                     Clear_All();
+
+            GC.Collect();
         }
 
         private void Form1_Click(object sender, EventArgs e)
@@ -2204,27 +2232,26 @@ namespace Web_Camera_Video
             {
                 writer = new VideoFileWriter();
 
-                writer.Open(Path.Combine( Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString()+".mp4"), videoDevice.VideoResolution.FrameSize.Width, videoDevice.VideoResolution.FrameSize.Height,
+                writer.Open(Path.Combine( Dir.Cloud, "Video_" + UI.ID + "_" + PictureN.ToString()+".avi"), 1440, 1080,
                     videoDevice.VideoResolution.AverageFrameRate, VideoCodec.MPEG4, ConfigDB.GetConfigValueInt("bitrate"));
             }
-
+            
             isRecord = !isRecord;
-            if (isRecord)
-                t.Start();
-
-            System.Threading.Timer StopCam = new System.Threading.Timer((object sender) =>
-            {
-                if (isRecord)
-                {
-                    writer.Close();
-                    isRecord = false;
-                }
-            }, null, Time, Timeout.Infinite);
-
+            if (!StapCamera.Enabled)
+                StapCamera.Start();
         }
 
-        
-
-
+        private void StapCamera_Tick(object sender, EventArgs e)
+        {
+            if (isRecord)
+            {
+                isRecord = false;
+                Thread.Sleep(50);
+                writer.Close();
+                StapCamera.Stop();
+                RunScript("background=bkg15;question=18;");
+                RenderFrame = false;
+            }
+        }
     }
 }

@@ -54,11 +54,7 @@ D:\Visual Studio\Web-Camera-Video\Web Camera Video\obj\Debug\Web Camera Video.cs
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe.config
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.exe
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Web Camera Video.pdb
-D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.dll
-D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Math.dll
-D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
-D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.dll
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.dll
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Disk.SDK.Provider.dll
 D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\EntityFramework.dll
@@ -164,3 +160,24 @@ E:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.FFMPEG
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.xml
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.xml
 E:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.FFMPEG.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\avcodec-57.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\avdevice-57.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\avfilter-6.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\avformat-57.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\avutil-55.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\postproc-54.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\swresample-2.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\swscale-4.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.dll.config
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.FFMPEG.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\Accord.Video.FFMPEG.xml
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.Formats.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.DirectShow.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Video.dll
+D:\Visual Studio\Web-Camera-Video\Web Camera Video\bin\Debug\AForge.Imaging.Formats.xml
